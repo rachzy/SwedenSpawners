@@ -1,0 +1,13 @@
+name: SwedenSpawners
+version: '${project.version}'
+main: com.redesweden.swedenspawners.SwedenSpawners
+api-version: 1.8.8
+authors: [ rachzy ]
+description: Plugin original de spawners da Rede Sweden
+website: https://rachzy.github.io
+depend: [SwedenEconomia]
+softdepend: [DecentHolograms]
+commands:
+  spawners:
+    description: Abre o menu de compra de spawners
+    usage: /<command>
