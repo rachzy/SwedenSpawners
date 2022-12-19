@@ -1,16 +1,22 @@
 package com.redesweden.swedenspawners.models;
 
 public class SpawnerManager {
+    private String uuid;
     private String nickname;
     private Boolean permissaoVender;
     private Boolean permissaoMatar;
     private Boolean permissaoQuebrar;
 
-    public SpawnerManager(String nickname, Boolean permissaoVender, Boolean permissaoMatar, Boolean permissaoQuebrar) {
+    public SpawnerManager(String uuid, String nickname, Boolean permissaoVender, Boolean permissaoMatar, Boolean permissaoQuebrar) {
+        this.uuid = uuid;
         this.nickname = nickname;
         this.permissaoVender = permissaoVender;
         this.permissaoMatar = permissaoMatar;
         this.permissaoQuebrar = permissaoQuebrar;
+    }
+
+    public String getUuid() {
+        return uuid;
     }
 
     public String getNickname() {
@@ -39,5 +45,20 @@ public class SpawnerManager {
 
     public void setPermissaoQuebrar(Boolean permissaoQuebrar) {
         this.permissaoQuebrar = permissaoQuebrar;
+    }
+
+    public void togglePermissaoVender(Spawner spawner) {
+        this.setPermissaoVender(!this.permissaoVender);
+        spawner.save(String.format("managers.%s.permissaoVender", this.uuid), this.permissaoVender);
+    }
+
+    public void togglePermissaoMatar(Spawner spawner) {
+        this.setPermissaoMatar(!this.permissaoMatar);
+        spawner.save(String.format("managers.%s.permissaoMatar", this.uuid), this.permissaoMatar);
+    }
+
+    public void togglePermissaoQuebrar(Spawner spawner) {
+        this.setPermissaoQuebrar(!this.permissaoQuebrar);
+        spawner.save(String.format("managers.%s.permissaoQuebrar", this.uuid), this.permissaoQuebrar);
     }
 }

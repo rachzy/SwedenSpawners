@@ -17,15 +17,17 @@ public class SpawnerMeta {
     private String id;
     private String title;
     private EntityType mob;
+    private ItemStack drop;
     private ItemStack bloco;
     private BigDecimal preco;
     private BigDecimal precoPorDrop;
 
-    public SpawnerMeta(String id, String title, EntityType mob, ItemStack bloco, BigDecimal preco, BigDecimal precoPorDrop) {
+    public SpawnerMeta(String id, String title, EntityType mob, ItemStack bloco, ItemStack drop, BigDecimal preco, BigDecimal precoPorDrop) {
         this.id = id;
         this.title = title;
         this.mob = mob;
         this.bloco = bloco;
+        this.drop = drop;
         this.preco = preco;
         this.precoPorDrop = precoPorDrop;
     }
@@ -44,6 +46,10 @@ public class SpawnerMeta {
 
     public ItemStack getBloco() {
         return bloco;
+    }
+
+    public ItemStack getDrop() {
+        return drop;
     }
 
     public BigDecimal getPreco() {

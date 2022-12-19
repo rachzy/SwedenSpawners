@@ -15,7 +15,6 @@ import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.math.BigDecimal;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,20 +35,22 @@ public class SpawnersFile {
 
         spawnersFile = YamlConfiguration.loadConfiguration(file);
 
-        spawnersFile.addDefault("spawners.0.dono", "rach_ultimate");
-        spawnersFile.addDefault("spawners.0.tipo", "PORCO");
-        spawnersFile.addDefault("spawners.0.local.x", 69);
-        spawnersFile.addDefault("spawners.0.local.y", 69);
-        spawnersFile.addDefault("spawners.0.local.z", 69);
-        spawnersFile.addDefault("spawners.0.local.mundo", "world");
-        spawnersFile.addDefault("spawners.0.managers.0.nickname", "apnx_");
-        spawnersFile.addDefault("spawners.0.managers.0.permissaoVender", true);
-        spawnersFile.addDefault("spawners.0.managers.0.permissaoMatar", false);
-        spawnersFile.addDefault("spawners.0.managers.0.permissaoQuebrar", true);
-        spawnersFile.addDefault("spawners.0.quantidadeStackada", "0");
-        spawnersFile.addDefault("spawners.0.entidadesSpawnadas", "0");
-        spawnersFile.addDefault("spawners.0.dropsArmazenados", "0");
-        spawnersFile.addDefault("spawners.0.ativado", false);
+//        spawnersFile.addDefault("spawners.0.dono", "rach_ultimate");
+//        spawnersFile.addDefault("spawners.0.tipo", "PORCO");
+//        spawnersFile.addDefault("spawners.0.local.x", 69);
+//        spawnersFile.addDefault("spawners.0.local.y", 69);
+//        spawnersFile.addDefault("spawners.0.local.z", 69);
+//        spawnersFile.addDefault("spawners.0.local.mundo", "world");
+//        spawnersFile.addDefault("spawners.0.managers.0.nickname", "apnx_");
+//        spawnersFile.addDefault("spawners.0.managers.0.permissaoVender", true);
+//        spawnersFile.addDefault("spawners.0.managers.0.permissaoMatar", false);
+//        spawnersFile.addDefault("spawners.0.managers.0.permissaoQuebrar", true);
+//        spawnersFile.addDefault("spawners.0.quantidadeStackada", "0");
+//        spawnersFile.addDefault("spawners.0.entidadesSpawnadas", "0");
+//        spawnersFile.addDefault("spawners.0.dropsArmazenados", "0");
+//        spawnersFile.addDefault("spawners.0.ativado", false);
+
+        if(spawnersFile.getConfigurationSection("spawners") == null) return;
 
         for(String spawnerId : spawnersFile.getConfigurationSection("spawners").getKeys(false)) {
             SpawnerPlayer dono = Players.getPlayerByName(spawnersFile.getString(String.format("spawners.%s.dono", spawnerId)));
@@ -71,7 +72,7 @@ public class SpawnersFile {
                     Boolean permissaoMatar = spawnersFile.getBoolean(String.format("spawners.%s.managers.%s.permissaoMatar", spawnerId, playerUUID));
                     Boolean permissaoQuebrar = spawnersFile.getBoolean(String.format("spawners.%s.managers.%s.permissaoQuebrar", spawnerId, playerUUID));
 
-                    SpawnerManager manager = new SpawnerManager(nickname, permissaoVender, permissaoMatar, permissaoQuebrar);
+                    SpawnerManager manager = new SpawnerManager(playerUUID, nickname, permissaoVender, permissaoMatar, permissaoQuebrar);
                     managers.add(manager);
                 }
             }
@@ -87,6 +88,7 @@ public class SpawnersFile {
     }
 
     public static void createNewSpawner(Player dono, SpawnerMeta tipo, Location local, BigDecimal quantiaStackada) {
+        System.out.println("[LOGGER] " + dono.getDisplayName() + " criou um novo spawner.");
         String id = dono.getUniqueId().toString().concat(String.valueOf(Math.round(Math.random() * 999999)));
         spawnersFile.set(String.format("spawners.%s.dono", id), dono.getDisplayName());
         spawnersFile.set(String.format("spawners.%s.tipo", id), tipo.getId());

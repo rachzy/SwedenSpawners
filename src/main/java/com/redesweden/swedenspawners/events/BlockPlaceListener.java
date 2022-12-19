@@ -1,12 +1,14 @@
 package com.redesweden.swedenspawners.events;
 
 import com.redesweden.swedeneconomia.functions.ConverterQuantia;
+import com.redesweden.swedenspawners.SwedenSpawners;
 import com.redesweden.swedenspawners.data.SaleSpawners;
 import com.redesweden.swedenspawners.data.Spawners;
 import com.redesweden.swedenspawners.files.SpawnersFile;
 import com.redesweden.swedenspawners.functions.GetBlocosPorPerto;
 import com.redesweden.swedenspawners.models.Spawner;
 import com.redesweden.swedenspawners.models.SpawnerMeta;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -15,9 +17,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -90,9 +92,13 @@ public class BlockPlaceListener implements Listener {
            return;
         }
 
-        blocoColocado.setType(spawnerMeta.getBloco().getType());
-        blocoColocado.setData(spawnerMeta.getBloco().getData().getData());
-        SpawnersFile.createNewSpawner(player, spawnerMeta, blocoColocado.getLocation().add(1, 0, 0), quantidade);
-        player.sendMessage(String.format("§eVocê colocou com sucesso §a1 %s", spawnerMeta.getTitle()));
+        new BukkitRunnable() {
+            public void run() {
+                blocoColocado.setType(spawnerMeta.getBloco().getType());
+                blocoColocado.setData(spawnerMeta.getBloco().getData().getData());
+                SpawnersFile.createNewSpawner(player, spawnerMeta, blocoColocado.getLocation().add(1, 0, 0), quantidade);
+                player.sendMessage(String.format("§eVocê colocou com sucesso §a1 %s", spawnerMeta.getTitle()));
+            }
+        }.runTaskLater(SwedenSpawners.getPlugin(SwedenSpawners.class), 1);
     }
 }

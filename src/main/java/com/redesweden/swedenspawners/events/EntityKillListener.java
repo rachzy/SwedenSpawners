@@ -16,6 +16,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class EntityKillListener implements Listener {
     @EventHandler
     public void onEntityKill(EntityDeathEvent e) {
+        e.getDrops().clear();
         Location mobLocal = e.getEntity().getLocation();
         List<Block> blocosPorPerto = new GetBlocosPorPerto(mobLocal, 2).getBlocos();
 
@@ -24,14 +25,12 @@ public class EntityKillListener implements Listener {
             Spawner spawnerPerto = Spawners.getSpawnerPorLocal(bloco.getLocation());
             if(spawnerPerto != null
                     && spawnerPerto.getSpawnerMeta().getMob() == e.getEntity().getType()
-                    && e.getEntity().getName().substring(2).equals(new ConverterQuantia(spawnerPerto.getEntidadesSpawnadas()).emLetras())
             ) {
                 spawner.set(Spawners.getSpawnerPorLocal(bloco.getLocation()));
             }
         });
 
         if(spawner.get() == null) return;
-        e.getDrops().clear();
         spawner.get().matarEntidades();
     }
 }
