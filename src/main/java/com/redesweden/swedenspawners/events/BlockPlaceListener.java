@@ -8,8 +8,6 @@ import com.redesweden.swedenspawners.files.SpawnersFile;
 import com.redesweden.swedenspawners.functions.GetBlocosPorPerto;
 import com.redesweden.swedenspawners.models.Spawner;
 import com.redesweden.swedenspawners.models.SpawnerMeta;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -28,7 +26,7 @@ public class BlockPlaceListener implements Listener {
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent e) {
         // Execute apenas caso o evento não tenha sido cancelado.
-        if(e.isCancelled()) return;
+        if (e.isCancelled()) return;
 
         Block blocoColocado = e.getBlock();
         Player player = e.getPlayer();
@@ -38,13 +36,13 @@ public class BlockPlaceListener implements Listener {
         List<Block> blocosAoRedor = new GetBlocosPorPerto(blocoColocado.getLocation(), 2).getBlocos();
         AtomicReference<Spawner> spawner = new AtomicReference<>(null);
         blocosAoRedor.forEach((bloco) -> {
-            if(spawner.get() == null && Spawners.getSpawnerPorLocal(bloco.getLocation()) != null) {
+            if (spawner.get() == null && Spawners.getSpawnerPorLocal(bloco.getLocation()) != null) {
                 spawner.set(Spawners.getSpawnerPorLocal(bloco.getLocation()));
             }
         });
 
         // Se tiver algum spawner perto do bloco, retorne
-        if(spawner.get() != null
+        if (spawner.get() != null
                 && e.getBlock().getType() != Material.SKULL
                 && !itemBloco.hasItemMeta()
                 && itemBloco.getItemMeta().getDisplayName() == null
@@ -55,7 +53,7 @@ public class BlockPlaceListener implements Listener {
         }
 
         // Caso o item colocado não seja uma skull ou não tenha metadata, retorne
-        if(e.getBlock().getType() != Material.SKULL
+        if (e.getBlock().getType() != Material.SKULL
                 || !itemBloco.hasItemMeta()
                 || itemBloco.getItemMeta().getDisplayName() == null
                 || itemBloco.getItemMeta().getLore() == null) return;
@@ -64,7 +62,7 @@ public class BlockPlaceListener implements Listener {
         List<String> lore = itemBloco.getItemMeta().getLore();
 
         //Caso o titulo do item não começe com "Spawner", retorne
-        if(!itemTitle.startsWith("SPAWNER")) return;
+        if (!itemTitle.startsWith("SPAWNER")) return;
 
         SpawnerMeta spawnerMeta = SaleSpawners.getSpawnerPorTitulo(itemBloco.getItemMeta().getDisplayName());
         BigDecimal quantidade;
@@ -75,21 +73,28 @@ public class BlockPlaceListener implements Listener {
             return;
         }
 
-        if(spawnerMeta == null) return;
+        if (spawnerMeta == null) return;
 
-        if(spawner.get() != null) {
-           if(!spawner.get().getDono().getNickname().equals(player.getDisplayName())
-                   || spawner.get().getSpawnerMeta().getMob() != spawnerMeta.getMob())
-           {
-               player.sendMessage("§cJá existe um spawner de outro tipo ou de outro player muito perto deste.");
-               e.setCancelled(true);
-               return;
-           }
+        if (spawner.get() != null) {
+            if (!spawner.get().getDono().getNickname().equals(player.getDisplayName())
+                    || spawner.get().getSpawnerMeta().getMob() != spawnerMeta.getMob()) {
+                player.sendMessage("§cJá existe um spawner de outro tipo ou de outro player muito perto deste.");
+                e.setCancelled(true);
+                return;
+            }
 
-           spawner.get().addQuantidadesStackadas(quantidade);
-           blocoColocado.setType(Material.AIR);
-           player.sendMessage(String.format("§aVocê adicionou com sucesso §f%s §aspawner(s)", new ConverterQuantia(quantidade).emLetras()));
-           return;
+            BigDecimal quantiaFinal = quantidade;
+
+            // Verificar se o jogador está no SHIFT para ativar função de colocar todos os spawners de uma vez
+            if (player.isSneaking()) {
+                quantiaFinal = quantidade.multiply(BigDecimal.valueOf(itemBloco.getAmount()));
+                player.setItemInHand(new ItemStack(Material.AIR));
+            }
+
+            spawner.get().addQuantidadesStackadas(quantiaFinal);
+            blocoColocado.setType(Material.AIR);
+            player.sendMessage(String.format("§aVocê adicionou com sucesso §f%s §aspawner(s)", new ConverterQuantia(quantiaFinal).emLetras()));
+            return;
         }
 
         new BukkitRunnable() {
