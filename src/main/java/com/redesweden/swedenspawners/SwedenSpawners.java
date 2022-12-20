@@ -1,5 +1,6 @@
 package com.redesweden.swedenspawners;
 
+import com.redesweden.swedenspawners.commands.LimiteCommand;
 import com.redesweden.swedenspawners.commands.SpawnersCommand;
 import com.redesweden.swedenspawners.events.*;
 import com.redesweden.swedenspawners.files.LojaFile;
@@ -42,6 +43,7 @@ public final class SwedenSpawners extends JavaPlugin {
 
         //Registrar comandos
         getCommand("spawners").setExecutor(new SpawnersCommand());
+        getCommand("limite").setExecutor(new LimiteCommand());
     }
 
     @Override

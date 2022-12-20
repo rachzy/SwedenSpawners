@@ -92,7 +92,11 @@ public class BlockPlaceListener implements Listener {
             }
 
             spawner.get().addQuantidadesStackadas(quantiaFinal);
-            blocoColocado.setType(Material.AIR);
+            new BukkitRunnable() {
+                public void run() {
+                    blocoColocado.setType(Material.AIR);
+                }
+            }.runTaskLater(SwedenSpawners.getPlugin(SwedenSpawners.class), 1);
             player.sendMessage(String.format("§aVocê adicionou com sucesso §f%s §aspawner(s)", new ConverterQuantia(quantiaFinal).emLetras()));
             return;
         }

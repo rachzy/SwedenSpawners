@@ -11,3 +11,10 @@ commands:
   spawners:
     description: Abre o menu de compra de spawners
     usage: /<command>
+    aliases:
+      - spawner
+      - gerador
+      - geradores
+  limite:
+    description: Mostra ao jogador quantos limites este ou outro possui
+    usage: /<command> <target>

@@ -45,7 +45,16 @@ public class SpawnerPlayer {
     }
 
     public void addLimite(BigDecimal quantia) {
-        this.limite = this.limite.add(quantia);
+        this.setLimite(this.limite.add(quantia));
+    }
+
+    public void setLimite(BigDecimal quantia) {
+        this.limite = quantia;
+        save("limite", this.limite.toString());
+    }
+
+    public void subLimite(BigDecimal quantia) {
+        this.setLimite(this.limite.subtract(quantia));
     }
 
     public void addSpawnersComprados(BigDecimal quantia) {
