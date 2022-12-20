@@ -1,13 +1,13 @@
 package com.redesweden.swedenspawners.models;
 
-public class SpawnerManager {
+public class SpawnerAmigo {
     private String uuid;
     private String nickname;
     private Boolean permissaoVender;
     private Boolean permissaoMatar;
     private Boolean permissaoQuebrar;
 
-    public SpawnerManager(String uuid, String nickname, Boolean permissaoVender, Boolean permissaoMatar, Boolean permissaoQuebrar) {
+    public SpawnerAmigo(String uuid, String nickname, Boolean permissaoVender, Boolean permissaoMatar, Boolean permissaoQuebrar) {
         this.uuid = uuid;
         this.nickname = nickname;
         this.permissaoVender = permissaoVender;
@@ -49,16 +49,16 @@ public class SpawnerManager {
 
     public void togglePermissaoVender(Spawner spawner) {
         this.setPermissaoVender(!this.permissaoVender);
-        spawner.save(String.format("managers.%s.permissaoVender", this.uuid), this.permissaoVender);
+        spawner.save(String.format("amigos.%s.permissaoVender", this.uuid), this.permissaoVender);
     }
 
     public void togglePermissaoMatar(Spawner spawner) {
         this.setPermissaoMatar(!this.permissaoMatar);
-        spawner.save(String.format("managers.%s.permissaoMatar", this.uuid), this.permissaoMatar);
+        spawner.save(String.format("amigos.%s.permissaoMatar", this.uuid), this.permissaoMatar);
     }
 
     public void togglePermissaoQuebrar(Spawner spawner) {
         this.setPermissaoQuebrar(!this.permissaoQuebrar);
-        spawner.save(String.format("managers.%s.permissaoQuebrar", this.uuid), this.permissaoQuebrar);
+        spawner.save(String.format("amigos.%s.permissaoQuebrar", this.uuid), this.permissaoQuebrar);
     }
 }

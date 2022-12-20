@@ -31,12 +31,10 @@ public class Spawner {
     private BigDecimal quantidadeStackada;
     private BigDecimal entidadesSpawnadas;
     private BigDecimal dropsAramazenados;
-    private List<SpawnerManager> managers;
+    private List<SpawnerAmigo> amigos;
     private Boolean ativado;
-    private Thread spawnThread;
-    private Thread startSpawnerThread;
 
-    public Spawner(String id, SpawnerPlayer dono, SpawnerMeta spawnerMeta, Location local, BigDecimal quantidadeStackada, BigDecimal entidadesSpawnadas, BigDecimal dropsAramazenados, List<SpawnerManager> managers, Boolean ativado) {
+    public Spawner(String id, SpawnerPlayer dono, SpawnerMeta spawnerMeta, Location local, BigDecimal quantidadeStackada, BigDecimal entidadesSpawnadas, BigDecimal dropsAramazenados, List<SpawnerAmigo> amigos, Boolean ativado) {
         this.id = id;
         this.dono = dono;
         this.spawnerMeta = spawnerMeta;
@@ -44,7 +42,7 @@ public class Spawner {
         this.quantidadeStackada = quantidadeStackada;
         this.entidadesSpawnadas = entidadesSpawnadas;
         this.dropsAramazenados = dropsAramazenados;
-        this.managers = managers;
+        this.amigos = amigos;
         this.ativado = ativado;
 
         this.iniciar();
@@ -83,12 +81,12 @@ public class Spawner {
         return dropsAramazenados;
     }
 
-    public List<SpawnerManager> getManagers() {
-        return managers;
+    public List<SpawnerAmigo> getAmigos() {
+        return amigos;
     }
 
-    public SpawnerManager getManagerPorNome(String nickname) {
-        return managers.stream().filter(manager -> manager.getNickname().equalsIgnoreCase(nickname)).findFirst().orElse(null);
+    public SpawnerAmigo getAmigoPorNome(String nickname) {
+        return amigos.stream().filter(amigo -> amigo.getNickname().equalsIgnoreCase(nickname)).findFirst().orElse(null);
     }
 
     public Boolean getAtivado() {
@@ -99,18 +97,18 @@ public class Spawner {
         this.setAtivado(!this.ativado);
     }
 
-    public void addManager(String uuid, String nickname) throws Exception {
-        if(this.getManagerPorNome(nickname) != null) throw new Exception("§cEste jogador já é um manager desse spawn.");
-        this.managers.add(new SpawnerManager(uuid, nickname, false, false, false));
-        save(String.format("managers.%s.nickname", uuid), nickname);
-        save(String.format("managers.%s.permissaoVender", uuid), false);
-        save(String.format("managers.%s.permissaoMatar", uuid), false);
-        save(String.format("managers.%s.permissaoQuebrar", uuid), false);
+    public void addAmigo(String uuid, String nickname) throws Exception {
+        if(this.getAmigoPorNome(nickname) != null) throw new Exception("§cEste jogador já é um amigo desse spawn.");
+        this.amigos.add(new SpawnerAmigo(uuid, nickname, false, false, false));
+        save(String.format("amigos.%s.nickname", uuid), nickname);
+        save(String.format("amigos.%s.permissaoVender", uuid), false);
+        save(String.format("amigos.%s.permissaoMatar", uuid), false);
+        save(String.format("amigos.%s.permissaoQuebrar", uuid), false);
     }
 
-    public void removerManager(SpawnerManager manager) {
-        this.managers = this.managers.stream().filter(managerIn -> !managerIn.getNickname().equals(manager.getNickname())).collect(Collectors.toList());
-        save(String.format("managers.%s", manager.getUuid()), null);
+    public void removerAmigo(SpawnerAmigo amigo) {
+        this.amigos = this.amigos.stream().filter(amigoIn -> !amigoIn.getNickname().equals(amigo.getNickname())).collect(Collectors.toList());
+        save(String.format("amigos.%s", amigo.getUuid()), null);
     }
 
     public void zerarDropsArmazenados() {
@@ -132,7 +130,7 @@ public class Spawner {
         this.quantidadeStackada = this.quantidadeStackada.add(quantidade);
 
         DHAPI.setHologramLine(this.holograma, 3, String.format("§fQuantia: §e%s", new ConverterQuantia(this.getQuantidadeStackada()).emLetras()));
-        save("quantiaStackada", quantidade.toString());
+        save("quantidadeStackada", this.quantidadeStackada.toString());
     }
 
     public void setarHolograma() {
@@ -179,7 +177,7 @@ public class Spawner {
         AtomicReference<Boolean> mobSetado = new AtomicReference<>(false);
         mobsPorPerto.forEach((mob) -> {
             if (mob.getType() == this.getSpawnerMeta().getMob() && !mobSetado.get()) {
-                mob.setCustomName("§e" + new ConverterQuantia(this.entidadesSpawnadas).emLetras());
+                mob.setCustomName(String.format("§e§l%s §f- §e%s", this.getSpawnerMeta().getId(), new ConverterQuantia(this.entidadesSpawnadas).emLetras()));
                 mob.setCustomNameVisible(true);
                 mobSetado.set(true);
             }

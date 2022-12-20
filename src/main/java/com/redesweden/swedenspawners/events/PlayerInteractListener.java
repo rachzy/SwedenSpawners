@@ -4,7 +4,7 @@ import com.redesweden.swedenspawners.GUIs.SpawnerGUI;
 import com.redesweden.swedenspawners.data.EventosEspeciais;
 import com.redesweden.swedenspawners.data.Spawners;
 import com.redesweden.swedenspawners.models.Spawner;
-import com.redesweden.swedenspawners.models.SpawnerManager;
+import com.redesweden.swedenspawners.models.SpawnerAmigo;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -27,9 +27,9 @@ public class PlayerInteractListener implements Listener {
         if(itemNaMao.getType() == Material.SKULL_ITEM || spawner == null) return;
 
         if(!spawner.getDono().getNickname().equals(player.getDisplayName())) {
-            SpawnerManager manager = spawner.getManagerPorNome(player.getDisplayName());
+            SpawnerAmigo amigo = spawner.getAmigoPorNome(player.getDisplayName());
 
-            if(manager == null) {
+            if(amigo == null) {
                 player.sendMessage("§cVocê não tem permissão para acessar este spawner.");
                 return;
             }

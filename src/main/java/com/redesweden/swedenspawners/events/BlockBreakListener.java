@@ -5,7 +5,7 @@ import com.redesweden.swedenspawners.data.Players;
 import com.redesweden.swedenspawners.data.SaleSpawners;
 import com.redesweden.swedenspawners.data.Spawners;
 import com.redesweden.swedenspawners.models.Spawner;
-import com.redesweden.swedenspawners.models.SpawnerManager;
+import com.redesweden.swedenspawners.models.SpawnerAmigo;
 import com.redesweden.swedenspawners.models.SpawnerMeta;
 import com.redesweden.swedenspawners.models.SpawnerPlayer;
 import eu.decentsoftware.holograms.api.DHAPI;
@@ -30,20 +30,20 @@ public class BlockBreakListener implements Listener {
         e.setCancelled(true);
 
         if(!spawner.getDono().getNickname().equals(player.getDisplayName())) {
-            SpawnerManager manager = spawner.getManagerPorNome(player.getDisplayName());
+            SpawnerAmigo amigo = spawner.getAmigoPorNome(player.getDisplayName());
 
-            if(manager == null || !manager.getPermissaoQuebrar()) {
+            if(amigo == null || !amigo.getPermissaoQuebrar()) {
                 player.sendMessage("§cVocê não tem permissão para quebrar esse spawner");
                 return;
             }
         }
 
         SpawnerMeta spawnerMeta = SaleSpawners.getSpawnerPorTitulo(spawner.getSpawnerMeta().getTitle());
-        BigDecimal quantiaStackada = spawner.getQuantidadeStackada();
+        BigDecimal quantidadeStackada = spawner.getQuantidadeStackada();
 
         e.getBlock().setType(Material.AIR);
-        player.getInventory().addItem(spawnerMeta.getSpawner(quantiaStackada));
-        player.sendMessage(String.format("§aVocê retirou §f%s §aspawners.", new ConverterQuantia(quantiaStackada).emLetras()));
+        player.getInventory().addItem(spawnerMeta.getSpawner(quantidadeStackada));
+        player.sendMessage(String.format("§aVocê retirou §f%s §aspawners.", new ConverterQuantia(quantidadeStackada).emLetras()));
         DHAPI.removeHologram(spawner.getId());
         spawner.setAtivado(false);
         Spawners.removeSpawnerPorId(spawner.getId());

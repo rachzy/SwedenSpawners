@@ -38,6 +38,7 @@ public final class SwedenSpawners extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new BlockPlaceListener(), this);
         getServer().getPluginManager().registerEvents(new BlockBreakListener(), this);
         getServer().getPluginManager().registerEvents(new EntityKillListener(), this);
+        getServer().getPluginManager().registerEvents(new EntityDamageListener(), this);
 
         //Registrar comandos
         getCommand("spawners").setExecutor(new SpawnersCommand());

@@ -27,7 +27,7 @@ public class SpawnerGUI {
 
         ItemStack gerenciarAmigos = new ItemStack(Material.ARMOR_STAND, 1);
         ItemMeta gerenciarAmigosMeta = gerenciarAmigos.getItemMeta();
-        gerenciarAmigosMeta.setDisplayName("§eGerenciar Managers");
+        gerenciarAmigosMeta.setDisplayName("§eGerenciar Amigos");
         List<String> loreGerenciarAmigosMeta = new ArrayList<>();
         loreGerenciarAmigosMeta.add("§aClique para acessar");
         gerenciarAmigosMeta.setLore(loreGerenciarAmigosMeta);
@@ -40,7 +40,7 @@ public class SpawnerGUI {
         List<String> loreInfoMeta = new ArrayList<>();
         loreInfoMeta.add("§7Entidade: §a" + spawner.getSpawnerMeta().getMob().getName());
         loreInfoMeta.add("§7Quantidade stackada: §a" + new ConverterQuantia(spawner.getQuantidadeStackada()).emLetras());
-        loreInfoMeta.add("§7Quantidade de Managers: §a" + spawner.getManagers().toArray().length);
+        loreInfoMeta.add("§7Quantidade de Amigos: §a" + spawner.getAmigos().toArray().length);
         infoMeta.setLore(loreInfoMeta);
 
         info.setItemMeta(infoMeta);
@@ -52,10 +52,10 @@ public class SpawnerGUI {
         List<String> lore = new ArrayList<>();
         if(spawner.getAtivado()) {
             ligarOuDesligarMeta.setOwner("Xester69");
-            lore.add("§7Status da máquina: §aON");
+            lore.add("§7Status do spawner: §aON");
         } else {
             ligarOuDesligarMeta.setOwner("Bosscartoon180");
-            lore.add("§7Status da máquina: §cOFF");
+            lore.add("§7Status do spawner: §cOFF");
         }
         ligarOuDesligarMeta.setLore(lore);
 

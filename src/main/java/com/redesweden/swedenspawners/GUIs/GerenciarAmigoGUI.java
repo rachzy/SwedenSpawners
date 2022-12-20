@@ -1,7 +1,7 @@
 package com.redesweden.swedenspawners.GUIs;
 
 import com.redesweden.swedenspawners.models.Spawner;
-import com.redesweden.swedenspawners.models.SpawnerManager;
+import com.redesweden.swedenspawners.models.SpawnerAmigo;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
@@ -12,22 +12,22 @@ import org.bukkit.inventory.meta.SkullMeta;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GerenciarManagerGUI {
-    private Inventory inventario = Bukkit.createInventory(null, 27, "§3Manager");
+public class GerenciarAmigoGUI {
+    private Inventory inventario = Bukkit.createInventory(null, 27, "§3Amigo");
 
-    public GerenciarManagerGUI(Spawner spawner, SpawnerManager manager) {
-        ItemStack managerHead = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
-        SkullMeta managerHeadMeta = (SkullMeta) managerHead.getItemMeta();
-        managerHeadMeta.setOwner(manager.getNickname());
-        managerHeadMeta.setDisplayName("§a" + manager.getNickname());
+    public GerenciarAmigoGUI(SpawnerAmigo amigo) {
+        ItemStack amigoHead = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+        SkullMeta amigoHeadMeta = (SkullMeta) amigoHead.getItemMeta();
+        amigoHeadMeta.setOwner(amigo.getNickname());
+        amigoHeadMeta.setDisplayName("§a" + amigo.getNickname());
 
-        managerHead.setItemMeta(managerHeadMeta);
+        amigoHead.setItemMeta(amigoHeadMeta);
 
         ItemStack permissaoVenderHead = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
         SkullMeta permissaoVenderHeadMeta = (SkullMeta) permissaoVenderHead.getItemMeta();
         permissaoVenderHeadMeta.setDisplayName("§ePermissão de Vender");
         List<String> lorePermissaoVender = new ArrayList<>();
-        if(manager.getPermissaoVender()) {
+        if(amigo.getPermissaoVender()) {
             permissaoVenderHeadMeta.setOwner("Xester69");
             lorePermissaoVender.add("§aAtivada");
         } else {
@@ -44,7 +44,7 @@ public class GerenciarManagerGUI {
         SkullMeta permissaoMatarHeadMeta = (SkullMeta) permissaoMatarHead.getItemMeta();
         permissaoMatarHeadMeta.setDisplayName("§ePermissão de Matar");
         List<String> lorePermissaoMatar = new ArrayList<>();
-        if(manager.getPermissaoMatar()) {
+        if(amigo.getPermissaoMatar()) {
             permissaoMatarHeadMeta.setOwner("Xester69");
             lorePermissaoMatar.add("§aAtivada");
         } else {
@@ -61,7 +61,7 @@ public class GerenciarManagerGUI {
         SkullMeta permissaoQuebrarHeadMeta = (SkullMeta) permissaoQuebrarHead.getItemMeta();
         permissaoQuebrarHeadMeta.setDisplayName("§ePermissão de Quebrar");
         List<String> lorePermissaoQuebrar = new ArrayList<>();
-        if(manager.getPermissaoQuebrar()) {
+        if(amigo.getPermissaoQuebrar()) {
             permissaoQuebrarHeadMeta.setOwner("Xester69");
             lorePermissaoQuebrar.add("§aAtivada");
         } else {
@@ -74,15 +74,15 @@ public class GerenciarManagerGUI {
 
         permissaoQuebrarHead.setItemMeta(permissaoQuebrarHeadMeta);
 
-        ItemStack removerManager = new ItemStack(Material.BARRIER, 1);
-        ItemMeta removerManagerMeta = removerManager.getItemMeta();
-        removerManagerMeta.setDisplayName("§cRemover Manager");
-        List<String> loreRemoverManager = new ArrayList<>();
-        loreRemoverManager.add("§7Clique para remover este");
-        loreRemoverManager.add("§7jogador da lista de managers.");
-        removerManagerMeta.setLore(loreRemoverManager);
+        ItemStack removerAmigo = new ItemStack(Material.BARRIER, 1);
+        ItemMeta removerAmigoMeta = removerAmigo.getItemMeta();
+        removerAmigoMeta.setDisplayName("§cRemover Amigo");
+        List<String> loreRemoverAmigo = new ArrayList<>();
+        loreRemoverAmigo.add("§7Clique para remover este");
+        loreRemoverAmigo.add("§7jogador da lista de amigos.");
+        removerAmigoMeta.setLore(loreRemoverAmigo);
 
-        removerManager.setItemMeta(removerManagerMeta);
+        removerAmigo.setItemMeta(removerAmigoMeta);
 
         ItemStack voltar = new ItemStack(Material.ARROW, 1);
         ItemMeta voltarMeta = voltar.getItemMeta();
@@ -94,11 +94,11 @@ public class GerenciarManagerGUI {
 
         voltar.setItemMeta(voltarMeta);
 
-        inventario.setItem(10, managerHead);
+        inventario.setItem(10, amigoHead);
         inventario.setItem(12, permissaoVenderHead);
         inventario.setItem(13, permissaoMatarHead);
         inventario.setItem(14, permissaoQuebrarHead);
-        inventario.setItem(16, removerManager);
+        inventario.setItem(16, removerAmigo);
         inventario.setItem(22, voltar);
     }
 

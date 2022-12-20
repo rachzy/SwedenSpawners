@@ -89,15 +89,15 @@ public class ChatMessageListener implements Listener {
             return;
         }
 
-        if(EventosEspeciais.getEventoAdicionarManagerByPlayer(player) != null) {
-            Spawner spawner = EventosEspeciais.getEventoAdicionarManagerByPlayer(player).getSpawner();
-            EventosEspeciais.removePlayerAdicionandoManager(player);
+        if(EventosEspeciais.getEventoAdicionarAmigoByPlayer(player) != null) {
+            Spawner spawner = EventosEspeciais.getEventoAdicionarAmigoByPlayer(player).getSpawner();
+            EventosEspeciais.removePlayerAdicionandoAmigo(player);
             e.setCancelled(true);
 
             String nomeDoJogador = e.getMessage();
 
             if(nomeDoJogador.equals(player.getDisplayName())) {
-                player.sendMessage("§cVocê não pode se adicionar como manager.");
+                player.sendMessage("§cVocê não pode se adicionar como amigo.");
                 return;
             }
 
@@ -107,13 +107,13 @@ public class ChatMessageListener implements Listener {
             }
 
             try {
-                spawner.addManager(Bukkit.getOfflinePlayer(nomeDoJogador).getUniqueId().toString(), nomeDoJogador);
+                spawner.addAmigo(Bukkit.getOfflinePlayer(nomeDoJogador).getUniqueId().toString(), nomeDoJogador);
             } catch (Exception ex) {
                 player.sendMessage(ex.getMessage());
                 return;
             }
 
-            player.sendMessage(String.format("§aVocê adicionou o jogador §e%s §aà lista de managers de seu spawner.", nomeDoJogador));
+            player.sendMessage(String.format("§aVocê adicionou o jogador §e%s §aà lista de amigos de seu spawner.", nomeDoJogador));
         }
     }
 }

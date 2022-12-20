@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 public class EventosEspeciais {
     private static List<EventoPlayerCompraDeSpawners> comprarQuantiaDeSpawners = new ArrayList<>();
     private static List<EventoGerenciarSpawner> playersGerenciandoSpawners = new ArrayList<>();
-    private static List<EventoGerenciarSpawner> playersAdicionandoManagers = new ArrayList<>();
+    private static List<EventoGerenciarSpawner> playersAdicionandoAmigos = new ArrayList<>();
 
     public static EventoPlayerCompraDeSpawners getEventoInComprarQuantiaDeSpawnersByPlayer(String nickname) {
         return comprarQuantiaDeSpawners.stream()
@@ -54,21 +54,21 @@ public class EventosEspeciais {
                 .collect(Collectors.toList());
     }
 
-    public static EventoGerenciarSpawner getEventoAdicionarManagerByPlayer(Player player) {
-        return playersAdicionandoManagers
+    public static EventoGerenciarSpawner getEventoAdicionarAmigoByPlayer(Player player) {
+        return playersAdicionandoAmigos
                 .stream()
                 .filter(playerIn -> playerIn.getNick().equals(player.getDisplayName()))
                 .findFirst()
                 .orElse(null);
     }
 
-    public static void addPlayerAdicionandoManager(Player player, Spawner spawner) {
-        removePlayerAdicionandoManager(player);
-        playersAdicionandoManagers.add(new EventoGerenciarSpawner(player.getDisplayName(), spawner));
+    public static void addPlayerAdicionandoAmigo(Player player, Spawner spawner) {
+        removePlayerAdicionandoAmigo(player);
+        playersAdicionandoAmigos.add(new EventoGerenciarSpawner(player.getDisplayName(), spawner));
     }
 
-    public static void removePlayerAdicionandoManager(Player player) {
-        playersAdicionandoManagers = playersAdicionandoManagers
+    public static void removePlayerAdicionandoAmigo(Player player) {
+        playersAdicionandoAmigos = playersAdicionandoAmigos
                 .stream()
                 .filter(playerIn -> !playerIn.getNick().equals(player.getDisplayName()))
                 .collect(Collectors.toList());

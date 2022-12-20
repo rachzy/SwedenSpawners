@@ -4,13 +4,13 @@ import com.redesweden.swedeneconomia.data.Players;
 import com.redesweden.swedeneconomia.functions.ConverterQuantia;
 import com.redesweden.swedeneconomia.models.PlayerSaldo;
 import com.redesweden.swedenspawners.GUIs.GerenciarDropsGUI;
-import com.redesweden.swedenspawners.GUIs.GerenciarManagerGUI;
-import com.redesweden.swedenspawners.GUIs.GerenciarManagersGUI;
+import com.redesweden.swedenspawners.GUIs.GerenciarAmigoGUI;
+import com.redesweden.swedenspawners.GUIs.GerenciarAmigosGUI;
 import com.redesweden.swedenspawners.GUIs.SpawnerGUI;
 import com.redesweden.swedenspawners.data.EventosEspeciais;
 import com.redesweden.swedenspawners.data.SaleSpawners;
 import com.redesweden.swedenspawners.models.Spawner;
-import com.redesweden.swedenspawners.models.SpawnerManager;
+import com.redesweden.swedenspawners.models.SpawnerAmigo;
 import com.redesweden.swedenspawners.models.SpawnerMeta;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -113,8 +113,8 @@ public class InventoryClickListener implements Listener {
                 return;
             }
 
-            if (nomeDoItem.equals("GERENCIAR MANAGERS")) {
-                player.openInventory(new GerenciarManagersGUI(player.getDisplayName(), spawner).get());
+            if (nomeDoItem.equals("GERENCIAR AMIGOS")) {
+                player.openInventory(new GerenciarAmigosGUI(player.getDisplayName(), spawner).get());
                 return;
             }
 
@@ -148,9 +148,9 @@ public class InventoryClickListener implements Listener {
             player.closeInventory();
 
             if (!spawner.getDono().getNickname().equals(player.getDisplayName())) {
-                SpawnerManager manager = spawner.getManagerPorNome(player.getDisplayName());
+                SpawnerAmigo amigo = spawner.getAmigoPorNome(player.getDisplayName());
 
-                if (manager == null || !manager.getPermissaoVender()) {
+                if (amigo == null || !amigo.getPermissaoVender()) {
                     player.sendMessage("§cVocê não tem permissão para gerenciar os drops deste spawner.");
                     return;
                 }
@@ -176,7 +176,7 @@ public class InventoryClickListener implements Listener {
             }
         }
 
-        if (viewTitle.equals("MANAGERS")) {
+        if (viewTitle.equals("AMIGOS")) {
             e.setCancelled(true);
 
             if (e.getCurrentItem() == null
@@ -194,26 +194,26 @@ public class InventoryClickListener implements Listener {
             player.closeInventory();
 
             if (!spawner.getDono().getNickname().equals(player.getDisplayName())) {
-                player.sendMessage("§cVocê não tem permissão para gerenciar os managers deste spawner.");
+                player.sendMessage("§cVocê não tem permissão para gerenciar os amigos deste spawner.");
                 return;
             }
 
-            if (nomeDoItem.equals("ADICIONAR MANAGER")) {
-                EventosEspeciais.addPlayerAdicionandoManager(player, spawner);
+            if (nomeDoItem.equals("ADICIONAR AMIGO")) {
+                EventosEspeciais.addPlayerAdicionandoAmigo(player, spawner);
                 player.sendMessage("");
-                player.sendMessage(" §aDigite o nome do player que você deseja adicionar como manager.");
+                player.sendMessage(" §aDigite o nome do player que você deseja adicionar como amigo.");
                 player.sendMessage("");
                 return;
             }
 
-            SpawnerManager manager = spawner.getManagerPorNome(nomeDoItem);
+            SpawnerAmigo amigo = spawner.getAmigoPorNome(nomeDoItem);
 
-            if(manager != null) {
-                player.openInventory(new GerenciarManagerGUI(spawner, manager).get());
+            if(amigo != null) {
+                player.openInventory(new GerenciarAmigoGUI(amigo).get());
             }
         }
 
-        if(viewTitle.equals("MANAGER")) {
+        if(viewTitle.equals("AMIGO")) {
             e.setCancelled(true);
 
             if (e.getCurrentItem() == null
@@ -224,40 +224,40 @@ public class InventoryClickListener implements Listener {
             Spawner spawner = EventosEspeciais.getEventoGerenciarSpawnerByPlayer(player).getSpawner();
 
             if (nomeDoItem.equals("VOLTAR")) {
-                player.openInventory(new GerenciarManagersGUI(player.getDisplayName(), spawner).get());
+                player.openInventory(new GerenciarAmigosGUI(player.getDisplayName(), spawner).get());
                 return;
             }
 
             if (!spawner.getDono().getNickname().equals(player.getDisplayName())) {
-                player.sendMessage("§cVocê não tem permissão para gerenciar os managers deste spawner.");
+                player.sendMessage("§cVocê não tem permissão para gerenciar os amigos deste spawner.");
                 return;
             }
 
-            String managerNick = e.getInventory().getItem(10).getItemMeta().getDisplayName().substring(2);
-            SpawnerManager managerAlvo = spawner.getManagerPorNome(managerNick);
+            String amigoNick = e.getInventory().getItem(10).getItemMeta().getDisplayName().substring(2);
+            SpawnerAmigo amigoAlvo = spawner.getAmigoPorNome(amigoNick);
 
             if(nomeDoItem.equals("PERMISSÃO DE VENDER")) {
-                managerAlvo.togglePermissaoVender(spawner);
-                player.openInventory(new GerenciarManagerGUI(spawner, managerAlvo).get());
+                amigoAlvo.togglePermissaoVender(spawner);
+                player.openInventory(new GerenciarAmigoGUI(amigoAlvo).get());
                 return;
             }
 
             if(nomeDoItem.equals("PERMISSÃO DE MATAR")) {
-                managerAlvo.togglePermissaoMatar(spawner);
-                player.openInventory(new GerenciarManagerGUI(spawner, managerAlvo).get());
+                amigoAlvo.togglePermissaoMatar(spawner);
+                player.openInventory(new GerenciarAmigoGUI(amigoAlvo).get());
                 return;
             }
 
             if(nomeDoItem.equals("PERMISSÃO DE QUEBRAR")) {
-                managerAlvo.togglePermissaoQuebrar(spawner);
-                player.openInventory(new GerenciarManagerGUI(spawner, managerAlvo).get());
+                amigoAlvo.togglePermissaoQuebrar(spawner);
+                player.openInventory(new GerenciarAmigoGUI(amigoAlvo).get());
                 return;
             }
 
-            if(nomeDoItem.equals("REMOVER MANAGER")) {
-                spawner.removerManager(managerAlvo);
-                player.openInventory(new GerenciarManagersGUI(player.getDisplayName(), spawner).get());
-                player.sendMessage(String.format("§cVocê removeu %s da lista de Managers do seu spawner.", managerAlvo.getNickname()));
+            if(nomeDoItem.equals("REMOVER AMIGO")) {
+                spawner.removerAmigo(amigoAlvo);
+                player.openInventory(new GerenciarAmigosGUI(player.getDisplayName(), spawner).get());
+                player.sendMessage(String.format("§cVocê removeu %s da lista de Amigos do seu spawner.", amigoAlvo.getNickname()));
             }
         }
     }
