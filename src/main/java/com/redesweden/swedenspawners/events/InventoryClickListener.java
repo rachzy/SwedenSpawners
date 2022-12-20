@@ -73,13 +73,15 @@ public class InventoryClickListener implements Listener {
             }
 
             PlayerSaldo playerSaldo = Players.getPlayer(player.getDisplayName());
+            SpawnerPlayer playerSpawner = com.redesweden.swedenspawners.data.Players.getPlayerByName(player.getDisplayName());
             BigDecimal saldo = (BigDecimal) playerSaldo.getSaldo(false);
             BigDecimal spawnerPreco = spawner.getPreco();
             BigDecimal quantidade = new BigDecimal("1");
+
             if (e.getClick().isKeyboardClick()) {
-                SpawnerPlayer playerSpawner = com.redesweden.swedenspawners.data.Players.getPlayerByName(player.getDisplayName());
                 quantidade = playerSpawner.getLimite().multiply(new BigDecimal(playerSpawner.getMultiplicador()));
             }
+
             BigDecimal precoFinal = spawnerPreco.multiply(quantidade);
             ItemStack spawnerItem = spawner.getSpawner(quantidade);
 
@@ -115,7 +117,8 @@ public class InventoryClickListener implements Listener {
             }
 
             playerSaldo.subSaldo(precoFinal);
-            player.sendMessage(String.format("§aVocê comprou §f%s %s", new ConverterQuantia(quantidade).emLetras(), spawner.getTitle()));
+            playerSpawner.addSpawnersComprados(quantidade);
+            player.sendMessage(String.format("§aVocê comprou §f%s §a%s", new ConverterQuantia(quantidade).emLetras(), spawner.getTitle()));
             return;
         }
 

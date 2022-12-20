@@ -167,7 +167,12 @@ public class Spawner {
     }
 
     public void spawnarMob() {
+        // Verifica se o spawner está ativo
         if (!this.ativado) return;
+
+        // Verifica se o dono está online no servidor
+        Player dono = Bukkit.getServer().getPlayer(this.getDono().getNickname());
+        if(dono == null || !dono.isOnline()) return;
 
         if(Objects.equals(this.entidadesSpawnadas, new BigDecimal("0"))) {
             this.entidadesSpawnadas = new BigDecimal("1").multiply(this.quantidadeStackada);
@@ -185,7 +190,7 @@ public class Spawner {
 
         if (!mobSetado.get()) {
             Entity novoMob = Bukkit.getWorld(this.getLocal().getWorld().getName()).spawnEntity(this.getLocal().clone().add(1, 0, 1), this.getSpawnerMeta().getMob());
-            novoMob.setCustomName("§e" + new ConverterQuantia(this.entidadesSpawnadas).emLetras());
+            novoMob.setCustomName(String.format("§e§l%s §f- §e%s", this.getSpawnerMeta().getId(), new ConverterQuantia(this.entidadesSpawnadas).emLetras()));
             novoMob.setCustomNameVisible(true);
             NBTEditor.set(novoMob, true, "NoAI");
             NBTEditor.set(novoMob, true, "Invunerable");

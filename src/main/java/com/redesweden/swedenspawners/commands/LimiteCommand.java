@@ -26,6 +26,7 @@ public class LimiteCommand implements CommandExecutor {
                 return true;
             }
 
+            // Setar as variáveis que podem ser utilizadas em várias partes do código
             player = (Player) sender;
             spawnerPlayer = Players.getPlayerByName(player.getDisplayName());
         }
