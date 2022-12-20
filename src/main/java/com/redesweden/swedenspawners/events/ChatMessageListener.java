@@ -115,5 +115,31 @@ public class ChatMessageListener implements Listener {
 
             player.sendMessage(String.format("§aVocê adicionou o jogador §e%s §aà lista de amigos de seu spawner.", nomeDoJogador));
         }
+
+        if(EventosEspeciais.getPlayerSetandoMultiplicador(player) != null) {
+            e.setCancelled(true);
+            int quantia;
+
+            try {
+              quantia = Integer.parseInt(e.getMessage());
+            } catch (Exception ex) {
+                player.sendMessage("§cA quantia inserida precisa ser um número.");
+                return;
+            }
+
+            if(quantia <= 0 || quantia > 10) {
+                player.sendMessage("§cA quantia precisa ser dentre 1 a 10.");
+                return;
+            }
+
+            if(!player.hasPermission("swedenspawners.multiplicador." + quantia)) {
+                player.sendMessage(String.format("§cVocê não tem permissão para definir seu multiplicador para %s", quantia));
+                return;
+            }
+
+            SpawnerPlayer spawnerPlayer = Players.getPlayerByName(player.getDisplayName());
+            spawnerPlayer.setMultiplicador(quantia);
+            player.sendMessage("§7Você definiu com sucesso seu multiplicador para §a" + quantia);
+        }
     }
 }

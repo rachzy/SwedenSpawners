@@ -12,6 +12,8 @@ import com.redesweden.swedenspawners.data.SaleSpawners;
 import com.redesweden.swedenspawners.models.Spawner;
 import com.redesweden.swedenspawners.models.SpawnerAmigo;
 import com.redesweden.swedenspawners.models.SpawnerMeta;
+import com.redesweden.swedenspawners.models.SpawnerPlayer;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -39,9 +41,27 @@ public class InventoryClickListener implements Listener {
                     || e.getCurrentItem().getItemMeta().getDisplayName() == null) return;
 
             // Retorne caso o player não tenha clicado em um spawner
-            String spawnerTitle = e.getCurrentItem().getItemMeta().getDisplayName();
-            SpawnerMeta spawner = SaleSpawners.getSpawnerPorTitulo(spawnerTitle);
-            if (spawner == null) return;
+            String itemTitle = e.getCurrentItem().getItemMeta().getDisplayName();
+            SpawnerMeta spawner = SaleSpawners.getSpawnerPorTitulo(itemTitle);
+            if (spawner == null) {
+                // Verificar se o player clicou no Multiplicador de Compra
+                if(e.getCurrentItem().getType() != Material.SKULL_ITEM
+                        || !itemTitle.substring(2).equalsIgnoreCase("multiplicador de compra"))
+                    return;
+
+                player.closeInventory();
+
+                if(!player.hasPermission("swedenspawners.usarmultiplicador")) {
+                    player.sendMessage("§cApenas §aVIPs §cpodem utilizar o Multiplicador de Compra.");
+                    return;
+                }
+
+                EventosEspeciais.addPlayerSetandoMultiplicador(player);
+                player.sendMessage("");
+                player.sendMessage(" §aDigite a quantia que você deseja definir seu multiplicador para tal:");
+                player.sendMessage("");
+                return;
+            }
 
             if (e.getClick().isLeftClick()) {
                 player.closeInventory();
@@ -57,7 +77,8 @@ public class InventoryClickListener implements Listener {
             BigDecimal spawnerPreco = spawner.getPreco();
             BigDecimal quantidade = new BigDecimal("1");
             if (e.getClick().isKeyboardClick()) {
-                quantidade = com.redesweden.swedenspawners.data.Players.getPlayerByUuid(player.getUniqueId().toString()).getLimite();
+                SpawnerPlayer playerSpawner = com.redesweden.swedenspawners.data.Players.getPlayerByName(player.getDisplayName());
+                quantidade = playerSpawner.getLimite().multiply(new BigDecimal(playerSpawner.getMultiplicador()));
             }
             BigDecimal precoFinal = spawnerPreco.multiply(quantidade);
             ItemStack spawnerItem = spawner.getSpawner(quantidade);

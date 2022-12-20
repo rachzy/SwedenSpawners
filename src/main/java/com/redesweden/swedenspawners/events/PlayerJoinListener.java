@@ -16,7 +16,7 @@ public class PlayerJoinListener implements Listener {
 
         if(Players.getPlayerByUuid(player.getUniqueId().toString()) == null) {
             System.out.println("[SwedenSpawners] Registrando jogador...");
-            SpawnerPlayer newPlayer = new SpawnerPlayer(player.getUniqueId().toString(), player.getDisplayName(), new BigDecimal("1"), new BigDecimal("0"));
+            SpawnerPlayer newPlayer = new SpawnerPlayer(player.getUniqueId().toString(), player.getDisplayName(), new BigDecimal("1"), new BigDecimal("0"), 1);
             Players.addPlayer(newPlayer, true);
         }
     }

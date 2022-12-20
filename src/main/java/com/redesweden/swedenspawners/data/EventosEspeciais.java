@@ -14,6 +14,7 @@ public class EventosEspeciais {
     private static List<EventoPlayerCompraDeSpawners> comprarQuantiaDeSpawners = new ArrayList<>();
     private static List<EventoGerenciarSpawner> playersGerenciandoSpawners = new ArrayList<>();
     private static List<EventoGerenciarSpawner> playersAdicionandoAmigos = new ArrayList<>();
+    private static List<Player> playersSetandoMultiplicador = new ArrayList<>();
 
     public static EventoPlayerCompraDeSpawners getEventoInComprarQuantiaDeSpawnersByPlayer(String nickname) {
         return comprarQuantiaDeSpawners.stream()
@@ -71,6 +72,25 @@ public class EventosEspeciais {
         playersAdicionandoAmigos = playersAdicionandoAmigos
                 .stream()
                 .filter(playerIn -> !playerIn.getNick().equals(player.getDisplayName()))
+                .collect(Collectors.toList());
+    }
+
+    public static Player getPlayerSetandoMultiplicador(Player player) {
+        return playersSetandoMultiplicador
+                .stream()
+                .filter(playerIn -> playerIn.getDisplayName().equals(player.getDisplayName()))
+                .findFirst()
+                .orElse(null);
+    }
+
+    public static void addPlayerSetandoMultiplicador(Player player) {
+        playersSetandoMultiplicador.add(player);
+    }
+
+    public static void removePlayerSetandoMultiplicador(Player player) {
+        playersSetandoMultiplicador = playersSetandoMultiplicador
+                .stream()
+                .filter(playerIn -> !playerIn.getDisplayName().equals(player.getDisplayName()))
                 .collect(Collectors.toList());
     }
 

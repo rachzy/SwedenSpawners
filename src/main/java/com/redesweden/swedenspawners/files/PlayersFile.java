@@ -26,16 +26,15 @@ public class PlayersFile {
 
         playersFile = YamlConfiguration.loadConfiguration(file);
 
-        playersFile.addDefault("players.0.nickname", "rach_ultimate");
-        playersFile.addDefault("players.0.limite", "1");
-        playersFile.addDefault("players.0.spawnersComprados", "0");
 
+        if(playersFile.getConfigurationSection("players") == null) return;
         for(String player : playersFile.getConfigurationSection("players").getKeys(false)) {
             String nickname = playersFile.getString(String.format("players.%s.nickname", player));
             String limite = playersFile.getString(String.format("players.%s.limite", player));
             String spawnersComprados = playersFile.getString(String.format("players.%s.spawnersComprados", player));
+            Integer multiplicador = playersFile.getInt(String.format("players.%s.multiplicador", player));
 
-            SpawnerPlayer newPlayer = new SpawnerPlayer(player, nickname, new BigDecimal(limite), new BigDecimal(spawnersComprados));
+            SpawnerPlayer newPlayer = new SpawnerPlayer(player, nickname, new BigDecimal(limite), new BigDecimal(spawnersComprados), multiplicador);
             Players.addPlayer(newPlayer, false);
         }
     }
@@ -44,6 +43,7 @@ public class PlayersFile {
         playersFile.set(String.format("players.%s.nickname", uuid), nickname);
         playersFile.set(String.format("players.%s.limite", uuid), "1");
         playersFile.set(String.format("players.%s.spawnersComprados", uuid), "0");
+        playersFile.set(String.format("players.%s.multiplicador", uuid), 1);
         save();
     }
 

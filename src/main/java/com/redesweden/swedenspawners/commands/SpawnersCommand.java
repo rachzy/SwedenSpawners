@@ -15,7 +15,7 @@ public class SpawnersCommand implements CommandExecutor {
         }
 
         Player player = (Player) sender;
-        player.openInventory(new ComprarSpawnersGUI().get());
+        player.openInventory(new ComprarSpawnersGUI(player.getDisplayName()).get());
         return true;
     }
 }
