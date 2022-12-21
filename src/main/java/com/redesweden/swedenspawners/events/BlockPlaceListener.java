@@ -2,6 +2,7 @@ package com.redesweden.swedenspawners.events;
 
 import com.redesweden.swedeneconomia.functions.ConverterQuantia;
 import com.redesweden.swedenspawners.SwedenSpawners;
+import com.redesweden.swedenspawners.data.Players;
 import com.redesweden.swedenspawners.data.SaleSpawners;
 import com.redesweden.swedenspawners.data.Spawners;
 import com.redesweden.swedenspawners.files.SpawnersFile;
@@ -115,6 +116,7 @@ public class BlockPlaceListener implements Listener {
                     String spawnerId = itemBloco.getItemMeta().getLore().get(1).substring(2);
                     Spawner spawner = Spawners.getSpawnerPorId(spawnerId);
                     spawner.setLocal(blocoColocado.getLocation().add(1, 0, 0));
+                    spawner.setDono(Players.getPlayerByName(player.getDisplayName()));
                     spawner.setRetirado(false);
                     spawner.setAtivado(true);
                     spawner.iniciar();

@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 public class Spawner {
     private final String id;
     private Hologram holograma;
-    private final SpawnerPlayer dono;
+    private SpawnerPlayer dono;
     private final SpawnerMeta spawnerMeta;
     private Location local;
     private int levelTempoDeSpawn;
@@ -68,6 +68,10 @@ public class Spawner {
 
     public SpawnerPlayer getDono() {
         return dono;
+    }
+
+    public void setDono(SpawnerPlayer dono) {
+        this.dono = dono;
     }
 
     public SpawnerMeta getSpawnerMeta() {
