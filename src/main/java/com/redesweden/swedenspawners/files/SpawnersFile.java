@@ -25,7 +25,7 @@ public class SpawnersFile {
     public static void setup() {
         file = new File(Bukkit.getServer().getPluginManager().getPlugin("SwedenSpawners").getDataFolder(), "spawners.yml");
 
-        if(!file.exists()) {
+        if (!file.exists()) {
             try {
                 file.createNewFile();
             } catch (Exception e) {
@@ -35,24 +35,9 @@ public class SpawnersFile {
 
         spawnersFile = YamlConfiguration.loadConfiguration(file);
 
-//        spawnersFile.addDefault("spawners.0.dono", "rach_ultimate");
-//        spawnersFile.addDefault("spawners.0.tipo", "PORCO");
-//        spawnersFile.addDefault("spawners.0.local.x", 69);
-//        spawnersFile.addDefault("spawners.0.local.y", 69);
-//        spawnersFile.addDefault("spawners.0.local.z", 69);
-//        spawnersFile.addDefault("spawners.0.local.mundo", "world");
-//        spawnersFile.addDefault("spawners.0.amigos.0.nickname", "apnx_");
-//        spawnersFile.addDefault("spawners.0.amigos.0.permissaoVender", true);
-//        spawnersFile.addDefault("spawners.0.amigos.0.permissaoMatar", false);
-//        spawnersFile.addDefault("spawners.0.amigos.0.permissaoQuebrar", true);
-//        spawnersFile.addDefault("spawners.0.quantidadeStackada", "0");
-//        spawnersFile.addDefault("spawners.0.entidadesSpawnadas", "0");
-//        spawnersFile.addDefault("spawners.0.dropsArmazenados", "0");
-//        spawnersFile.addDefault("spawners.0.ativado", false);
+        if (spawnersFile.getConfigurationSection("spawners") == null) return;
 
-        if(spawnersFile.getConfigurationSection("spawners") == null) return;
-
-        for(String spawnerId : spawnersFile.getConfigurationSection("spawners").getKeys(false)) {
+        for (String spawnerId : spawnersFile.getConfigurationSection("spawners").getKeys(false)) {
             SpawnerPlayer dono = Players.getPlayerByName(spawnersFile.getString(String.format("spawners.%s.dono", spawnerId)));
             SpawnerMeta tipo = SaleSpawners.getSpawnerPorId(spawnersFile.getString(String.format("spawners.%s.tipo", spawnerId)));
 
@@ -60,13 +45,16 @@ public class SpawnersFile {
             int y = spawnersFile.getInt(String.format("spawners.%s.local.y", spawnerId));
             int z = spawnersFile.getInt(String.format("spawners.%s.local.z", spawnerId));
             String mundo = spawnersFile.getString(String.format("spawners.%s.local.mundo", spawnerId));
-
             Location local = new Location(Bukkit.getWorld(mundo), x, y, z);
+
+            int upgradeTempoDeSpawn = spawnersFile.getInt(String.format("spawners.%s.upgrades.tempoDeSpawn", spawnerId));
+            int upgradeValorDoDrop = spawnersFile.getInt(String.format("spawners.%s.upgrades.valorDoDrop", spawnerId));
+            int upgradeMultiplicadorDeSpawn = spawnersFile.getInt(String.format("spawners.%s.upgrades.multiplicadorDeSpawn", spawnerId));
 
             List<SpawnerAmigo> amigos = new ArrayList<>();
 
-            if(spawnersFile.getConfigurationSection(String.format("spawners.%s.amigos", spawnerId)) != null) {
-                for(String playerUUID : spawnersFile.getConfigurationSection(String.format("spawners.%s.amigos", spawnerId)).getKeys(false)) {
+            if (spawnersFile.getConfigurationSection(String.format("spawners.%s.amigos", spawnerId)) != null) {
+                for (String playerUUID : spawnersFile.getConfigurationSection(String.format("spawners.%s.amigos", spawnerId)).getKeys(false)) {
                     String nickname = spawnersFile.getString(String.format("spawners.%s.amigos.%s.nickname", spawnerId, playerUUID));
                     Boolean permissaoVender = spawnersFile.getBoolean(String.format("spawners.%s.amigos.%s.permissaoVender", spawnerId, playerUUID));
                     Boolean permissaoMatar = spawnersFile.getBoolean(String.format("spawners.%s.amigos.%s.permissaoMatar", spawnerId, playerUUID));
@@ -82,7 +70,17 @@ public class SpawnersFile {
             BigDecimal dropsArmazenados = new BigDecimal(spawnersFile.getString(String.format("spawners.%s.dropsArmazenados", spawnerId)));
             Boolean ativado = spawnersFile.getBoolean(String.format("spawners.%s.ativado", spawnerId));
 
-            Spawner spawner = new Spawner(spawnerId, dono, tipo, local, quantidadeStackada, entidadesSpawnadas, dropsArmazenados, amigos, ativado);
+            Spawner spawner = new Spawner(spawnerId,
+                    dono,
+                    tipo,
+                    local,
+                    upgradeTempoDeSpawn,
+                    upgradeValorDoDrop,
+                    upgradeMultiplicadorDeSpawn,
+                    quantidadeStackada, entidadesSpawnadas,
+                    dropsArmazenados,
+                    amigos,
+                    ativado);
             Spawners.addSpawner(spawner);
         }
     }
@@ -95,13 +93,16 @@ public class SpawnersFile {
         spawnersFile.set(String.format("spawners.%s.local.x", id), local.getX());
         spawnersFile.set(String.format("spawners.%s.local.y", id), local.getY());
         spawnersFile.set(String.format("spawners.%s.local.z", id), local.getZ());
+        spawnersFile.set(String.format("spawners.%s.upgrades.tempoDeSpawn", id), 1);
+        spawnersFile.set(String.format("spawners.%s.upgrades.valorDoDrop", id), 1);
+        spawnersFile.set(String.format("spawners.%s.upgrades.multiplicadorDeSpawn", id), 1);
         spawnersFile.set(String.format("spawners.%s.local.mundo", id), local.getWorld().getName());
         spawnersFile.set(String.format("spawners.%s.quantidadeStackada", id), quantidadeStackada.toString());
         spawnersFile.set(String.format("spawners.%s.entidadesSpawnadas", id), "0");
         spawnersFile.set(String.format("spawners.%s.dropsArmazenados", id), "0");
         spawnersFile.set(String.format("spawners.%s.ativado", id), true);
 
-        Spawner novoSpawner = new Spawner(id, Players.getPlayerByName(dono.getDisplayName()), tipo, local, quantidadeStackada, new BigDecimal("0"), new BigDecimal("0"), new ArrayList<>(), true);
+        Spawner novoSpawner = new Spawner(id, Players.getPlayerByName(dono.getDisplayName()), tipo, local, 1, 1, 1, quantidadeStackada, new BigDecimal("0"), new BigDecimal("0"), new ArrayList<>(), true);
         Spawners.addSpawner(novoSpawner);
         save();
     }

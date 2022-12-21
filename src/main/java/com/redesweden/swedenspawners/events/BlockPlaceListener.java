@@ -6,15 +6,19 @@ import com.redesweden.swedenspawners.data.SaleSpawners;
 import com.redesweden.swedenspawners.data.Spawners;
 import com.redesweden.swedenspawners.files.SpawnersFile;
 import com.redesweden.swedenspawners.functions.GetBlocosPorPerto;
+import com.redesweden.swedenspawners.functions.InstantFirework;
 import com.redesweden.swedenspawners.models.Spawner;
 import com.redesweden.swedenspawners.models.SpawnerMeta;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.math.BigDecimal;
@@ -106,6 +110,18 @@ public class BlockPlaceListener implements Listener {
                 blocoColocado.setType(spawnerMeta.getBloco().getType());
                 blocoColocado.setData(spawnerMeta.getBloco().getData().getData());
                 SpawnersFile.createNewSpawner(player, spawnerMeta, blocoColocado.getLocation().add(1, 0, 0), quantidade);
+
+                // Summonar partículas
+                for(int i = 0; i <= 25; i++) {
+                    blocoColocado.getWorld().playEffect(blocoColocado.getLocation(), Effect.FIREWORKS_SPARK, 4);
+                }
+
+                // Summonar foguete
+                new InstantFirework(FireworkEffect.builder().withColor(Color.FUCHSIA, Color.PURPLE).build(), blocoColocado.getLocation().clone().add(0.5, 1, 0.5));
+
+                // Tocar som de level up
+                player.playSound(player.getLocation(), Sound.LEVEL_UP, 3.0F, 0.5F);
+
                 player.sendMessage(String.format("§eVocê colocou com sucesso §a1 %s", spawnerMeta.getTitle()));
             }
         }.runTaskLater(SwedenSpawners.getPlugin(SwedenSpawners.class), 1);

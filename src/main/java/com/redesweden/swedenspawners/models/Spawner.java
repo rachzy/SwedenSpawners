@@ -28,17 +28,23 @@ public class Spawner {
     private final SpawnerPlayer dono;
     private final SpawnerMeta spawnerMeta;
     private final Location local;
+    private int levelTempoDeSpawn;
+    private int levelValorDoDrop;
+    private int levelMultiplicadorDeSpawn;
     private BigDecimal quantidadeStackada;
     private BigDecimal entidadesSpawnadas;
     private BigDecimal dropsAramazenados;
     private List<SpawnerAmigo> amigos;
     private Boolean ativado;
 
-    public Spawner(String id, SpawnerPlayer dono, SpawnerMeta spawnerMeta, Location local, BigDecimal quantidadeStackada, BigDecimal entidadesSpawnadas, BigDecimal dropsAramazenados, List<SpawnerAmigo> amigos, Boolean ativado) {
+    public Spawner(String id, SpawnerPlayer dono, SpawnerMeta spawnerMeta, Location local, int levelTempoDeSpawn, int levelValorDoDrop, int levelMultiplicadorDeSpawn, BigDecimal quantidadeStackada, BigDecimal entidadesSpawnadas, BigDecimal dropsAramazenados, List<SpawnerAmigo> amigos, Boolean ativado) {
         this.id = id;
         this.dono = dono;
         this.spawnerMeta = spawnerMeta;
         this.local = local;
+        this.levelTempoDeSpawn = levelTempoDeSpawn;
+        this.levelValorDoDrop = levelValorDoDrop;
+        this.levelMultiplicadorDeSpawn = levelMultiplicadorDeSpawn;
         this.quantidadeStackada = quantidadeStackada;
         this.entidadesSpawnadas = entidadesSpawnadas;
         this.dropsAramazenados = dropsAramazenados;
@@ -67,6 +73,33 @@ public class Spawner {
 
     public Location getLocal() {
         return local;
+    }
+
+    public int getLevelTempoDeSpawn() {
+        return levelTempoDeSpawn;
+    }
+
+    public void addLevelTempoDeSpawn() {
+        this.levelTempoDeSpawn += 1;
+        save("upgrades.tempoDeSpawn", this.levelTempoDeSpawn);
+    }
+
+    public int getLevelValorDoDrop() {
+        return levelValorDoDrop;
+    }
+
+    public void addLevelValorDoDrop() {
+        this.levelValorDoDrop += 1;
+        save("upgrades.valorDoDrop", this.levelValorDoDrop);
+    }
+
+    public int getLevelMultiplicadorDeSpawn() {
+        return levelMultiplicadorDeSpawn;
+    }
+
+    public void addLevelMultiplicadorDeSpawn() {
+        this.levelMultiplicadorDeSpawn += 1;
+        save("upgrades.multiplicadorDeSpawn", this.levelMultiplicadorDeSpawn);
     }
 
     public BigDecimal getQuantidadeStackada() {
@@ -151,6 +184,7 @@ public class Spawner {
             // Remove o 'org.bukkit.entity' do nome da entidade
             String nomeDaEntidade = this.spawnerMeta.getMob().getEntityClass().getName().split("\\.")[3];
             spawnerHeadMeta.setOwner("MHF_" + nomeDaEntidade);
+            spawnerItem.setItemMeta(spawnerHeadMeta);
 
             DHAPI.addHologramLine(this.holograma, this.spawnerMeta.getTitle());
             DHAPI.addHologramLine(this.holograma, spawnerItem);
@@ -162,7 +196,7 @@ public class Spawner {
                 DHAPI.addHologramLine(this.holograma, "§fStatus: §cOFF");
             }
         } catch (Exception e) {
-            //
+            System.out.println("Erro ao ativar o hologrgama: " + e.getMessage());
         }
     }
 
@@ -195,14 +229,14 @@ public class Spawner {
             NBTEditor.set(novoMob, true, "NoAI");
             NBTEditor.set(novoMob, true, "Invunerable");
         }
-        this.entidadesSpawnadas = this.entidadesSpawnadas.add(this.quantidadeStackada);
+        this.entidadesSpawnadas = this.entidadesSpawnadas.add(this.quantidadeStackada.multiply(BigDecimal.valueOf(this.levelMultiplicadorDeSpawn)));
         save("entidadesSpawnadas", this.entidadesSpawnadas.toString());
     }
 
     public void startSpawnerLoop() {
         BukkitScheduler scheduler = Bukkit.getScheduler();
         this.spawnarMob();
-        scheduler.runTaskLater(SwedenSpawners.getPlugin(SwedenSpawners.class), this::startSpawnerLoop, 20L * 5L);
+        scheduler.runTaskLater(SwedenSpawners.getPlugin(SwedenSpawners.class), this::startSpawnerLoop, (20L / this.levelTempoDeSpawn) * 5L);
     }
 
     public void matarEntidades() {

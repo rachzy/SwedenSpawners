@@ -3,17 +3,16 @@ package com.redesweden.swedenspawners.events;
 import com.redesweden.swedeneconomia.data.Players;
 import com.redesweden.swedeneconomia.functions.ConverterQuantia;
 import com.redesweden.swedeneconomia.models.PlayerSaldo;
-import com.redesweden.swedenspawners.GUIs.GerenciarDropsGUI;
-import com.redesweden.swedenspawners.GUIs.GerenciarAmigoGUI;
-import com.redesweden.swedenspawners.GUIs.GerenciarAmigosGUI;
-import com.redesweden.swedenspawners.GUIs.SpawnerGUI;
+import com.redesweden.swedenspawners.GUIs.*;
 import com.redesweden.swedenspawners.data.EventosEspeciais;
 import com.redesweden.swedenspawners.data.SaleSpawners;
+import com.redesweden.swedenspawners.functions.InstantFirework;
 import com.redesweden.swedenspawners.models.Spawner;
 import com.redesweden.swedenspawners.models.SpawnerAmigo;
 import com.redesweden.swedenspawners.models.SpawnerMeta;
 import com.redesweden.swedenspawners.models.SpawnerPlayer;
-import org.bukkit.Material;
+import org.bukkit.*;
+import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -129,20 +128,25 @@ public class InventoryClickListener implements Listener {
                     || !e.getCurrentItem().hasItemMeta()
                     || e.getCurrentItem().getItemMeta().getDisplayName() == null) return;
 
-            String nomeDoItem = e.getCurrentItem().getItemMeta().getDisplayName().substring(2).toUpperCase();
+            String nomeDoItem = e.getCurrentItem().getItemMeta().getDisplayName().substring(2);
             Spawner spawner = EventosEspeciais.getEventoGerenciarSpawnerByPlayer(player).getSpawner();
 
-            if (nomeDoItem.equals("GERENCIAR DROPS")) {
+            if (nomeDoItem.equalsIgnoreCase("GERENCIAR DROPS")) {
                 player.openInventory(new GerenciarDropsGUI(spawner).get());
                 return;
             }
 
-            if (nomeDoItem.equals("GERENCIAR AMIGOS")) {
+            if (nomeDoItem.equalsIgnoreCase("GERENCIAR AMIGOS")) {
                 player.openInventory(new GerenciarAmigosGUI(player.getDisplayName(), spawner).get());
                 return;
             }
 
-            if (nomeDoItem.equals("LIGAR OU DESLIGAR")) {
+            if(nomeDoItem.equalsIgnoreCase("UPGRADES")) {
+                player.openInventory(new UpgradesGUI(spawner).get());
+                return;
+            }
+
+            if (nomeDoItem.equalsIgnoreCase("LIGAR OU DESLIGAR")) {
                 spawner.toggleAtivado();
 
                 if (spawner.getAtivado()) {
@@ -161,10 +165,10 @@ public class InventoryClickListener implements Listener {
                     || !e.getCurrentItem().hasItemMeta()
                     || e.getCurrentItem().getItemMeta().getDisplayName() == null) return;
 
-            String nomeDoItem = e.getCurrentItem().getItemMeta().getDisplayName().substring(2).toUpperCase();
+            String nomeDoItem = e.getCurrentItem().getItemMeta().getDisplayName().substring(2);
             Spawner spawner = EventosEspeciais.getEventoGerenciarSpawnerByPlayer(player).getSpawner();
 
-            if (nomeDoItem.equals("VOLTAR")) {
+            if (nomeDoItem.equalsIgnoreCase("VOLTAR")) {
                 player.openInventory(new SpawnerGUI(spawner).get());
                 return;
             }
@@ -180,13 +184,13 @@ public class InventoryClickListener implements Listener {
                 }
             }
 
-            if (nomeDoItem.equals("DROPS DO SPAWNER")) {
+            if (nomeDoItem.equalsIgnoreCase("DROPS DO SPAWNER")) {
                 if (Objects.equals(spawner.getDropsAramazenados(), new BigDecimal("0"))) {
                     player.sendMessage("§cEste spawner não tem nenhum drop para vender.");
                     return;
                 }
                 PlayerSaldo playerSaldo = Players.getPlayer(player.getDisplayName());
-                BigDecimal valorDaVenda = spawner.getDropsAramazenados().multiply(spawner.getSpawnerMeta().getPrecoPorDrop());
+                BigDecimal valorDaVenda = spawner.getDropsAramazenados().multiply(spawner.getSpawnerMeta().getPrecoPorDrop().multiply(BigDecimal.valueOf(spawner.getLevelValorDoDrop())));
                 playerSaldo.addSaldo(valorDaVenda);
                 playerSaldo.addQuantiaMovimentada(valorDaVenda);
                 player.sendMessage(String.format("§aVocê vendeu %s de drops deste spawner por $§f%s§a.", new ConverterQuantia(spawner.getDropsAramazenados()).emLetras(), new ConverterQuantia(valorDaVenda).emLetras()));
@@ -194,7 +198,7 @@ public class InventoryClickListener implements Listener {
                 return;
             }
 
-            if (nomeDoItem.equals("LIMPAR DROPS")) {
+            if (nomeDoItem.equalsIgnoreCase("LIMPAR DROPS")) {
                 player.sendMessage("§cVocê limpou os drops deste spawner.");
                 spawner.zerarDropsArmazenados();
             }
@@ -207,10 +211,10 @@ public class InventoryClickListener implements Listener {
                     || !e.getCurrentItem().hasItemMeta()
                     || e.getCurrentItem().getItemMeta().getDisplayName() == null) return;
 
-            String nomeDoItem = e.getCurrentItem().getItemMeta().getDisplayName().substring(2).toUpperCase();
+            String nomeDoItem = e.getCurrentItem().getItemMeta().getDisplayName().substring(2);
             Spawner spawner = EventosEspeciais.getEventoGerenciarSpawnerByPlayer(player).getSpawner();
 
-            if (nomeDoItem.equals("VOLTAR")) {
+            if (nomeDoItem.equalsIgnoreCase("VOLTAR")) {
                 player.openInventory(new SpawnerGUI(spawner).get());
                 return;
             }
@@ -222,7 +226,7 @@ public class InventoryClickListener implements Listener {
                 return;
             }
 
-            if (nomeDoItem.equals("ADICIONAR AMIGO")) {
+            if (nomeDoItem.equalsIgnoreCase("ADICIONAR AMIGO")) {
                 EventosEspeciais.addPlayerAdicionandoAmigo(player, spawner);
                 player.sendMessage("");
                 player.sendMessage(" §aDigite o nome do player que você deseja adicionar como amigo.");
@@ -244,10 +248,10 @@ public class InventoryClickListener implements Listener {
                     || !e.getCurrentItem().hasItemMeta()
                     || e.getCurrentItem().getItemMeta().getDisplayName() == null) return;
 
-            String nomeDoItem = e.getCurrentItem().getItemMeta().getDisplayName().substring(2).toUpperCase();
+            String nomeDoItem = e.getCurrentItem().getItemMeta().getDisplayName().substring(2);
             Spawner spawner = EventosEspeciais.getEventoGerenciarSpawnerByPlayer(player).getSpawner();
 
-            if (nomeDoItem.equals("VOLTAR")) {
+            if (nomeDoItem.equalsIgnoreCase("VOLTAR")) {
                 player.openInventory(new GerenciarAmigosGUI(player.getDisplayName(), spawner).get());
                 return;
             }
@@ -260,29 +264,81 @@ public class InventoryClickListener implements Listener {
             String amigoNick = e.getInventory().getItem(10).getItemMeta().getDisplayName().substring(2);
             SpawnerAmigo amigoAlvo = spawner.getAmigoPorNome(amigoNick);
 
-            if(nomeDoItem.equals("PERMISSÃO DE VENDER")) {
+            if(nomeDoItem.equalsIgnoreCase("PERMISSÃO DE VENDER")) {
                 amigoAlvo.togglePermissaoVender(spawner);
                 player.openInventory(new GerenciarAmigoGUI(amigoAlvo).get());
                 return;
             }
 
-            if(nomeDoItem.equals("PERMISSÃO DE MATAR")) {
+            if(nomeDoItem.equalsIgnoreCase("PERMISSÃO DE MATAR")) {
                 amigoAlvo.togglePermissaoMatar(spawner);
                 player.openInventory(new GerenciarAmigoGUI(amigoAlvo).get());
                 return;
             }
 
-            if(nomeDoItem.equals("PERMISSÃO DE QUEBRAR")) {
+            if(nomeDoItem.equalsIgnoreCase("PERMISSÃO DE QUEBRAR")) {
                 amigoAlvo.togglePermissaoQuebrar(spawner);
                 player.openInventory(new GerenciarAmigoGUI(amigoAlvo).get());
                 return;
             }
 
-            if(nomeDoItem.equals("REMOVER AMIGO")) {
+            if(nomeDoItem.equalsIgnoreCase("REMOVER AMIGO")) {
                 spawner.removerAmigo(amigoAlvo);
                 player.openInventory(new GerenciarAmigosGUI(player.getDisplayName(), spawner).get());
                 player.sendMessage(String.format("§cVocê removeu %s da lista de Amigos do seu spawner.", amigoAlvo.getNickname()));
             }
+        }
+
+        if(viewTitle.equals("UPGRADES")) {
+            e.setCancelled(true);
+
+            if (e.getCurrentItem() == null
+                    || !e.getCurrentItem().hasItemMeta()
+                    || e.getCurrentItem().getItemMeta().getDisplayName() == null) return;
+
+            String nomeDoItem = e.getCurrentItem().getItemMeta().getDisplayName().substring(2);
+            Spawner spawner = EventosEspeciais.getEventoGerenciarSpawnerByPlayer(player).getSpawner();
+
+            if (nomeDoItem.equalsIgnoreCase("VOLTAR")) {
+                player.openInventory(new SpawnerGUI(spawner).get());
+                return;
+            }
+
+            player.closeInventory();
+            int levelFinal = 0;
+
+            if(nomeDoItem.equalsIgnoreCase("TEMPO DE SPAWN")) {
+                if(spawner.getLevelTempoDeSpawn() >= 5) {
+                    player.sendMessage("§cEste spawner já está em seu level máximo neste upgrade.");
+                    return;
+                }
+                spawner.addLevelTempoDeSpawn();
+                levelFinal = spawner.getLevelTempoDeSpawn();
+            }
+
+            if(nomeDoItem.equalsIgnoreCase("VALOR DO DROP")) {
+                if(spawner.getLevelValorDoDrop() >= 5) {
+                    player.sendMessage("§cEste spawner já está em seu level máximo neste upgrade.");
+                    return;
+                }
+                spawner.addLevelValorDoDrop();
+                levelFinal = spawner.getLevelValorDoDrop();
+            }
+
+            if(nomeDoItem.equalsIgnoreCase("MULTIPLICADOR DE SPAWN")) {
+                if(spawner.getLevelMultiplicadorDeSpawn() >= 5) {
+                    player.sendMessage("§cEste spawner já está em seu level máximo neste upgrade.");
+                    return;
+                }
+                spawner.addLevelMultiplicadorDeSpawn();
+                levelFinal = spawner.getLevelValorDoDrop();
+            }
+            
+            if(levelFinal == 0) return;
+
+            player.playSound(player.getLocation(), Sound.NOTE_PIANO, 3.0F, 0.5F);
+            new InstantFirework(FireworkEffect.builder().withColor(Color.LIME, Color.YELLOW).build(), spawner.getLocal().clone().add(-0.5, 1, 0.5));
+            player.sendMessage(String.format("§aUpgrade aplicado com sucesso! Seu spawner agora está no level §6%s §ade %s.", levelFinal, nomeDoItem));
         }
     }
 }

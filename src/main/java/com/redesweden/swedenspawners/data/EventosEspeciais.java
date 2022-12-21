@@ -16,6 +16,14 @@ public class EventosEspeciais {
     private static List<EventoGerenciarSpawner> playersAdicionandoAmigos = new ArrayList<>();
     private static List<Player> playersSetandoMultiplicador = new ArrayList<>();
 
+    public static List<EventoGerenciarSpawner> getPlayersGerenciandoSpawners() {
+        return playersGerenciandoSpawners;
+    }
+
+    public static List<EventoGerenciarSpawner> getPlayersAdicionandoAmigos() {
+        return playersAdicionandoAmigos;
+    }
+
     public static EventoPlayerCompraDeSpawners getEventoInComprarQuantiaDeSpawnersByPlayer(String nickname) {
         return comprarQuantiaDeSpawners.stream()
                 .filter(evento -> evento.getPlayer().getDisplayName().equals(nickname))

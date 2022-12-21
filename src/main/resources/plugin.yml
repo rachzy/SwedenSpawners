@@ -6,7 +6,7 @@ authors: [ rachzy ]
 description: Plugin original de spawners da Rede Sweden
 website: https://rachzy.github.io
 depend: [SwedenEconomia, NBTEditor]
-softdepend: [DecentHolograms]
+softdepend: [DecentHolograms, HeadsPluginAPI]
 commands:
   spawners:
     description: Abre o menu de compra de spawners

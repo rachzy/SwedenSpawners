@@ -1,6 +1,7 @@
 package com.redesweden.swedenspawners.events;
 
 import com.redesweden.swedeneconomia.functions.ConverterQuantia;
+import com.redesweden.swedenspawners.data.EventosEspeciais;
 import com.redesweden.swedenspawners.data.Players;
 import com.redesweden.swedenspawners.data.SaleSpawners;
 import com.redesweden.swedenspawners.data.Spawners;
@@ -38,13 +39,41 @@ public class BlockBreakListener implements Listener {
             }
         }
 
+        if(player.getInventory().firstEmpty() == -1) {
+            player.sendMessage("§cVocê precisa ter pelo menos 1 slot vazio em seu inventário para retirar o spawner.");
+            e.setCancelled(true);
+            return;
+        }
+
         SpawnerMeta spawnerMeta = SaleSpawners.getSpawnerPorTitulo(spawner.getSpawnerMeta().getTitle());
         BigDecimal quantidadeStackada = spawner.getQuantidadeStackada();
 
         e.getBlock().setType(Material.AIR);
         player.getInventory().addItem(spawnerMeta.getSpawner(quantidadeStackada));
         player.sendMessage(String.format("§aVocê retirou §f%s §aspawners.", new ConverterQuantia(quantidadeStackada).emLetras()));
+
+        // Remover players de eventos especiais relacionados a spawners
+        EventosEspeciais.getPlayersAdicionandoAmigos().forEach(evento -> {
+            if(evento.getSpawner().getId().equals(spawner.getId())) {
+                Player playerIn = player.getServer().getPlayer(evento.getNick());
+                if(playerIn == null || !playerIn.isOnline()) return;
+                EventosEspeciais.removePlayerAdicionandoAmigo(playerIn);
+                playerIn.sendMessage("§cSeu spawner foi quebrado, logo este evento foi cancelado.");
+            }
+        });
+
+        EventosEspeciais.getPlayersGerenciandoSpawners().forEach(evento -> {
+            if(evento.getSpawner().getId().equals(spawner.getId())) {
+                Player playerIn = player.getServer().getPlayer(evento.getNick());
+                if(playerIn == null || !playerIn.isOnline()) return;
+                EventosEspeciais.removePlayerGerenciandoSpawner(playerIn);
+                playerIn.closeInventory();
+            }
+        });
+
+        // Remover o holograma do spawner
         DHAPI.removeHologram(spawner.getId());
+
         spawner.setAtivado(false);
         Spawners.removeSpawnerPorId(spawner.getId());
     }

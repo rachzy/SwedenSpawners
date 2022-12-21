@@ -8,6 +8,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class GerenciarDropsGUI {
         dropsItemMeta.setDisplayName("§eDrops do spawner");
         List<String> loreDropsItem = new ArrayList<>();
         loreDropsItem.add(String.format("§7Drops armazenados: §a%s", new ConverterQuantia(spawner.getDropsAramazenados()).emLetras()));
-        loreDropsItem.add(String.format("§7Valor total: §a$%s", new ConverterQuantia(spawner.getDropsAramazenados().multiply(spawner.getSpawnerMeta().getPrecoPorDrop())).emLetras()));
+        loreDropsItem.add(String.format("§7Valor total: §a$%s", new ConverterQuantia(spawner.getDropsAramazenados().multiply(spawner.getSpawnerMeta().getPrecoPorDrop().multiply(BigDecimal.valueOf(spawner.getLevelValorDoDrop())))).emLetras()));
         loreDropsItem.add("");
         loreDropsItem.add("§aClique para vender");
         dropsItemMeta.setLore(loreDropsItem);
