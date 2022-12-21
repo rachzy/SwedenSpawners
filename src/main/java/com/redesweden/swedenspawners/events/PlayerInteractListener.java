@@ -6,6 +6,7 @@ import com.redesweden.swedenspawners.data.Spawners;
 import com.redesweden.swedenspawners.models.Spawner;
 import com.redesweden.swedenspawners.models.SpawnerAmigo;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -37,5 +38,6 @@ public class PlayerInteractListener implements Listener {
 
         EventosEspeciais.addPlayerGerenciandoSpawner(player, spawner);
         player.openInventory(new SpawnerGUI(spawner).get());
+        player.playSound(player.getLocation(), Sound.CLICK, 3.0F, 2.5F);
     }
 }

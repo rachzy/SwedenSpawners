@@ -117,6 +117,7 @@ public class ChatMessageListener implements Listener {
         }
 
         if(EventosEspeciais.getPlayerSetandoMultiplicador(player) != null) {
+            EventosEspeciais.removePlayerSetandoMultiplicador(player);
             e.setCancelled(true);
             int quantia;
 

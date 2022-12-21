@@ -3,6 +3,7 @@ package com.redesweden.swedenspawners.models;
 import com.redesweden.swedeneconomia.functions.ConverterQuantia;
 import com.redesweden.swedenspawners.SwedenSpawners;
 import com.redesweden.swedenspawners.files.SpawnersFile;
+import dev.dbassett.skullcreator.SkullCreator;
 import eu.decentsoftware.holograms.api.DHAPI;
 import eu.decentsoftware.holograms.api.holograms.Hologram;
 import io.github.bananapuncher714.nbteditor.NBTEditor;
@@ -195,16 +196,10 @@ public class Spawner {
             Location hologramaLocal = this.local.clone();
             this.holograma = DHAPI.createHologram(this.getId(), hologramaLocal.add(-0.5, 3, 0.5), true);
 
-            // Pegar head da entidade
-            ItemStack spawnerItem = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
-            SkullMeta spawnerHeadMeta = (SkullMeta) spawnerItem.getItemMeta();
-            // Remove o 'org.bukkit.entity' do nome da entidade
             String nomeDaEntidade = this.spawnerMeta.getMob().getEntityClass().getName().split("\\.")[3];
-            spawnerHeadMeta.setOwner("MHF_" + nomeDaEntidade);
-            spawnerItem.setItemMeta(spawnerHeadMeta);
 
             DHAPI.addHologramLine(this.holograma, this.spawnerMeta.getTitle());
-            DHAPI.addHologramLine(this.holograma, spawnerItem);
+            DHAPI.addHologramLine(this.holograma, SkullCreator.itemFromName("MHF_" + nomeDaEntidade));
             DHAPI.addHologramLine(this.holograma, String.format("§fDono: §e%s", this.getDono().getNickname()));
             DHAPI.addHologramLine(this.holograma, String.format("§fQuantia: §e%s", new ConverterQuantia(this.getQuantidadeStackada()).emLetras()));
             if (this.ativado) {
@@ -268,8 +263,10 @@ public class Spawner {
     public void matarEntidades(int looting) {
         if(looting == 0) {
             this.dropsAramazenados = this.dropsAramazenados.add(this.entidadesSpawnadas);
+        } else if(looting == 1) {
+            this.dropsAramazenados = this.dropsAramazenados.add(this.entidadesSpawnadas.multiply(BigDecimal.valueOf(1.25)));
         } else {
-            this.dropsAramazenados = this.dropsAramazenados.add(this.entidadesSpawnadas.multiply(BigDecimal.valueOf(looting + 0.5)));
+            this.dropsAramazenados = this.dropsAramazenados.add(this.entidadesSpawnadas.multiply(BigDecimal.valueOf(looting * 0.6)));
         }
         this.entidadesSpawnadas = new BigDecimal("0");
     }

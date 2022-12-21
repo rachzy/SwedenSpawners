@@ -67,6 +67,10 @@
             <id>CodeMC</id>
             <url>https://repo.codemc.org/repository/maven-public</url>
         </repository>
+        <repository>
+            <id>skullcreator-repo</id>
+            <url>https://github.com/deanveloper/SkullCreator/raw/mvn-repo/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -93,6 +97,13 @@
             <groupId>io.github.bananapuncher714</groupId>
             <artifactId>NBTEditor</artifactId>
             <version>7.16</version>
+            <scope>compile</scope>
+        </dependency>
+        <!-- SkullCreator -->
+        <dependency>
+            <groupId>dev.dbassett</groupId>
+            <artifactId>skullcreator</artifactId>
+            <version>3.0.1</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

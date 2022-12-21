@@ -58,6 +58,7 @@ public class InventoryClickListener implements Listener {
                 player.sendMessage("");
                 player.sendMessage(" §aDigite a quantia que você deseja definir seu multiplicador para tal:");
                 player.sendMessage("");
+                player.playSound(player.getLocation(), Sound.LEVEL_UP, 3.0F, 2F);
                 return;
             }
 
@@ -117,6 +118,7 @@ public class InventoryClickListener implements Listener {
             playerSaldo.subSaldo(precoFinal);
             playerSpawner.addSpawnersComprados(quantidade);
             player.sendMessage(String.format("§aVocê comprou §f%s §a%s", new ConverterQuantia(quantidade).emLetras(), spawner.getTitle()));
+            player.playSound(player.getLocation(), Sound.VILLAGER_YES, 3.0F, 1F);
             return;
         }
 
@@ -132,16 +134,19 @@ public class InventoryClickListener implements Listener {
 
             if (nomeDoItem.equalsIgnoreCase("GERENCIAR DROPS")) {
                 player.openInventory(new GerenciarDropsGUI(spawner).get());
+                player.playSound(player.getLocation(), Sound.CLICK, 3.0F, 1.5F);
                 return;
             }
 
             if (nomeDoItem.equalsIgnoreCase("GERENCIAR AMIGOS")) {
                 player.openInventory(new GerenciarAmigosGUI(player.getDisplayName(), spawner).get());
+                player.playSound(player.getLocation(), Sound.CLICK, 3.0F, 1.5F);
                 return;
             }
 
             if(nomeDoItem.equalsIgnoreCase("MELHORIAS")) {
                 player.openInventory(new MelhoriasGUI(spawner).get());
+                player.playSound(player.getLocation(), Sound.CLICK, 3.0F, 1.5F);
                 return;
             }
 
@@ -150,10 +155,13 @@ public class InventoryClickListener implements Listener {
 
                 if (spawner.getAtivado()) {
                     player.sendMessage("§aSpawner ativado com sucesso!");
+                    player.playSound(player.getLocation(), Sound.NOTE_PLING, 3.0F, 1.5F);
                 } else {
                     player.sendMessage("§cSpawner desligado com sucesso.");
+                    player.playSound(player.getLocation(), Sound.NOTE_PLING, 3.0F, 0.5F);
                 }
                 player.closeInventory();
+
             }
         }
 
@@ -169,6 +177,7 @@ public class InventoryClickListener implements Listener {
 
             if (nomeDoItem.equalsIgnoreCase("VOLTAR")) {
                 player.openInventory(new SpawnerGUI(spawner).get());
+                player.playSound(player.getLocation(), Sound.CLICK, 3.0F, 2.5F);
                 return;
             }
 
@@ -193,12 +202,14 @@ public class InventoryClickListener implements Listener {
                 playerSaldo.addSaldo(valorDaVenda);
                 playerSaldo.addQuantiaMovimentada(valorDaVenda);
                 player.sendMessage(String.format("§aVocê vendeu %s de drops deste spawner por $§f%s§a.", new ConverterQuantia(spawner.getDropsAramazenados()).emLetras(), new ConverterQuantia(valorDaVenda).emLetras()));
+                player.playSound(player.getLocation(), Sound.LEVEL_UP, 3.0F, 1.5F);
                 spawner.zerarDropsArmazenados();
                 return;
             }
 
             if (nomeDoItem.equalsIgnoreCase("LIMPAR DROPS")) {
                 player.sendMessage("§cVocê limpou os drops deste spawner.");
+                player.playSound(player.getLocation(), Sound.CAT_MEOW, 3.0F, 0.5F);
                 spawner.zerarDropsArmazenados();
             }
         }
@@ -215,6 +226,7 @@ public class InventoryClickListener implements Listener {
 
             if (nomeDoItem.equalsIgnoreCase("VOLTAR")) {
                 player.openInventory(new SpawnerGUI(spawner).get());
+                player.playSound(player.getLocation(), Sound.CLICK, 3.0F, 2.5F);
                 return;
             }
 
@@ -226,6 +238,7 @@ public class InventoryClickListener implements Listener {
             }
 
             if (nomeDoItem.equalsIgnoreCase("ADICIONAR AMIGO")) {
+                player.playSound(player.getLocation(), Sound.CLICK, 3.0F, 2.5F);
                 if(spawner.getAmigos().toArray().length >= 5) {
                     player.sendMessage("§cEste spawner já atingiu seu limite de amigos (5).");
                     return;
@@ -256,6 +269,7 @@ public class InventoryClickListener implements Listener {
 
             if (nomeDoItem.equalsIgnoreCase("VOLTAR")) {
                 player.openInventory(new GerenciarAmigosGUI(player.getDisplayName(), spawner).get());
+                player.playSound(player.getLocation(), Sound.CLICK, 3.0F, 2.5F);
                 return;
             }
 
@@ -304,6 +318,7 @@ public class InventoryClickListener implements Listener {
 
             if (nomeDoItem.equalsIgnoreCase("VOLTAR")) {
                 player.openInventory(new SpawnerGUI(spawner).get());
+                player.playSound(player.getLocation(), Sound.CLICK, 3.0F, 2.5F);
                 return;
             }
 
@@ -339,7 +354,7 @@ public class InventoryClickListener implements Listener {
             
             if(levelFinal == 0) return;
 
-            player.playSound(player.getLocation(), Sound.NOTE_PIANO, 3.0F, 0.5F);
+            player.playSound(player.getLocation(), Sound.LEVEL_UP, 3.0F, 0.5F);
             new InstantFirework(FireworkEffect.builder().withColor(Color.LIME, Color.YELLOW).build(), spawner.getLocal().clone().add(-0.5, 1, 0.5));
             player.sendMessage(String.format("§aMelhoria aplicado com sucesso! Seu spawner agora está no level §6%s §ade %s.", levelFinal, nomeDoItem));
         }
