@@ -15,8 +15,12 @@ public class Spawners {
         spawnerList.add(spawner);
     }
 
+    public static Spawner getSpawnerPorId(String id) {
+        return spawnerList.stream().filter((spawner) -> spawner.getId().equals(id)).findFirst().orElse(null);
+    }
+
     public static Spawner getSpawnerPorLocal(Location local) {
-        return spawnerList.stream().filter((spawner) -> spawner.getLocal().getX() == local.getX() && spawner.getLocal().getY() == local.getY() && spawner.getLocal().getZ() == local.getZ()).findFirst().orElse(null);
+        return spawnerList.stream().filter((spawner) -> spawner.getLocal().getX() == local.getX() && spawner.getLocal().getY() == local.getY() && spawner.getLocal().getZ() == local.getZ() && !spawner.getRetirado()).findFirst().orElse(null);
     }
 
     public static void removeSpawnerPorId(String id) {

@@ -16,8 +16,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public class BlockBreakListener implements Listener {
     @EventHandler
@@ -48,8 +51,16 @@ public class BlockBreakListener implements Listener {
         SpawnerMeta spawnerMeta = SaleSpawners.getSpawnerPorTitulo(spawner.getSpawnerMeta().getTitle());
         BigDecimal quantidadeStackada = spawner.getQuantidadeStackada();
 
+        ItemStack spawnerComId = spawnerMeta.getSpawner(quantidadeStackada);
+        ItemMeta spawnerComIdMeta = spawnerComId.getItemMeta();
+        List<String> spawnerComIdLore = spawnerComIdMeta.getLore();
+        spawnerComIdLore.add("§9" + spawner.getId());
+        spawnerComIdLore.add("§7(Este spawner já foi utilizado)");
+        spawnerComIdMeta.setLore(spawnerComIdLore);
+        spawnerComId.setItemMeta(spawnerComIdMeta);
+
         e.getBlock().setType(Material.AIR);
-        player.getInventory().addItem(spawnerMeta.getSpawner(quantidadeStackada));
+        player.getInventory().addItem(spawnerComId);
         player.sendMessage(String.format("§aVocê retirou §f%s §aspawners.", new ConverterQuantia(quantidadeStackada).emLetras()));
 
         // Remover players de eventos especiais relacionados a spawners
@@ -75,6 +86,7 @@ public class BlockBreakListener implements Listener {
         DHAPI.removeHologram(spawner.getId());
 
         spawner.setAtivado(false);
-        Spawners.removeSpawnerPorId(spawner.getId());
+        spawner.setRetirado(true);
+        spawner.desespawnarMob();
     }
 }

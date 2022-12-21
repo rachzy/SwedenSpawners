@@ -47,9 +47,9 @@ public class SpawnersFile {
             String mundo = spawnersFile.getString(String.format("spawners.%s.local.mundo", spawnerId));
             Location local = new Location(Bukkit.getWorld(mundo), x, y, z);
 
-            int upgradeTempoDeSpawn = spawnersFile.getInt(String.format("spawners.%s.upgrades.tempoDeSpawn", spawnerId));
-            int upgradeValorDoDrop = spawnersFile.getInt(String.format("spawners.%s.upgrades.valorDoDrop", spawnerId));
-            int upgradeMultiplicadorDeSpawn = spawnersFile.getInt(String.format("spawners.%s.upgrades.multiplicadorDeSpawn", spawnerId));
+            int melhoriaTempoDeSpawn = spawnersFile.getInt(String.format("spawners.%s.melhorias.tempoDeSpawn", spawnerId));
+            int melhoriaValorDoDrop = spawnersFile.getInt(String.format("spawners.%s.melhorias.valorDoDrop", spawnerId));
+            int melhoriaMultiplicadorDeSpawn = spawnersFile.getInt(String.format("spawners.%s.melhorias.multiplicadorDeSpawn", spawnerId));
 
             List<SpawnerAmigo> amigos = new ArrayList<>();
 
@@ -69,18 +69,20 @@ public class SpawnersFile {
             BigDecimal entidadesSpawnadas = new BigDecimal(spawnersFile.getString(String.format("spawners.%s.entidadesSpawnadas", spawnerId)));
             BigDecimal dropsArmazenados = new BigDecimal(spawnersFile.getString(String.format("spawners.%s.dropsArmazenados", spawnerId)));
             Boolean ativado = spawnersFile.getBoolean(String.format("spawners.%s.ativado", spawnerId));
+            Boolean retirado = spawnersFile.getBoolean(String.format("spawners.%s.retirado", spawnerId));
 
             Spawner spawner = new Spawner(spawnerId,
                     dono,
                     tipo,
                     local,
-                    upgradeTempoDeSpawn,
-                    upgradeValorDoDrop,
-                    upgradeMultiplicadorDeSpawn,
+                    melhoriaTempoDeSpawn,
+                    melhoriaValorDoDrop,
+                    melhoriaMultiplicadorDeSpawn,
                     quantidadeStackada, entidadesSpawnadas,
                     dropsArmazenados,
                     amigos,
-                    ativado);
+                    ativado,
+                    retirado);
             Spawners.addSpawner(spawner);
         }
     }
@@ -93,16 +95,17 @@ public class SpawnersFile {
         spawnersFile.set(String.format("spawners.%s.local.x", id), local.getX());
         spawnersFile.set(String.format("spawners.%s.local.y", id), local.getY());
         spawnersFile.set(String.format("spawners.%s.local.z", id), local.getZ());
-        spawnersFile.set(String.format("spawners.%s.upgrades.tempoDeSpawn", id), 1);
-        spawnersFile.set(String.format("spawners.%s.upgrades.valorDoDrop", id), 1);
-        spawnersFile.set(String.format("spawners.%s.upgrades.multiplicadorDeSpawn", id), 1);
+        spawnersFile.set(String.format("spawners.%s.melhorias.tempoDeSpawn", id), 1);
+        spawnersFile.set(String.format("spawners.%s.melhorias.valorDoDrop", id), 1);
+        spawnersFile.set(String.format("spawners.%s.melhorias.multiplicadorDeSpawn", id), 1);
         spawnersFile.set(String.format("spawners.%s.local.mundo", id), local.getWorld().getName());
         spawnersFile.set(String.format("spawners.%s.quantidadeStackada", id), quantidadeStackada.toString());
         spawnersFile.set(String.format("spawners.%s.entidadesSpawnadas", id), "0");
         spawnersFile.set(String.format("spawners.%s.dropsArmazenados", id), "0");
         spawnersFile.set(String.format("spawners.%s.ativado", id), true);
+        spawnersFile.set(String.format("spawners.%s.retirado", id), false);
 
-        Spawner novoSpawner = new Spawner(id, Players.getPlayerByName(dono.getDisplayName()), tipo, local, 1, 1, 1, quantidadeStackada, new BigDecimal("0"), new BigDecimal("0"), new ArrayList<>(), true);
+        Spawner novoSpawner = new Spawner(id, Players.getPlayerByName(dono.getDisplayName()), tipo, local, 1, 1, 1, quantidadeStackada, new BigDecimal("0"), new BigDecimal("0"), new ArrayList<>(), true, false);
         Spawners.addSpawner(novoSpawner);
         save();
     }

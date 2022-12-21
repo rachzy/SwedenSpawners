@@ -12,7 +12,6 @@ import com.redesweden.swedenspawners.models.SpawnerAmigo;
 import com.redesweden.swedenspawners.models.SpawnerMeta;
 import com.redesweden.swedenspawners.models.SpawnerPlayer;
 import org.bukkit.*;
-import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -141,8 +140,8 @@ public class InventoryClickListener implements Listener {
                 return;
             }
 
-            if(nomeDoItem.equalsIgnoreCase("UPGRADES")) {
-                player.openInventory(new UpgradesGUI(spawner).get());
+            if(nomeDoItem.equalsIgnoreCase("MELHORIAS")) {
+                player.openInventory(new MelhoriasGUI(spawner).get());
                 return;
             }
 
@@ -227,6 +226,10 @@ public class InventoryClickListener implements Listener {
             }
 
             if (nomeDoItem.equalsIgnoreCase("ADICIONAR AMIGO")) {
+                if(spawner.getAmigos().toArray().length >= 5) {
+                    player.sendMessage("§cEste spawner já atingiu seu limite de amigos (5).");
+                    return;
+                }
                 EventosEspeciais.addPlayerAdicionandoAmigo(player, spawner);
                 player.sendMessage("");
                 player.sendMessage(" §aDigite o nome do player que você deseja adicionar como amigo.");
@@ -289,7 +292,7 @@ public class InventoryClickListener implements Listener {
             }
         }
 
-        if(viewTitle.equals("UPGRADES")) {
+        if(viewTitle.equals("MELHORIAS")) {
             e.setCancelled(true);
 
             if (e.getCurrentItem() == null
@@ -308,8 +311,8 @@ public class InventoryClickListener implements Listener {
             int levelFinal = 0;
 
             if(nomeDoItem.equalsIgnoreCase("TEMPO DE SPAWN")) {
-                if(spawner.getLevelTempoDeSpawn() >= 5) {
-                    player.sendMessage("§cEste spawner já está em seu level máximo neste upgrade.");
+                if(spawner.getLevelTempoDeSpawn() >= 6) {
+                    player.sendMessage("§cEste spawner já está em seu level máximo neste melhoria.");
                     return;
                 }
                 spawner.addLevelTempoDeSpawn();
@@ -317,8 +320,8 @@ public class InventoryClickListener implements Listener {
             }
 
             if(nomeDoItem.equalsIgnoreCase("VALOR DO DROP")) {
-                if(spawner.getLevelValorDoDrop() >= 5) {
-                    player.sendMessage("§cEste spawner já está em seu level máximo neste upgrade.");
+                if(spawner.getLevelValorDoDrop() >= 6) {
+                    player.sendMessage("§cEste spawner já está em seu level máximo neste melhoria.");
                     return;
                 }
                 spawner.addLevelValorDoDrop();
@@ -326,8 +329,8 @@ public class InventoryClickListener implements Listener {
             }
 
             if(nomeDoItem.equalsIgnoreCase("MULTIPLICADOR DE SPAWN")) {
-                if(spawner.getLevelMultiplicadorDeSpawn() >= 5) {
-                    player.sendMessage("§cEste spawner já está em seu level máximo neste upgrade.");
+                if(spawner.getLevelMultiplicadorDeSpawn() >= 6) {
+                    player.sendMessage("§cEste spawner já está em seu level máximo neste melhoria.");
                     return;
                 }
                 spawner.addLevelMultiplicadorDeSpawn();
@@ -338,7 +341,7 @@ public class InventoryClickListener implements Listener {
 
             player.playSound(player.getLocation(), Sound.NOTE_PIANO, 3.0F, 0.5F);
             new InstantFirework(FireworkEffect.builder().withColor(Color.LIME, Color.YELLOW).build(), spawner.getLocal().clone().add(-0.5, 1, 0.5));
-            player.sendMessage(String.format("§aUpgrade aplicado com sucesso! Seu spawner agora está no level §6%s §ade %s.", levelFinal, nomeDoItem));
+            player.sendMessage(String.format("§aMelhoria aplicado com sucesso! Seu spawner agora está no level §6%s §ade %s.", levelFinal, nomeDoItem));
         }
     }
 }

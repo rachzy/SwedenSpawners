@@ -34,14 +34,14 @@ public class SpawnerGUI {
 
         gerenciarAmigos.setItemMeta(gerenciarAmigosMeta);
 
-        ItemStack upgrades = new ItemStack(Material.BEACON, 1);
-        ItemMeta boosterMeta = upgrades.getItemMeta();
-        boosterMeta.setDisplayName("§eUpgrades");
+        ItemStack melhorias = new ItemStack(Material.BEACON, 1);
+        ItemMeta boosterMeta = melhorias.getItemMeta();
+        boosterMeta.setDisplayName("§eMelhorias");
         List<String> loreBoosterMeta = new ArrayList<>();
         loreBoosterMeta.add("§aClique para acessar");
         boosterMeta.setLore(loreBoosterMeta);
 
-        upgrades.setItemMeta(boosterMeta);
+        melhorias.setItemMeta(boosterMeta);
 
         ItemStack info = new ItemStack(Material.SIGN, 1);
         ItemMeta infoMeta = gerenciarAmigos.getItemMeta();
@@ -72,7 +72,7 @@ public class SpawnerGUI {
 
         inventario.setItem(10, gerenciarDrops);
         inventario.setItem(11, gerenciarAmigos);
-        inventario.setItem(12, upgrades);
+        inventario.setItem(12, melhorias);
         inventario.setItem(13, info);
         inventario.setItem(15, ligarOuDesligar);
     }

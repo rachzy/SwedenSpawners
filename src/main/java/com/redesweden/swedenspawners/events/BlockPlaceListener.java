@@ -109,7 +109,18 @@ public class BlockPlaceListener implements Listener {
             public void run() {
                 blocoColocado.setType(spawnerMeta.getBloco().getType());
                 blocoColocado.setData(spawnerMeta.getBloco().getData().getData());
-                SpawnersFile.createNewSpawner(player, spawnerMeta, blocoColocado.getLocation().add(1, 0, 0), quantidade);
+
+                // Caso o spawner colocado já tenha um ID
+                try {
+                    String spawnerId = itemBloco.getItemMeta().getLore().get(1).substring(2);
+                    Spawner spawner = Spawners.getSpawnerPorId(spawnerId);
+                    spawner.setLocal(blocoColocado.getLocation().add(1, 0, 0));
+                    spawner.setRetirado(false);
+                    spawner.setAtivado(true);
+                    spawner.iniciar();
+                } catch (Exception ex) {
+                    SpawnersFile.createNewSpawner(player, spawnerMeta, blocoColocado.getLocation().add(1, 0, 0), quantidade);
+                }
 
                 // Summonar partículas
                 for(int i = 0; i <= 25; i++) {

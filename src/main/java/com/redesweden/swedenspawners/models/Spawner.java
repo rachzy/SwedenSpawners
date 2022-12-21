@@ -27,7 +27,7 @@ public class Spawner {
     private Hologram holograma;
     private final SpawnerPlayer dono;
     private final SpawnerMeta spawnerMeta;
-    private final Location local;
+    private Location local;
     private int levelTempoDeSpawn;
     private int levelValorDoDrop;
     private int levelMultiplicadorDeSpawn;
@@ -36,8 +36,9 @@ public class Spawner {
     private BigDecimal dropsAramazenados;
     private List<SpawnerAmigo> amigos;
     private Boolean ativado;
+    private Boolean retirado;
 
-    public Spawner(String id, SpawnerPlayer dono, SpawnerMeta spawnerMeta, Location local, int levelTempoDeSpawn, int levelValorDoDrop, int levelMultiplicadorDeSpawn, BigDecimal quantidadeStackada, BigDecimal entidadesSpawnadas, BigDecimal dropsAramazenados, List<SpawnerAmigo> amigos, Boolean ativado) {
+    public Spawner(String id, SpawnerPlayer dono, SpawnerMeta spawnerMeta, Location local, int levelTempoDeSpawn, int levelValorDoDrop, int levelMultiplicadorDeSpawn, BigDecimal quantidadeStackada, BigDecimal entidadesSpawnadas, BigDecimal dropsAramazenados, List<SpawnerAmigo> amigos, Boolean ativado, Boolean retirado) {
         this.id = id;
         this.dono = dono;
         this.spawnerMeta = spawnerMeta;
@@ -50,6 +51,7 @@ public class Spawner {
         this.dropsAramazenados = dropsAramazenados;
         this.amigos = amigos;
         this.ativado = ativado;
+        this.retirado = retirado;
 
         this.iniciar();
     }
@@ -75,13 +77,20 @@ public class Spawner {
         return local;
     }
 
+    public void setLocal(Location local) {
+        this.local = local;
+        save("local.x", local.getX());
+        save("local.y", local.getY());
+        save("local.z", local.getZ());
+    }
+
     public int getLevelTempoDeSpawn() {
         return levelTempoDeSpawn;
     }
 
     public void addLevelTempoDeSpawn() {
         this.levelTempoDeSpawn += 1;
-        save("upgrades.tempoDeSpawn", this.levelTempoDeSpawn);
+        save("melhorias.tempoDeSpawn", this.levelTempoDeSpawn);
     }
 
     public int getLevelValorDoDrop() {
@@ -90,7 +99,7 @@ public class Spawner {
 
     public void addLevelValorDoDrop() {
         this.levelValorDoDrop += 1;
-        save("upgrades.valorDoDrop", this.levelValorDoDrop);
+        save("melhorias.valorDoDrop", this.levelValorDoDrop);
     }
 
     public int getLevelMultiplicadorDeSpawn() {
@@ -99,7 +108,7 @@ public class Spawner {
 
     public void addLevelMultiplicadorDeSpawn() {
         this.levelMultiplicadorDeSpawn += 1;
-        save("upgrades.multiplicadorDeSpawn", this.levelMultiplicadorDeSpawn);
+        save("melhorias.multiplicadorDeSpawn", this.levelMultiplicadorDeSpawn);
     }
 
     public BigDecimal getQuantidadeStackada() {
@@ -128,6 +137,14 @@ public class Spawner {
 
     public void toggleAtivado() {
         this.setAtivado(!this.ativado);
+    }
+
+    public Boolean getRetirado() {
+        return retirado;
+    }
+
+    public void setRetirado(Boolean retirado) {
+        this.retirado = retirado;
     }
 
     public void addAmigo(String uuid, String nickname) throws Exception {
@@ -233,18 +250,32 @@ public class Spawner {
         save("entidadesSpawnadas", this.entidadesSpawnadas.toString());
     }
 
+    public void desespawnarMob() {
+        List<Entity> mobsPorPerto = new ArrayList<>(Bukkit.getWorld(this.getLocal().getWorld().getName()).getNearbyEntities(this.getLocal(), 2, 2, 2));
+        mobsPorPerto.forEach((mob) -> {
+            if (mob.getType() == this.getSpawnerMeta().getMob()) {
+                mob.remove();
+            }
+        });
+    }
+
     public void startSpawnerLoop() {
         BukkitScheduler scheduler = Bukkit.getScheduler();
         this.spawnarMob();
         scheduler.runTaskLater(SwedenSpawners.getPlugin(SwedenSpawners.class), this::startSpawnerLoop, (20L / this.levelTempoDeSpawn) * 5L);
     }
 
-    public void matarEntidades() {
-        this.dropsAramazenados = this.dropsAramazenados.add(this.entidadesSpawnadas);
+    public void matarEntidades(int looting) {
+        if(looting == 0) {
+            this.dropsAramazenados = this.dropsAramazenados.add(this.entidadesSpawnadas);
+        } else {
+            this.dropsAramazenados = this.dropsAramazenados.add(this.entidadesSpawnadas.multiply(BigDecimal.valueOf(looting + 0.5)));
+        }
         this.entidadesSpawnadas = new BigDecimal("0");
     }
 
     public void iniciar() {
+        if(this.retirado) return;
         this.setarHolograma();
         this.startSpawnerLoop();
     }
