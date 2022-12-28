@@ -12,14 +12,11 @@ import com.redesweden.swedenspawners.models.Spawner;
 import com.redesweden.swedenspawners.models.SpawnerMeta;
 import org.bukkit.*;
 import org.bukkit.block.Block;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.math.BigDecimal;
@@ -38,24 +35,13 @@ public class BlockPlaceListener implements Listener {
         ItemStack itemBloco = player.getItemInHand();
 
         // Verifica se tem algum spawner perto do bloco
-        List<Block> blocosAoRedor = new GetBlocosPorPerto(blocoColocado.getLocation(), 2).getBlocos();
+        List<Block> blocosAoRedor = new GetBlocosPorPerto(blocoColocado.getLocation(), 5).getBlocos();
         AtomicReference<Spawner> spawner = new AtomicReference<>(null);
         blocosAoRedor.forEach((bloco) -> {
             if (spawner.get() == null && Spawners.getSpawnerPorLocal(bloco.getLocation()) != null) {
                 spawner.set(Spawners.getSpawnerPorLocal(bloco.getLocation()));
             }
         });
-
-        // Se tiver algum spawner perto do bloco, retorne
-        if (spawner.get() != null
-                && e.getBlock().getType() != Material.SKULL
-                && !itemBloco.hasItemMeta()
-                && itemBloco.getItemMeta().getDisplayName() == null
-                && itemBloco.getItemMeta().getLore() == null) {
-            player.sendMessage("§cHá um spawner muito próximo!");
-            e.setCancelled(true);
-            return;
-        }
 
         // Caso o item colocado não seja uma skull ou não tenha metadata, retorne
         if (e.getBlock().getType() != Material.SKULL
@@ -83,7 +69,7 @@ public class BlockPlaceListener implements Listener {
         if (spawner.get() != null) {
             if (!spawner.get().getDono().getNickname().equals(player.getDisplayName())
                     || spawner.get().getSpawnerMeta().getMob() != spawnerMeta.getMob()) {
-                player.sendMessage("§cJá existe um spawner de outro tipo ou de outro player muito perto deste.");
+                player.sendMessage("§cJá existe um spawner de outro tipo ou de outro player muito perto deste. (Menos de 5 blocos)");
                 e.setCancelled(true);
                 return;
             }
@@ -115,17 +101,17 @@ public class BlockPlaceListener implements Listener {
                 try {
                     String spawnerId = itemBloco.getItemMeta().getLore().get(1).substring(2);
                     Spawner spawner = Spawners.getSpawnerPorId(spawnerId);
-                    spawner.setLocal(blocoColocado.getLocation().add(1, 0, 0));
+                    spawner.setLocal(blocoColocado.getLocation());
                     spawner.setDono(Players.getPlayerByName(player.getDisplayName()));
                     spawner.setRetirado(false);
                     spawner.setAtivado(true);
                     spawner.iniciar();
                 } catch (Exception ex) {
-                    SpawnersFile.createNewSpawner(player, spawnerMeta, blocoColocado.getLocation().add(1, 0, 0), quantidade);
+                    SpawnersFile.createNewSpawner(player, spawnerMeta, blocoColocado.getLocation(), quantidade);
                 }
 
                 // Summonar partículas
-                for(int i = 0; i <= 25; i++) {
+                for (int i = 0; i <= 25; i++) {
                     blocoColocado.getWorld().playEffect(blocoColocado.getLocation(), Effect.FIREWORKS_SPARK, 4);
                 }
 
@@ -135,7 +121,7 @@ public class BlockPlaceListener implements Listener {
                 // Tocar som de level up
                 player.playSound(player.getLocation(), Sound.LEVEL_UP, 3.0F, 0.5F);
 
-                player.sendMessage(String.format("§eVocê colocou com sucesso §a1 %s", spawnerMeta.getTitle()));
+                player.sendMessage(String.format("§aVocê criou um novo %s", spawnerMeta.getTitulo()));
             }
         }.runTaskLater(SwedenSpawners.getPlugin(SwedenSpawners.class), 1);
     }

@@ -10,6 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class SpawnerGUI {
         ItemMeta gerenciarDropsMeta = gerenciarDrops.getItemMeta();
         gerenciarDropsMeta.setDisplayName("§eGerenciar Drops");
         List<String> loreGerenciarDropsMeta = new ArrayList<>();
-        loreGerenciarDropsMeta.add("§aClique para acessar");
+        loreGerenciarDropsMeta.add("§7Clique para acessar");
         gerenciarDropsMeta.setLore(loreGerenciarDropsMeta);
 
         gerenciarDrops.setItemMeta(gerenciarDropsMeta);
@@ -30,7 +31,7 @@ public class SpawnerGUI {
         ItemMeta gerenciarAmigosMeta = gerenciarAmigos.getItemMeta();
         gerenciarAmigosMeta.setDisplayName("§eGerenciar Amigos");
         List<String> loreGerenciarAmigosMeta = new ArrayList<>();
-        loreGerenciarAmigosMeta.add("§aClique para acessar");
+        loreGerenciarAmigosMeta.add("§7Clique para acessar");
         gerenciarAmigosMeta.setLore(loreGerenciarAmigosMeta);
 
         gerenciarAmigos.setItemMeta(gerenciarAmigosMeta);
@@ -39,7 +40,7 @@ public class SpawnerGUI {
         ItemMeta boosterMeta = melhorias.getItemMeta();
         boosterMeta.setDisplayName("§eMelhorias");
         List<String> loreBoosterMeta = new ArrayList<>();
-        loreBoosterMeta.add("§aClique para acessar");
+        loreBoosterMeta.add("§7Clique para acessar");
         boosterMeta.setLore(loreBoosterMeta);
 
         melhorias.setItemMeta(boosterMeta);
@@ -69,14 +70,30 @@ public class SpawnerGUI {
         ligarOuDesligarMeta.setDisplayName("§eLigar ou desligar");
 
         ligarOuDesligarMeta.setLore(lore);
-
         ligarOuDesligar.setItemMeta(ligarOuDesligarMeta);
+
+        ItemStack retirarSpawners = SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2VkMWFiYTczZjYzOWY0YmM0MmJkNDgxOTZjNzE1MTk3YmUyNzEyYzNiOTYyYzk3ZWJmOWU5ZWQ4ZWZhMDI1In19fQ==");
+        ItemMeta retirarSpawnersMeta = retirarSpawners.getItemMeta();
+
+        if(spawner.getQuantidadeStackada().compareTo(new BigDecimal("1")) <= 0) {
+            retirarSpawnersMeta.setDisplayName("§cRetirar spawner");
+        } else {
+            retirarSpawnersMeta.setDisplayName("§cRetirar spawners");
+        }
+
+        List<String> loreRetirar = new ArrayList<>();
+        loreRetirar.add("§7Clique para retirar um ou mais spawners");
+        loreRetirar.add("§7da quantia total de geradores stackados");
+        retirarSpawnersMeta.setLore(loreRetirar);
+
+        retirarSpawners.setItemMeta(retirarSpawnersMeta);
 
         inventario.setItem(10, gerenciarDrops);
         inventario.setItem(11, gerenciarAmigos);
         inventario.setItem(12, melhorias);
         inventario.setItem(13, info);
         inventario.setItem(15, ligarOuDesligar);
+        inventario.setItem(16, retirarSpawners);
     }
 
     public Inventory get() {

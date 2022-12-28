@@ -23,7 +23,7 @@ public class PlayerInteractListener implements Listener {
         ItemStack itemNaMao = player.getItemInHand();
         Block blocoClicado = e.getClickedBlock();
 
-        Spawner spawner = Spawners.getSpawnerPorLocal(blocoClicado.getLocation().clone().add(1, 0 ,0));
+        Spawner spawner = Spawners.getSpawnerPorLocal(blocoClicado.getLocation().clone());
 
         if(itemNaMao.getType() == Material.SKULL_ITEM || spawner == null) return;
 

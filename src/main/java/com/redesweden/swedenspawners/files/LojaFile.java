@@ -33,25 +33,29 @@ public class LojaFile {
         lojaFile = YamlConfiguration.loadConfiguration(file);
 
         lojaFile.addDefault("spawners.PORCO.title", "§eSpawner de §d§lPORCO");
-        lojaFile.addDefault("spawners.PORCO.mob", "PIG");
+        lojaFile.addDefault("spawners.PORCO.mobID", 90);
         lojaFile.addDefault("spawners.PORCO.head", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmVlODUxNDg5MmYzZDc4YTMyZTg0NTZmY2JiOGM2MDgxZTIxYjI0NmQ4MmYzOThiZDk2OWZlYzE5ZDNjMjdiMyJ9fX0=");
-        lojaFile.addDefault("spawners.PORCO.drop", "PORK");
+        lojaFile.addDefault("spawners.PORCO.dropID", 319);
+        lojaFile.addDefault("spawners.PORCO.dropSubID", 0);
         lojaFile.addDefault("spawners.PORCO.cor", "PINK");
         lojaFile.addDefault("spawners.PORCO.preco", "10M");
         lojaFile.addDefault("spawners.PORCO.precoPorDrop", "1M");
 
         for(String spawner : lojaFile.getConfigurationSection("spawners").getKeys(false)) {
             String spawnerTitle = lojaFile.getString(String.format("spawners.%s.title", spawner));
-            String spawnerMob = lojaFile.getString(String.format("spawners.%s.mob", spawner));
+            int spawnerMobID = lojaFile.getInt(String.format("spawners.%s.mobID", spawner));
             String spawnerHead = lojaFile.getString(String.format("spawners.%s.head", spawner));
-            String spawnerDrop = lojaFile.getString(String.format("spawners.%s.drop", spawner));
+            int spawnerDropID = lojaFile.getInt(String.format("spawners.%s.dropID", spawner));
+            int spawnerDropSubID = lojaFile.getInt(String.format("spawners.%s.dropSubID", spawner));
             String spawnerCor = lojaFile.getString(String.format("spawners.%s.cor", spawner));
             String spawnerPreco = lojaFile.getString(String.format("spawners.%s.preco", spawner));
             String spawnerPrecoPDrop = lojaFile.getString(String.format("spawners.%s.precoPorDrop", spawner));
 
+            EntityType spawnerMob = EntityType.fromId(spawnerMobID);
+
             ItemStack head = SkullCreator.itemFromBase64(spawnerHead);
 
-            ItemStack drop = new ItemStack(Material.getMaterial(spawnerDrop), 1);
+            ItemStack drop = new ItemStack(Material.getMaterial(spawnerDropID), 1, (short) spawnerDropSubID);
             ItemStack spawnerBloco = new ItemStack(Material.STAINED_CLAY, 1, DyeColor.valueOf(spawnerCor).getData());
 
             BigDecimal spawnerPrecoBD;
@@ -68,7 +72,7 @@ public class LojaFile {
             if(spawnerPrecoBD != null && spawnerPrecoPDropBD != null) {
                 SpawnerMeta spawnerMeta = new SpawnerMeta(spawner,
                         spawnerTitle,
-                        EntityType.valueOf(spawnerMob),
+                        spawnerMob,
                         head,
                         spawnerBloco,
                         drop,

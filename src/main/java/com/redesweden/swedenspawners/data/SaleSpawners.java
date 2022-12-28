@@ -18,7 +18,7 @@ public class SaleSpawners {
     }
 
     public static SpawnerMeta getSpawnerPorTitulo(String title) {
-        return spawners.stream().filter(spawner -> spawner.getTitle().equals(title)).findFirst().orElse(null);
+        return spawners.stream().filter(spawner -> spawner.getTitulo().equals(title)).findFirst().orElse(null);
     }
 
     public static SpawnerMeta getSpawnerPorEntidade(EntityType entity) {

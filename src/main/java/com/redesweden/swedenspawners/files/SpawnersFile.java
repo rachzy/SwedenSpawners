@@ -60,9 +60,9 @@ public class SpawnersFile {
                     String nickname = spawnersFile.getString(String.format("spawners.%s.amigos.%s.nickname", spawnerId, playerUUID));
                     Boolean permissaoVender = spawnersFile.getBoolean(String.format("spawners.%s.amigos.%s.permissaoVender", spawnerId, playerUUID));
                     Boolean permissaoMatar = spawnersFile.getBoolean(String.format("spawners.%s.amigos.%s.permissaoMatar", spawnerId, playerUUID));
-                    Boolean permissaoQuebrar = spawnersFile.getBoolean(String.format("spawners.%s.amigos.%s.permissaoQuebrar", spawnerId, playerUUID));
+                    Boolean permissaoRetirar = spawnersFile.getBoolean(String.format("spawners.%s.amigos.%s.permissaoRetirar", spawnerId, playerUUID));
 
-                    SpawnerAmigo amigo = new SpawnerAmigo(playerUUID, nickname, permissaoVender, permissaoMatar, permissaoQuebrar);
+                    SpawnerAmigo amigo = new SpawnerAmigo(playerUUID, nickname, permissaoVender, permissaoMatar, permissaoRetirar);
                     amigos.add(amigo);
                 }
             }

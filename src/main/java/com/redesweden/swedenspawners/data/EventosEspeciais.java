@@ -13,11 +13,20 @@ import java.util.stream.Collectors;
 public class EventosEspeciais {
     private static List<EventoPlayerCompraDeSpawners> comprarQuantiaDeSpawners = new ArrayList<>();
     private static List<EventoGerenciarSpawner> playersGerenciandoSpawners = new ArrayList<>();
+    private static List<EventoGerenciarSpawner> playersRemovendoSpawners = new ArrayList<>();
     private static List<EventoGerenciarSpawner> playersAdicionandoAmigos = new ArrayList<>();
     private static List<Player> playersSetandoMultiplicador = new ArrayList<>();
 
     public static List<EventoGerenciarSpawner> getPlayersGerenciandoSpawners() {
         return playersGerenciandoSpawners;
+    }
+
+    public static EventoGerenciarSpawner getPlayerRemovendoSpawners(Player player) {
+        return playersRemovendoSpawners
+                .stream()
+                .filter(playerIn -> playerIn.getNick().equals(player.getDisplayName()))
+                .findFirst()
+                .orElse(null);
     }
 
     public static List<EventoGerenciarSpawner> getPlayersAdicionandoAmigos() {
@@ -58,6 +67,18 @@ public class EventosEspeciais {
 
     public static void removePlayerGerenciandoSpawner(Player player) {
         playersGerenciandoSpawners = playersGerenciandoSpawners
+                .stream()
+                .filter(playerIn -> !playerIn.getNick().equals(player.getDisplayName()))
+                .collect(Collectors.toList());
+    }
+
+    public static void addPlayerRemovendoSpawners(Player player, Spawner spawner) {
+        removePlayerRemovendoSpawners(player);
+        playersRemovendoSpawners.add(new EventoGerenciarSpawner(player.getDisplayName(), spawner));
+    }
+
+    public static void removePlayerRemovendoSpawners(Player player) {
+        playersRemovendoSpawners = playersRemovendoSpawners
                 .stream()
                 .filter(playerIn -> !playerIn.getNick().equals(player.getDisplayName()))
                 .collect(Collectors.toList());

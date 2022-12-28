@@ -61,24 +61,24 @@ public class GerenciarAmigoGUI {
 
         permissaoMatarHead.setItemMeta(permissaoMatarHeadMeta);
 
-        ItemStack permissaoQuebrarHead;
-        List<String> lorePermissaoQuebrar = new ArrayList<>();
-        if(amigo.getPermissaoQuebrar()) {
-            permissaoQuebrarHead = SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTkwNzkzZjU2NjE2ZjEwMTUwMmRlMWQzNGViMjU0NGY2MDdkOTg5MDBlMzY5OTM2OTI5NTMxOWU2MzBkY2Y2ZCJ9fX0=");
-            lorePermissaoQuebrar.add("§aAtivada");
+        ItemStack permissaoRetirarHead;
+        List<String> lorePermissaoRetirar = new ArrayList<>();
+        if(amigo.getPermissaoRetirar()) {
+            permissaoRetirarHead = SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTkwNzkzZjU2NjE2ZjEwMTUwMmRlMWQzNGViMjU0NGY2MDdkOTg5MDBlMzY5OTM2OTI5NTMxOWU2MzBkY2Y2ZCJ9fX0=");
+            lorePermissaoRetirar.add("§aAtivada");
         } else {
-            permissaoQuebrarHead = SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWVhNmFmNzBlZWVjNmZiMTkwMjJjODFlNTZmZjcyYmNjNWY4ZjBmM2UwODcyMWEyM2UzMGRkMWMxZjllMGNmMiJ9fX0=");
-            lorePermissaoQuebrar.add("§cDesativada");
+            permissaoRetirarHead = SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWVhNmFmNzBlZWVjNmZiMTkwMjJjODFlNTZmZjcyYmNjNWY4ZjBmM2UwODcyMWEyM2UzMGRkMWMxZjllMGNmMiJ9fX0=");
+            lorePermissaoRetirar.add("§cDesativada");
         }
 
-        SkullMeta permissaoQuebrarHeadMeta = (SkullMeta) permissaoQuebrarHead.getItemMeta();
-        permissaoQuebrarHeadMeta.setDisplayName("§ePermissão de Quebrar");
+        SkullMeta permissaoRetirarHeadMeta = (SkullMeta) permissaoRetirarHead.getItemMeta();
+        permissaoRetirarHeadMeta.setDisplayName("§ePermissão de Retirar");
 
-        lorePermissaoQuebrar.add("");
-        lorePermissaoQuebrar.add("§7Clique para alterar");
-        permissaoQuebrarHeadMeta.setLore(lorePermissaoQuebrar);
+        lorePermissaoRetirar.add("");
+        lorePermissaoRetirar.add("§7Clique para alterar");
+        permissaoRetirarHeadMeta.setLore(lorePermissaoRetirar);
 
-        permissaoQuebrarHead.setItemMeta(permissaoQuebrarHeadMeta);
+        permissaoRetirarHead.setItemMeta(permissaoRetirarHeadMeta);
 
         ItemStack removerAmigo = new ItemStack(Material.BARRIER, 1);
         ItemMeta removerAmigoMeta = removerAmigo.getItemMeta();
@@ -103,7 +103,7 @@ public class GerenciarAmigoGUI {
         inventario.setItem(10, amigoHead);
         inventario.setItem(12, permissaoVenderHead);
         inventario.setItem(13, permissaoMatarHead);
-        inventario.setItem(14, permissaoQuebrarHead);
+        inventario.setItem(14, permissaoRetirarHead);
         inventario.setItem(16, removerAmigo);
         inventario.setItem(22, voltar);
     }

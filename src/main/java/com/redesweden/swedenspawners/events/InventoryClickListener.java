@@ -6,6 +6,7 @@ import com.redesweden.swedeneconomia.models.PlayerSaldo;
 import com.redesweden.swedenspawners.GUIs.*;
 import com.redesweden.swedenspawners.data.EventosEspeciais;
 import com.redesweden.swedenspawners.data.SaleSpawners;
+import com.redesweden.swedenspawners.functions.GerenciadorDeSpawner;
 import com.redesweden.swedenspawners.functions.InstantFirework;
 import com.redesweden.swedenspawners.models.Spawner;
 import com.redesweden.swedenspawners.models.SpawnerAmigo;
@@ -47,27 +48,29 @@ public class InventoryClickListener implements Listener {
                         || !itemTitle.substring(2).equalsIgnoreCase("multiplicador de compra"))
                     return;
 
-                player.closeInventory();
-
                 if(!player.hasPermission("swedenspawners.usarmultiplicador")) {
                     player.sendMessage("§cApenas §aVIPs §cpodem utilizar o Multiplicador de Compra.");
                     return;
                 }
 
+                player.closeInventory();
                 EventosEspeciais.addPlayerSetandoMultiplicador(player);
                 player.sendMessage("");
                 player.sendMessage(" §aDigite a quantia que você deseja definir seu multiplicador para tal:");
+                player.sendMessage("§7(Digite 'CANCELAR' para cancelar a operação)");
                 player.sendMessage("");
-                player.playSound(player.getLocation(), Sound.LEVEL_UP, 3.0F, 2F);
+                player.playSound(player.getLocation(), Sound.CLICK, 3.0F, 2F);
                 return;
             }
 
-            if (e.getClick().isLeftClick()) {
+            if (e.getClick().isRightClick()) {
                 player.closeInventory();
                 EventosEspeciais.addPlayerToComprarQuantiaDeSpawners(player, spawner);
                 player.sendMessage("");
                 player.sendMessage(" §aDigite a quantia de spawners que você deseja comprar: ");
+                player.sendMessage("§7(Digite 'CANCELAR' para cancelar a operação)");
                 player.sendMessage("");
+                player.playSound(player.getLocation(), Sound.CLICK, 3.0F, 2F);
                 return;
             }
 
@@ -117,7 +120,7 @@ public class InventoryClickListener implements Listener {
 
             playerSaldo.subSaldo(precoFinal);
             playerSpawner.addSpawnersComprados(quantidade);
-            player.sendMessage(String.format("§aVocê comprou §f%s §a%s", new ConverterQuantia(quantidade).emLetras(), spawner.getTitle()));
+            player.sendMessage(String.format("§aVocê comprou §f%s §a%s", new ConverterQuantia(quantidade).emLetras(), spawner.getTitulo()));
             player.playSound(player.getLocation(), Sound.VILLAGER_YES, 3.0F, 1F);
             return;
         }
@@ -161,8 +164,36 @@ public class InventoryClickListener implements Listener {
                     player.playSound(player.getLocation(), Sound.NOTE_PLING, 3.0F, 0.5F);
                 }
                 player.closeInventory();
-
+                return;
             }
+
+            if(nomeDoItem.startsWith("Retirar spawner")) {
+                if(!spawner.getDono().getNickname().equals(player.getDisplayName())) {
+                    SpawnerAmigo amigo = spawner.getAmigoPorNome(player.getDisplayName());
+
+                    if (amigo == null || !amigo.getPermissaoRetirar()) {
+                        EventosEspeciais.removePlayerRemovendoSpawners(player);
+                        player.playSound(player.getLocation(), Sound.NOTE_BASS_GUITAR, 3.0F, 0.5F);
+                        player.sendMessage("§cVocê não tem permissão para retirar esse spawner");
+                        return;
+                    }
+                }
+
+                if(spawner.getQuantidadeStackada().compareTo(new BigDecimal("1")) <= 0) {
+                    new GerenciadorDeSpawner(player, spawner).removerPorCompleto();
+                    return;
+                }
+
+                EventosEspeciais.addPlayerRemovendoSpawners(player, spawner);
+                player.closeInventory();
+                player.playSound(player.getLocation(), Sound.NOTE_PLING, 3.0F, 2F);
+                player.sendMessage(" ");
+                player.sendMessage(" §aDigite a quantidade de spawners que deseja remover: ");
+                player.sendMessage("§7(Ou digite 'CANCELAR' para cancelar a operação)");
+                player.sendMessage("");
+            }
+
+            return;
         }
 
         if (viewTitle.equals("DROPS")) {
@@ -230,10 +261,10 @@ public class InventoryClickListener implements Listener {
                 return;
             }
 
-            player.closeInventory();
-
             if (!spawner.getDono().getNickname().equals(player.getDisplayName())) {
                 player.sendMessage("§cVocê não tem permissão para gerenciar os amigos deste spawner.");
+                player.closeInventory();
+                player.playSound(player.getLocation(), Sound.NOTE_BASS_GUITAR, 3.0F,  0.5F);
                 return;
             }
 
@@ -243,9 +274,11 @@ public class InventoryClickListener implements Listener {
                     player.sendMessage("§cEste spawner já atingiu seu limite de amigos (5).");
                     return;
                 }
+                player.closeInventory();
                 EventosEspeciais.addPlayerAdicionandoAmigo(player, spawner);
                 player.sendMessage("");
                 player.sendMessage(" §aDigite o nome do player que você deseja adicionar como amigo.");
+                player.sendMessage("§7(Digite 'CANCELAR' para cancelar a operação)");
                 player.sendMessage("");
                 return;
             }
@@ -254,6 +287,7 @@ public class InventoryClickListener implements Listener {
 
             if(amigo != null) {
                 player.openInventory(new GerenciarAmigoGUI(amigo).get());
+                player.playSound(player.getLocation(), Sound.CLICK, 3.0F, 2.5F);
             }
         }
 
@@ -275,6 +309,7 @@ public class InventoryClickListener implements Listener {
 
             if (!spawner.getDono().getNickname().equals(player.getDisplayName())) {
                 player.sendMessage("§cVocê não tem permissão para gerenciar os amigos deste spawner.");
+                player.playSound(player.getLocation(), Sound.NOTE_BASS_GUITAR, 3.0F, 0.5F);
                 return;
             }
 
@@ -284,26 +319,31 @@ public class InventoryClickListener implements Listener {
             if(nomeDoItem.equalsIgnoreCase("PERMISSÃO DE VENDER")) {
                 amigoAlvo.togglePermissaoVender(spawner);
                 player.openInventory(new GerenciarAmigoGUI(amigoAlvo).get());
+                player.playSound(player.getLocation(), Sound.CLICK, 3.0F, 2.5F);
                 return;
             }
 
             if(nomeDoItem.equalsIgnoreCase("PERMISSÃO DE MATAR")) {
                 amigoAlvo.togglePermissaoMatar(spawner);
                 player.openInventory(new GerenciarAmigoGUI(amigoAlvo).get());
+                player.playSound(player.getLocation(), Sound.CLICK, 3.0F, 2.5F);
                 return;
             }
 
-            if(nomeDoItem.equalsIgnoreCase("PERMISSÃO DE QUEBRAR")) {
-                amigoAlvo.togglePermissaoQuebrar(spawner);
+            if(nomeDoItem.equalsIgnoreCase("PERMISSÃO DE RETIRAR")) {
+                amigoAlvo.togglePermissaoRetirar(spawner);
                 player.openInventory(new GerenciarAmigoGUI(amigoAlvo).get());
+                player.playSound(player.getLocation(), Sound.CLICK, 3.0F, 2.5F);
                 return;
             }
 
             if(nomeDoItem.equalsIgnoreCase("REMOVER AMIGO")) {
                 spawner.removerAmigo(amigoAlvo);
                 player.openInventory(new GerenciarAmigosGUI(player.getDisplayName(), spawner).get());
+                player.playSound(player.getLocation(), Sound.NOTE_PLING, 3.0F, 2F);
                 player.sendMessage(String.format("§cVocê removeu %s da lista de Amigos do seu spawner.", amigoAlvo.getNickname()));
             }
+            return;
         }
 
         if(viewTitle.equals("MELHORIAS")) {
@@ -355,7 +395,7 @@ public class InventoryClickListener implements Listener {
             if(levelFinal == 0) return;
 
             player.playSound(player.getLocation(), Sound.LEVEL_UP, 3.0F, 0.5F);
-            new InstantFirework(FireworkEffect.builder().withColor(Color.LIME, Color.YELLOW).build(), spawner.getLocal().clone().add(-0.5, 1, 0.5));
+            new InstantFirework(FireworkEffect.builder().withColor(Color.LIME, Color.YELLOW).build(), spawner.getLocal().clone().add(0.5, 1, 0.5));
             player.sendMessage(String.format("§aMelhoria aplicado com sucesso! Seu spawner agora está no level §6%s §ade %s.", levelFinal, nomeDoItem));
         }
     }

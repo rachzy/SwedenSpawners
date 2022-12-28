@@ -5,14 +5,14 @@ public class SpawnerAmigo {
     private String nickname;
     private Boolean permissaoVender;
     private Boolean permissaoMatar;
-    private Boolean permissaoQuebrar;
+    private Boolean permissaoRetirar;
 
-    public SpawnerAmigo(String uuid, String nickname, Boolean permissaoVender, Boolean permissaoMatar, Boolean permissaoQuebrar) {
+    public SpawnerAmigo(String uuid, String nickname, Boolean permissaoVender, Boolean permissaoMatar, Boolean permissaoRetirar) {
         this.uuid = uuid;
         this.nickname = nickname;
         this.permissaoVender = permissaoVender;
         this.permissaoMatar = permissaoMatar;
-        this.permissaoQuebrar = permissaoQuebrar;
+        this.permissaoRetirar = permissaoRetirar;
     }
 
     public String getUuid() {
@@ -31,8 +31,8 @@ public class SpawnerAmigo {
         return permissaoMatar;
     }
 
-    public Boolean getPermissaoQuebrar() {
-        return permissaoQuebrar;
+    public Boolean getPermissaoRetirar() {
+        return permissaoRetirar;
     }
 
     public void setPermissaoVender(Boolean permissaoVender) {
@@ -43,8 +43,8 @@ public class SpawnerAmigo {
         this.permissaoMatar = permissaoMatar;
     }
 
-    public void setPermissaoQuebrar(Boolean permissaoQuebrar) {
-        this.permissaoQuebrar = permissaoQuebrar;
+    public void setPermissaoRetirar(Boolean permissaoRetirar) {
+        this.permissaoRetirar = permissaoRetirar;
     }
 
     public void togglePermissaoVender(Spawner spawner) {
@@ -57,8 +57,8 @@ public class SpawnerAmigo {
         spawner.save(String.format("amigos.%s.permissaoMatar", this.uuid), this.permissaoMatar);
     }
 
-    public void togglePermissaoQuebrar(Spawner spawner) {
-        this.setPermissaoQuebrar(!this.permissaoQuebrar);
-        spawner.save(String.format("amigos.%s.permissaoQuebrar", this.uuid), this.permissaoQuebrar);
+    public void togglePermissaoRetirar(Spawner spawner) {
+        this.setPermissaoRetirar(!this.permissaoRetirar);
+        spawner.save(String.format("amigos.%s.permissaoRetirar", this.uuid), this.permissaoRetirar);
     }
 }

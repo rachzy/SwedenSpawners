@@ -57,15 +57,15 @@ public class ComprarSpawnersGUI {
                 // Remove o 'org.bukkit.entity' do nome da entidade
                 String nomeDaEntidade = spawner.getMob().getEntityClass().getName().split("\\.")[3];
 
-                spawnerHeadMeta.setDisplayName(spawner.getTitle());
+                spawnerHeadMeta.setDisplayName(spawner.getTitulo());
 
                 List<String> headLore = new ArrayList<>();
-                headLore.add(String.format("§fPreço: §a$%s", new ConverterQuantia(spawner.getPreco()).emLetras()));
-                headLore.add(String.format("§fValor por drop: §a$%s", new ConverterQuantia(spawner.getPrecoPorDrop()).emLetras()));
+                headLore.add(String.format("§7Preço: §a$%s", new ConverterQuantia(spawner.getPreco()).emLetras()));
+                headLore.add(String.format("§7Valor por drop: §a$%s", new ConverterQuantia(spawner.getPrecoPorDrop()).emLetras()));
                 headLore.add("");
-                headLore.add("§fClique §a§lESQUERDO §fpara inserir quantidade");
-                headLore.add("§fClique §a§lDIREITO §fpara comprar 1");
-                headLore.add("§fAperte §a§lQ §fpara comprar o limite");
+                headLore.add("§7Clique §a§lESQUERDO §7para comprar 1");
+                headLore.add("§7Clique §a§lDIREITO §7para inserir quantidade");
+                headLore.add("§7Aperte §a§lQ §7para comprar o limite");
                 spawnerHeadMeta.setLore(headLore);
 
                 spawnerItem.setItemMeta(spawnerHeadMeta);

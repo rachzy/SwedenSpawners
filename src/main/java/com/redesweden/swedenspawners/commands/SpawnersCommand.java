@@ -1,6 +1,7 @@
 package com.redesweden.swedenspawners.commands;
 
 import com.redesweden.swedenspawners.GUIs.ComprarSpawnersGUI;
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -16,6 +17,7 @@ public class SpawnersCommand implements CommandExecutor {
 
         Player player = (Player) sender;
         player.openInventory(new ComprarSpawnersGUI(player.getDisplayName()).get());
+        player.playSound(player.getLocation(), Sound.LEVEL_UP, 3.0F, 2.5F);
         return true;
     }
 }

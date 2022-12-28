@@ -43,8 +43,7 @@ public class EntityKillListener implements Listener {
                 spawner.get().matarEntidades(lootingLevel);
                 return;
             }
+            spawner.get().matarEntidades(0);
         }
-
-        spawner.get().matarEntidades(0);
     }
 }
