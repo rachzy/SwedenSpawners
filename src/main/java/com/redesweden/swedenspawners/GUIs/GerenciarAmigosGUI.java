@@ -1,6 +1,7 @@
 package com.redesweden.swedenspawners.GUIs;
 
 import com.redesweden.swedenspawners.models.Spawner;
+import dev.dbassett.skullcreator.SkullCreator;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
@@ -12,15 +13,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GerenciarAmigosGUI {
-    private Inventory inventario = Bukkit.createInventory(null, 27, "§cAmigos");
+    private final Inventory inventario = Bukkit.createInventory(null, 27, "§cAmigos");
 
     public GerenciarAmigosGUI(String senderNickname, Spawner spawner) {
         spawner.getAmigos().forEach(amigo -> {
             int index = spawner.getAmigos().indexOf(amigo);
 
-            ItemStack amigoHead = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+            ItemStack amigoHead = SkullCreator.itemFromName(amigo.getNickname());
             SkullMeta amigoHeadMeta = (SkullMeta) amigoHead.getItemMeta();
-            amigoHeadMeta.setOwner(amigo.getNickname());
             amigoHeadMeta.setDisplayName(String.format("§a%s", amigo.getNickname()));
 
             List<String> loreAmigoHead = new ArrayList<>();
@@ -35,9 +35,8 @@ public class GerenciarAmigosGUI {
         });
 
         if(spawner.getDono().getNickname().equals(senderNickname)) {
-            ItemStack adicionarAmigo = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+            ItemStack adicionarAmigo = SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjA1NmJjMTI0NGZjZmY5OTM0NGYxMmFiYTQyYWMyM2ZlZTZlZjZlMzM1MWQyN2QyNzNjMTU3MjUzMWYifX19");
             SkullMeta adicionarAmigoMeta = (SkullMeta) adicionarAmigo.getItemMeta();
-            adicionarAmigoMeta.setOwner("Xester69");
             adicionarAmigoMeta.setDisplayName("§aAdicionar Amigo");
 
             List<String> loreAdicionarAmigo = new ArrayList<>();

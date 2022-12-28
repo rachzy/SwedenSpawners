@@ -200,10 +200,8 @@ public class Spawner {
             Location hologramaLocal = this.local.clone();
             this.holograma = DHAPI.createHologram(this.getId(), hologramaLocal.add(-0.5, 3, 0.5), true);
 
-            String nomeDaEntidade = this.spawnerMeta.getMob().getEntityClass().getName().split("\\.")[3];
-
             DHAPI.addHologramLine(this.holograma, this.spawnerMeta.getTitle());
-            DHAPI.addHologramLine(this.holograma, SkullCreator.itemFromName("MHF_" + nomeDaEntidade));
+            DHAPI.addHologramLine(this.holograma, spawnerMeta.getHead());
             DHAPI.addHologramLine(this.holograma, String.format("§fDono: §e%s", this.getDono().getNickname()));
             DHAPI.addHologramLine(this.holograma, String.format("§fQuantia: §e%s", new ConverterQuantia(this.getQuantidadeStackada()).emLetras()));
             if (this.ativado) {

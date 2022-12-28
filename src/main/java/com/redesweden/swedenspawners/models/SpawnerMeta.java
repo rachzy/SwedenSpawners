@@ -17,15 +17,17 @@ public class SpawnerMeta {
     private String id;
     private String title;
     private EntityType mob;
+    private ItemStack head;
     private ItemStack drop;
     private ItemStack bloco;
     private BigDecimal preco;
     private BigDecimal precoPorDrop;
 
-    public SpawnerMeta(String id, String title, EntityType mob, ItemStack bloco, ItemStack drop, BigDecimal preco, BigDecimal precoPorDrop) {
+    public SpawnerMeta(String id, String title, EntityType mob, ItemStack head, ItemStack bloco, ItemStack drop, BigDecimal preco, BigDecimal precoPorDrop) {
         this.id = id;
         this.title = title;
         this.mob = mob;
+        this.head = head;
         this.bloco = bloco;
         this.drop = drop;
         this.preco = preco;
@@ -42,6 +44,10 @@ public class SpawnerMeta {
 
     public EntityType getMob() {
         return mob;
+    }
+
+    public ItemStack getHead() {
+        return head;
     }
 
     public ItemStack getBloco() {
@@ -61,7 +67,7 @@ public class SpawnerMeta {
     }
 
     public ItemStack getSpawner(BigDecimal quantidade) {
-        ItemStack spawner = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+        ItemStack spawner = head;
         SkullMeta spawnerMeta = (SkullMeta) spawner.getItemMeta();
         spawnerMeta.setDisplayName(this.title);
 
@@ -71,8 +77,6 @@ public class SpawnerMeta {
 
         // Remove o 'org.bukkit.entity' do nome da entidade
         String nomeDaEntidade = this.getMob().getEntityClass().getName().split("\\.")[3];
-
-        spawnerMeta.setOwner("MHF_" + nomeDaEntidade);
 
         spawner.setItemMeta(spawnerMeta);
         return spawner;

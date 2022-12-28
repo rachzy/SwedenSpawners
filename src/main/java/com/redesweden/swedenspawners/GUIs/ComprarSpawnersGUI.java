@@ -5,6 +5,7 @@ import com.redesweden.swedenspawners.data.Players;
 import com.redesweden.swedenspawners.data.SaleSpawners;
 import com.redesweden.swedenspawners.models.SpawnerMeta;
 import com.redesweden.swedenspawners.models.SpawnerPlayer;
+import dev.dbassett.skullcreator.SkullCreator;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
@@ -50,13 +51,12 @@ public class ComprarSpawnersGUI {
                 barrierMeta.setDisplayName("§cSpawner ainda não disponível.");
                 spawnerItem.setItemMeta(barrierMeta);
             } else {
-                spawnerItem = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+                spawnerItem = spawner.getHead();
                 SkullMeta spawnerHeadMeta = (SkullMeta) spawnerItem.getItemMeta();
 
                 // Remove o 'org.bukkit.entity' do nome da entidade
                 String nomeDaEntidade = spawner.getMob().getEntityClass().getName().split("\\.")[3];
 
-                spawnerHeadMeta.setOwner("MHF_" + nomeDaEntidade);
                 spawnerHeadMeta.setDisplayName(spawner.getTitle());
 
                 List<String> headLore = new ArrayList<>();
@@ -73,9 +73,8 @@ public class ComprarSpawnersGUI {
             inventario.setItem(i + saltRounds, spawnerItem);
         }
 
-        ItemStack multiplicadorItem = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+        ItemStack multiplicadorItem = SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOGRmOWM5YTU4NTJiNDVkNzY4NmRmYzYzNjg5ODhmMDY5NDE3MGMyNDY3ZTJhODJiYzQwYzRjZjk3YzVlNjc0In19fQ==");
         SkullMeta multiplicadorItemMeta = (SkullMeta) multiplicadorItem.getItemMeta();
-        multiplicadorItemMeta.setOwner("YellowConcrete");
         multiplicadorItemMeta.setDisplayName("§eMultiplicador de Compra");
 
         List<String> loreMultiplicador = new ArrayList<>();

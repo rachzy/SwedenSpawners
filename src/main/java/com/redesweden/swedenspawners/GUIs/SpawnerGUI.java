@@ -2,6 +2,7 @@ package com.redesweden.swedenspawners.GUIs;
 
 import com.redesweden.swedeneconomia.functions.ConverterQuantia;
 import com.redesweden.swedenspawners.models.Spawner;
+import dev.dbassett.skullcreator.SkullCreator;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
@@ -43,8 +44,8 @@ public class SpawnerGUI {
 
         melhorias.setItemMeta(boosterMeta);
 
-        ItemStack info = new ItemStack(Material.SIGN, 1);
-        ItemMeta infoMeta = gerenciarAmigos.getItemMeta();
+        ItemStack info = SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjQ3ZTJlNWQ1NWI2ZDA0OTQzNTE5YmVkMjU1N2M2MzI5ZTMzYjYwYjkwOWRlZTg5MjNjZDg4YjExNTIxMCJ9fX0=");;
+        ItemMeta infoMeta = info.getItemMeta();
         infoMeta.setDisplayName("§eInformações do Spawner");
         List<String> loreInfoMeta = new ArrayList<>();
         loreInfoMeta.add("§7Entidade: §a" + spawner.getSpawnerMeta().getMob().getName());
@@ -54,18 +55,19 @@ public class SpawnerGUI {
 
         info.setItemMeta(infoMeta);
 
-        ItemStack ligarOuDesligar = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
-        SkullMeta ligarOuDesligarMeta = (SkullMeta) ligarOuDesligar.getItemMeta();
-        ligarOuDesligarMeta.setDisplayName("§eLigar ou desligar");
+        ItemStack ligarOuDesligar;
 
         List<String> lore = new ArrayList<>();
         if(spawner.getAtivado()) {
-            ligarOuDesligarMeta.setOwner("Xester69");
+            ligarOuDesligar = SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTkwNzkzZjU2NjE2ZjEwMTUwMmRlMWQzNGViMjU0NGY2MDdkOTg5MDBlMzY5OTM2OTI5NTMxOWU2MzBkY2Y2ZCJ9fX0=");
             lore.add("§7Status do spawner: §aON");
         } else {
-            ligarOuDesligarMeta.setOwner("Bosscartoon180");
+            ligarOuDesligar = SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWVhNmFmNzBlZWVjNmZiMTkwMjJjODFlNTZmZjcyYmNjNWY4ZjBmM2UwODcyMWEyM2UzMGRkMWMxZjllMGNmMiJ9fX0=");
             lore.add("§7Status do spawner: §cOFF");
         }
+        SkullMeta ligarOuDesligarMeta = (SkullMeta) ligarOuDesligar.getItemMeta();
+        ligarOuDesligarMeta.setDisplayName("§eLigar ou desligar");
+
         ligarOuDesligarMeta.setLore(lore);
 
         ligarOuDesligar.setItemMeta(ligarOuDesligarMeta);

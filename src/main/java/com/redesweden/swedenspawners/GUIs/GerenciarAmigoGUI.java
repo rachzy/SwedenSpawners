@@ -1,7 +1,7 @@
 package com.redesweden.swedenspawners.GUIs;
 
-import com.redesweden.swedenspawners.models.Spawner;
 import com.redesweden.swedenspawners.models.SpawnerAmigo;
+import dev.dbassett.skullcreator.SkullCreator;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
@@ -13,61 +13,67 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GerenciarAmigoGUI {
-    private Inventory inventario = Bukkit.createInventory(null, 27, "§3Amigo");
+    private final Inventory inventario = Bukkit.createInventory(null, 27, "§3Amigo");
 
     public GerenciarAmigoGUI(SpawnerAmigo amigo) {
-        ItemStack amigoHead = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+        ItemStack amigoHead = SkullCreator.itemFromName(amigo.getNickname());
         SkullMeta amigoHeadMeta = (SkullMeta) amigoHead.getItemMeta();
-        amigoHeadMeta.setOwner(amigo.getNickname());
         amigoHeadMeta.setDisplayName("§a" + amigo.getNickname());
 
         amigoHead.setItemMeta(amigoHeadMeta);
 
-        ItemStack permissaoVenderHead = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
-        SkullMeta permissaoVenderHeadMeta = (SkullMeta) permissaoVenderHead.getItemMeta();
-        permissaoVenderHeadMeta.setDisplayName("§ePermissão de Vender");
+        ItemStack permissaoVenderHead;
         List<String> lorePermissaoVender = new ArrayList<>();
         if(amigo.getPermissaoVender()) {
-            permissaoVenderHeadMeta.setOwner("Xester69");
+            permissaoVenderHead = SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTkwNzkzZjU2NjE2ZjEwMTUwMmRlMWQzNGViMjU0NGY2MDdkOTg5MDBlMzY5OTM2OTI5NTMxOWU2MzBkY2Y2ZCJ9fX0=");
             lorePermissaoVender.add("§aAtivada");
         } else {
-            permissaoVenderHeadMeta.setOwner("Bosscartoon180");
+            permissaoVenderHead = SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWVhNmFmNzBlZWVjNmZiMTkwMjJjODFlNTZmZjcyYmNjNWY4ZjBmM2UwODcyMWEyM2UzMGRkMWMxZjllMGNmMiJ9fX0=");
             lorePermissaoVender.add("§cDesativada");
         }
+
+        SkullMeta permissaoVenderHeadMeta = (SkullMeta) permissaoVenderHead.getItemMeta();
+        permissaoVenderHeadMeta.setDisplayName("§ePermissão de Vender");
+
         lorePermissaoVender.add("");
         lorePermissaoVender.add("§7Clique para alterar");
         permissaoVenderHeadMeta.setLore(lorePermissaoVender);
 
         permissaoVenderHead.setItemMeta(permissaoVenderHeadMeta);
 
-        ItemStack permissaoMatarHead = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
-        SkullMeta permissaoMatarHeadMeta = (SkullMeta) permissaoMatarHead.getItemMeta();
-        permissaoMatarHeadMeta.setDisplayName("§ePermissão de Matar");
+        ItemStack permissaoMatarHead;
+
         List<String> lorePermissaoMatar = new ArrayList<>();
         if(amigo.getPermissaoMatar()) {
-            permissaoMatarHeadMeta.setOwner("Xester69");
+            permissaoMatarHead = SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTkwNzkzZjU2NjE2ZjEwMTUwMmRlMWQzNGViMjU0NGY2MDdkOTg5MDBlMzY5OTM2OTI5NTMxOWU2MzBkY2Y2ZCJ9fX0=");
             lorePermissaoMatar.add("§aAtivada");
         } else {
-            permissaoMatarHeadMeta.setOwner("Bosscartoon180");
+            permissaoMatarHead = SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWVhNmFmNzBlZWVjNmZiMTkwMjJjODFlNTZmZjcyYmNjNWY4ZjBmM2UwODcyMWEyM2UzMGRkMWMxZjllMGNmMiJ9fX0=");
             lorePermissaoMatar.add("§cDesativada");
         }
+
+        SkullMeta permissaoMatarHeadMeta = (SkullMeta) permissaoMatarHead.getItemMeta();
+        permissaoMatarHeadMeta.setDisplayName("§ePermissão de Matar");
+
         lorePermissaoMatar.add("");
         lorePermissaoMatar.add("§7Clique para alterar");
         permissaoMatarHeadMeta.setLore(lorePermissaoMatar);
 
         permissaoMatarHead.setItemMeta(permissaoMatarHeadMeta);
 
-        ItemStack permissaoQuebrarHead = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
-        SkullMeta permissaoQuebrarHeadMeta = (SkullMeta) permissaoQuebrarHead.getItemMeta();
-        permissaoQuebrarHeadMeta.setDisplayName("§ePermissão de Quebrar");
+        ItemStack permissaoQuebrarHead;
         List<String> lorePermissaoQuebrar = new ArrayList<>();
         if(amigo.getPermissaoQuebrar()) {
-            permissaoQuebrarHeadMeta.setOwner("Xester69");
+            permissaoQuebrarHead = SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTkwNzkzZjU2NjE2ZjEwMTUwMmRlMWQzNGViMjU0NGY2MDdkOTg5MDBlMzY5OTM2OTI5NTMxOWU2MzBkY2Y2ZCJ9fX0=");
             lorePermissaoQuebrar.add("§aAtivada");
         } else {
-            permissaoQuebrarHeadMeta.setOwner("Bosscartoon180");
+            permissaoQuebrarHead = SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWVhNmFmNzBlZWVjNmZiMTkwMjJjODFlNTZmZjcyYmNjNWY4ZjBmM2UwODcyMWEyM2UzMGRkMWMxZjllMGNmMiJ9fX0=");
             lorePermissaoQuebrar.add("§cDesativada");
         }
+
+        SkullMeta permissaoQuebrarHeadMeta = (SkullMeta) permissaoQuebrarHead.getItemMeta();
+        permissaoQuebrarHeadMeta.setDisplayName("§ePermissão de Quebrar");
+
         lorePermissaoQuebrar.add("");
         lorePermissaoQuebrar.add("§7Clique para alterar");
         permissaoQuebrarHeadMeta.setLore(lorePermissaoQuebrar);
