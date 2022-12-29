@@ -1,5 +1,6 @@
 package com.redesweden.swedenspawners.events;
 
+import com.redesweden.swedencash.models.PlayerCash;
 import com.redesweden.swedeneconomia.data.Players;
 import com.redesweden.swedeneconomia.functions.ConverterQuantia;
 import com.redesweden.swedeneconomia.models.PlayerSaldo;
@@ -12,7 +13,10 @@ import com.redesweden.swedenspawners.models.Spawner;
 import com.redesweden.swedenspawners.models.SpawnerAmigo;
 import com.redesweden.swedenspawners.models.SpawnerMeta;
 import com.redesweden.swedenspawners.models.SpawnerPlayer;
-import org.bukkit.*;
+import org.bukkit.Color;
+import org.bukkit.FireworkEffect;
+import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -44,11 +48,11 @@ public class InventoryClickListener implements Listener {
             SpawnerMeta spawner = SaleSpawners.getSpawnerPorTitulo(itemTitle);
             if (spawner == null) {
                 // Verificar se o player clicou no Multiplicador de Compra
-                if(e.getCurrentItem().getType() != Material.SKULL_ITEM
+                if (e.getCurrentItem().getType() != Material.SKULL_ITEM
                         || !itemTitle.substring(2).equalsIgnoreCase("multiplicador de compra"))
                     return;
 
-                if(!player.hasPermission("swedenspawners.usarmultiplicador")) {
+                if (!player.hasPermission("swedenspawners.usarmultiplicador")) {
                     player.sendMessage("§cApenas §aVIPs §cpodem utilizar o Multiplicador de Compra.");
                     return;
                 }
@@ -147,7 +151,7 @@ public class InventoryClickListener implements Listener {
                 return;
             }
 
-            if(nomeDoItem.equalsIgnoreCase("MELHORIAS")) {
+            if (nomeDoItem.equalsIgnoreCase("MELHORIAS")) {
                 player.openInventory(new MelhoriasGUI(spawner).get());
                 player.playSound(player.getLocation(), Sound.CLICK, 3.0F, 1.5F);
                 return;
@@ -167,8 +171,8 @@ public class InventoryClickListener implements Listener {
                 return;
             }
 
-            if(nomeDoItem.startsWith("Retirar spawner")) {
-                if(!spawner.getDono().getNickname().equals(player.getDisplayName())) {
+            if (nomeDoItem.startsWith("Retirar spawner")) {
+                if (!spawner.getDono().getNickname().equals(player.getDisplayName())) {
                     SpawnerAmigo amigo = spawner.getAmigoPorNome(player.getDisplayName());
 
                     if (amigo == null || !amigo.getPermissaoRetirar()) {
@@ -179,7 +183,7 @@ public class InventoryClickListener implements Listener {
                     }
                 }
 
-                if(spawner.getQuantidadeStackada().compareTo(new BigDecimal("1")) <= 0) {
+                if (spawner.getQuantidadeStackada().compareTo(new BigDecimal("1")) <= 0) {
                     new GerenciadorDeSpawner(player, spawner).removerPorCompleto();
                     return;
                 }
@@ -264,13 +268,13 @@ public class InventoryClickListener implements Listener {
             if (!spawner.getDono().getNickname().equals(player.getDisplayName())) {
                 player.sendMessage("§cVocê não tem permissão para gerenciar os amigos deste spawner.");
                 player.closeInventory();
-                player.playSound(player.getLocation(), Sound.NOTE_BASS_GUITAR, 3.0F,  0.5F);
+                player.playSound(player.getLocation(), Sound.NOTE_BASS_GUITAR, 3.0F, 0.5F);
                 return;
             }
 
             if (nomeDoItem.equalsIgnoreCase("ADICIONAR AMIGO")) {
                 player.playSound(player.getLocation(), Sound.CLICK, 3.0F, 2.5F);
-                if(spawner.getAmigos().toArray().length >= 5) {
+                if (spawner.getAmigos().toArray().length >= 5) {
                     player.sendMessage("§cEste spawner já atingiu seu limite de amigos (5).");
                     return;
                 }
@@ -285,13 +289,13 @@ public class InventoryClickListener implements Listener {
 
             SpawnerAmigo amigo = spawner.getAmigoPorNome(nomeDoItem);
 
-            if(amigo != null) {
+            if (amigo != null) {
                 player.openInventory(new GerenciarAmigoGUI(amigo).get());
                 player.playSound(player.getLocation(), Sound.CLICK, 3.0F, 2.5F);
             }
         }
 
-        if(viewTitle.equals("AMIGO")) {
+        if (viewTitle.equals("AMIGO")) {
             e.setCancelled(true);
 
             if (e.getCurrentItem() == null
@@ -316,28 +320,28 @@ public class InventoryClickListener implements Listener {
             String amigoNick = e.getInventory().getItem(10).getItemMeta().getDisplayName().substring(2);
             SpawnerAmigo amigoAlvo = spawner.getAmigoPorNome(amigoNick);
 
-            if(nomeDoItem.equalsIgnoreCase("PERMISSÃO DE VENDER")) {
+            if (nomeDoItem.equalsIgnoreCase("PERMISSÃO DE VENDER")) {
                 amigoAlvo.togglePermissaoVender(spawner);
                 player.openInventory(new GerenciarAmigoGUI(amigoAlvo).get());
                 player.playSound(player.getLocation(), Sound.CLICK, 3.0F, 2.5F);
                 return;
             }
 
-            if(nomeDoItem.equalsIgnoreCase("PERMISSÃO DE MATAR")) {
+            if (nomeDoItem.equalsIgnoreCase("PERMISSÃO DE MATAR")) {
                 amigoAlvo.togglePermissaoMatar(spawner);
                 player.openInventory(new GerenciarAmigoGUI(amigoAlvo).get());
                 player.playSound(player.getLocation(), Sound.CLICK, 3.0F, 2.5F);
                 return;
             }
 
-            if(nomeDoItem.equalsIgnoreCase("PERMISSÃO DE RETIRAR")) {
+            if (nomeDoItem.equalsIgnoreCase("PERMISSÃO DE RETIRAR")) {
                 amigoAlvo.togglePermissaoRetirar(spawner);
                 player.openInventory(new GerenciarAmigoGUI(amigoAlvo).get());
                 player.playSound(player.getLocation(), Sound.CLICK, 3.0F, 2.5F);
                 return;
             }
 
-            if(nomeDoItem.equalsIgnoreCase("REMOVER AMIGO")) {
+            if (nomeDoItem.equalsIgnoreCase("REMOVER AMIGO")) {
                 spawner.removerAmigo(amigoAlvo);
                 player.openInventory(new GerenciarAmigosGUI(player.getDisplayName(), spawner).get());
                 player.playSound(player.getLocation(), Sound.NOTE_PLING, 3.0F, 2F);
@@ -346,7 +350,7 @@ public class InventoryClickListener implements Listener {
             return;
         }
 
-        if(viewTitle.equals("MELHORIAS")) {
+        if (viewTitle.equals("MELHORIAS")) {
             e.setCancelled(true);
 
             if (e.getCurrentItem() == null
@@ -365,34 +369,46 @@ public class InventoryClickListener implements Listener {
             player.closeInventory();
             int levelFinal = 0;
 
-            if(nomeDoItem.equalsIgnoreCase("TEMPO DE SPAWN")) {
-                if(spawner.getLevelTempoDeSpawn() >= 6) {
+            BigDecimal precoMelhoria;
+
+            if (nomeDoItem.equalsIgnoreCase("TEMPO DE SPAWN")
+                    || nomeDoItem.equalsIgnoreCase("VALOR DO DROP")
+                    || nomeDoItem.equalsIgnoreCase("MULTIPLICADOR DE SPAWN")
+            ) {
+                try {
+                    String preco = Arrays.stream(e.getCurrentItem().getItemMeta().getLore().get(1).split(" ")).toArray()[3].toString().substring(3);
+                    precoMelhoria = new ConverterQuantia(preco).emNumeros();
+
+                    PlayerCash playerCash = com.redesweden.swedencash.data.Players.getPlayerPorNickname(player.getDisplayName());
+                    if(playerCash.getCash().compareTo(precoMelhoria) < 0) {
+                        player.playSound(player.getLocation(), Sound.NOTE_BASS_GUITAR, 3.0F, 2F);
+                        player.sendMessage("§cVocê não possui CASH suficiente para comprar este upgrade.");
+                        return;
+                    }
+                    playerCash.subCash(precoMelhoria);
+                } catch (Exception ex) {
+                    player.playSound(player.getLocation(), Sound.NOTE_BASS_GUITAR, 3.0F, 2F);
                     player.sendMessage("§cEste spawner já está em seu level máximo neste melhoria.");
                     return;
                 }
+            }
+
+            if (nomeDoItem.equalsIgnoreCase("TEMPO DE SPAWN")) {
                 spawner.addLevelTempoDeSpawn();
                 levelFinal = spawner.getLevelTempoDeSpawn();
             }
 
-            if(nomeDoItem.equalsIgnoreCase("VALOR DO DROP")) {
-                if(spawner.getLevelValorDoDrop() >= 6) {
-                    player.sendMessage("§cEste spawner já está em seu level máximo neste melhoria.");
-                    return;
-                }
+            if (nomeDoItem.equalsIgnoreCase("VALOR DO DROP")) {
                 spawner.addLevelValorDoDrop();
                 levelFinal = spawner.getLevelValorDoDrop();
             }
 
-            if(nomeDoItem.equalsIgnoreCase("MULTIPLICADOR DE SPAWN")) {
-                if(spawner.getLevelMultiplicadorDeSpawn() >= 6) {
-                    player.sendMessage("§cEste spawner já está em seu level máximo neste melhoria.");
-                    return;
-                }
+            if (nomeDoItem.equalsIgnoreCase("MULTIPLICADOR DE SPAWN")) {
                 spawner.addLevelMultiplicadorDeSpawn();
                 levelFinal = spawner.getLevelValorDoDrop();
             }
-            
-            if(levelFinal == 0) return;
+
+            if (levelFinal == 0) return;
 
             player.playSound(player.getLocation(), Sound.LEVEL_UP, 3.0F, 0.5F);
             new InstantFirework(FireworkEffect.builder().withColor(Color.LIME, Color.YELLOW).build(), spawner.getLocal().clone().add(0.5, 1, 0.5));

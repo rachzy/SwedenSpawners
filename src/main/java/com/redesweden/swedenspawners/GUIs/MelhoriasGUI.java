@@ -22,7 +22,7 @@ public class MelhoriasGUI {
         List<String> loreMelhoriaTempoDeSpawn = new ArrayList<>();
         loreMelhoriaTempoDeSpawn.add("§7Level atual: §a" + spawner.getLevelTempoDeSpawn());
         if(spawner.getLevelTempoDeSpawn() <= 5) {
-            loreMelhoriaTempoDeSpawn.add("§7Preço do melhoria: §6" + new ConverterQuantia(new BigDecimal(400000 * spawner.getLevelTempoDeSpawn())).emLetras() + " Cash");
+            loreMelhoriaTempoDeSpawn.add("§7Preço da melhoria: §6✰" + new ConverterQuantia(new BigDecimal(400000 * spawner.getLevelTempoDeSpawn())).emLetras() + " Cash");
             loreMelhoriaTempoDeSpawn.add("");
             loreMelhoriaTempoDeSpawn.add("§bClique para evoluir");
         } else {
@@ -38,7 +38,7 @@ public class MelhoriasGUI {
         List<String> loreMelhoriaValorDoDrop = new ArrayList<>();
         loreMelhoriaValorDoDrop.add("§7Level atual: §a" + spawner.getLevelValorDoDrop());
         if(spawner.getLevelValorDoDrop() <= 5) {
-            loreMelhoriaValorDoDrop.add("§7Preço do melhoria: §6" + new ConverterQuantia(new BigDecimal(400000 * spawner.getLevelValorDoDrop())).emLetras()  + " Cash");
+            loreMelhoriaValorDoDrop.add("§7Preço da melhoria: §6✰" + new ConverterQuantia(new BigDecimal(400000 * spawner.getLevelValorDoDrop())).emLetras()  + " Cash");
             loreMelhoriaValorDoDrop.add("");
             loreMelhoriaValorDoDrop.add("§bClique para evoluir");
         } else {
@@ -54,7 +54,7 @@ public class MelhoriasGUI {
         List<String> loreMelhoriaMultiplicadorDeSpawn = new ArrayList<>();
         loreMelhoriaMultiplicadorDeSpawn.add("§7Level atual: §a" + spawner.getLevelMultiplicadorDeSpawn());
         if(spawner.getLevelMultiplicadorDeSpawn() <= 5) {
-            loreMelhoriaMultiplicadorDeSpawn.add("§7Preço do melhoria: §6" + new ConverterQuantia(new BigDecimal(400000 * spawner.getLevelMultiplicadorDeSpawn())).emLetras() + " Cash");
+            loreMelhoriaMultiplicadorDeSpawn.add("§7Preço da melhoria: §6✰" + new ConverterQuantia(new BigDecimal(400000 * spawner.getLevelMultiplicadorDeSpawn())).emLetras() + " Cash");
             loreMelhoriaMultiplicadorDeSpawn.add("");
             loreMelhoriaMultiplicadorDeSpawn.add("§bClique para evoluir");
         } else {
