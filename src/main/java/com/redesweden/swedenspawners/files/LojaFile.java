@@ -44,7 +44,7 @@ public class LojaFile {
         for(String spawner : lojaFile.getConfigurationSection("spawners").getKeys(false)) {
             String spawnerTitle = lojaFile.getString(String.format("spawners.%s.title", spawner));
             int spawnerMobID = lojaFile.getInt(String.format("spawners.%s.mobID", spawner));
-            String spawnerHead = lojaFile.getString(String.format("spawners.%s.head", spawner));
+            String spawnerHeadBase64 = lojaFile.getString(String.format("spawners.%s.head", spawner));
             int spawnerDropID = lojaFile.getInt(String.format("spawners.%s.dropID", spawner));
             int spawnerDropSubID = lojaFile.getInt(String.format("spawners.%s.dropSubID", spawner));
             String spawnerCor = lojaFile.getString(String.format("spawners.%s.cor", spawner));
@@ -53,7 +53,7 @@ public class LojaFile {
 
             EntityType spawnerMob = EntityType.fromId(spawnerMobID);
 
-            ItemStack head = SkullCreator.itemFromBase64(spawnerHead);
+            ItemStack head = SkullCreator.itemFromBase64(spawnerHeadBase64);
 
             ItemStack drop = new ItemStack(Material.getMaterial(spawnerDropID), 1, (short) spawnerDropSubID);
             ItemStack spawnerBloco = new ItemStack(Material.STAINED_CLAY, 1, DyeColor.valueOf(spawnerCor).getData());
@@ -74,6 +74,7 @@ public class LojaFile {
                         spawnerTitle,
                         spawnerMob,
                         head,
+                        spawnerHeadBase64,
                         spawnerBloco,
                         drop,
                         spawnerPrecoBD,

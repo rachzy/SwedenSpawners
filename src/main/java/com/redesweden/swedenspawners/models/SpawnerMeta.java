@@ -10,20 +10,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SpawnerMeta {
-    private String id;
-    private String titulo;
-    private EntityType mob;
-    private ItemStack head;
-    private ItemStack drop;
-    private ItemStack bloco;
-    private BigDecimal preco;
-    private BigDecimal precoPorDrop;
+    private final String id;
+    private final String titulo;
+    private final EntityType mob;
+    private final ItemStack head;
+    private final String headBase64;
+    private final ItemStack drop;
+    private final ItemStack bloco;
+    private final BigDecimal preco;
+    private final BigDecimal precoPorDrop;
 
-    public SpawnerMeta(String id, String titulo, EntityType mob, ItemStack head, ItemStack bloco, ItemStack drop, BigDecimal preco, BigDecimal precoPorDrop) {
+    public SpawnerMeta(String id, String titulo, EntityType mob, ItemStack head, String headBase64, ItemStack bloco, ItemStack drop, BigDecimal preco, BigDecimal precoPorDrop) {
         this.id = id;
         this.titulo = titulo;
         this.mob = mob;
         this.head = head;
+        this.headBase64 = headBase64;
         this.bloco = bloco;
         this.drop = drop;
         this.preco = preco;
@@ -44,6 +46,10 @@ public class SpawnerMeta {
 
     public ItemStack getHead() {
         return head;
+    }
+
+    public String getHeadBase64() {
+        return headBase64;
     }
 
     public ItemStack getBloco() {

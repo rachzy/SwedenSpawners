@@ -21,6 +21,10 @@ public class SaleSpawners {
         return spawners.stream().filter(spawner -> spawner.getTitulo().equals(title)).findFirst().orElse(null);
     }
 
+    public static SpawnerMeta getSpawnerPorBase64(String base64) {
+        return spawners.stream().filter(spawner -> spawner.getHeadBase64().equals(base64)).findFirst().orElse(null);
+    }
+
     public static SpawnerMeta getSpawnerPorEntidade(EntityType entity) {
         return spawners.stream().filter(spawner -> spawner.getMob() == entity).findFirst().orElse(null);
     }
