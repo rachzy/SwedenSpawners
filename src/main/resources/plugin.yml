@@ -16,5 +16,8 @@ commands:
       - gerador
       - geradores
   limite:
+    aliases:
+      - limit
+      - limites
     description: Mostra ao jogador quantos limites este ou outro possui
     usage: /<command> <target>
