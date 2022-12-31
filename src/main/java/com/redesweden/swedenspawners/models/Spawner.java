@@ -235,9 +235,7 @@ public class Spawner {
         Player dono = Bukkit.getServer().getPlayer(this.getDono().getNickname());
         if(dono == null || !dono.isOnline()) return;
 
-        if(Objects.equals(this.entidadesSpawnadas, new BigDecimal("0"))) {
-            this.entidadesSpawnadas = new BigDecimal("1").multiply(this.quantidadeStackada);
-        }
+        this.entidadesSpawnadas = this.entidadesSpawnadas.add(this.quantidadeStackada.multiply(BigDecimal.valueOf(this.levelMultiplicadorDeSpawn)));
 
         List<Entity> mobsPorPerto = new ArrayList<>(Bukkit.getWorld(this.getLocal().getWorld().getName()).getNearbyEntities(this.getLocal(), 2, 2, 2));
         AtomicReference<Boolean> mobSetado = new AtomicReference<>(false);
@@ -256,7 +254,6 @@ public class Spawner {
             NBTEditor.set(novoMob, true, "NoAI");
             NBTEditor.set(novoMob, true, "Invunerable");
         }
-        this.entidadesSpawnadas = this.entidadesSpawnadas.add(this.quantidadeStackada.multiply(BigDecimal.valueOf(this.levelMultiplicadorDeSpawn)));
         save("entidadesSpawnadas", this.entidadesSpawnadas.toString());
     }
 
