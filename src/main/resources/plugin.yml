@@ -5,8 +5,45 @@ api-version: 1.8.8
 authors: [ rachzy ]
 description: Plugin original de spawners da Rede Sweden
 website: https://rachzy.github.io
-depend: [SwedenEconomia, NBTEditor]
-softdepend: [DecentHolograms, HeadsPluginAPI]
+depend: [ SwedenEconomia, NBTEditor ]
+softdepend: [ DecentHolograms, HeadsPluginAPI ]
+permissions:
+  swedenspawners.admin:
+    description: Dá permissão ao jogador para executar comandos de admin.
+    default: op
+  swedenspawners.usarmultiplicador:
+    description: Permite que um jogador tenha acesso ao multiplicador
+    default: op
+  swedenspawners.multiplicador.1:
+    description: Permite que um jogador possa usar o multiplicador no nível 1
+    default: op
+  swedenspawners.multiplicador.2:
+    description: Permite que um jogador possa usar o multiplicador no nível 2
+    default: op
+  swedenspawners.multiplicador.3:
+    description: Permite que um jogador possa usar o multiplicador no nível 3
+    default: op
+  swedenspawners.multiplicador.4:
+    description: Permite que um jogador possa usar o multiplicador no nível 4
+    default: op
+  swedenspawners.multiplicador.5:
+    description: Permite que um jogador possa usar o multiplicador no nível 5
+    default: op
+  swedenspawners.multiplicador.6:
+    description: Permite que um jogador possa usar o multiplicador no nível 6
+    default: op
+  swedenspawners.multiplicador.7:
+    description: Permite que um jogador possa usar o multiplicador no nível 7
+    default: op
+  swedenspawners.multiplicador.8:
+    description: Permite que um jogador possa usar o multiplicador no nível 8
+    default: op
+  swedenspawners.multiplicador.9:
+    description: Permite que um jogador possa usar o multiplicador no nível 9
+    default: op
+  swedenspawners.multiplicador.10:
+    description: Permite que um jogador possa usar o multiplicador no nível 10
+    default: op
 commands:
   spawners:
     description: Abre o menu de compra de spawners

@@ -23,7 +23,7 @@ public class LimiteCommand implements CommandExecutor {
         if (args.length == 0 || args[0].equals("enviar") || args[0].equals("send")) {
             // Caso o sender não seja um player
             if (!(sender instanceof Player)) {
-                sender.sendMessage("§e§lLIMITE §6>> §cApenas players podem executar este comando.");
+                sender.sendMessage("§c§lLIMITE §6>> §cApenas players podem executar este comando.");
                 return true;
             }
 
@@ -44,14 +44,14 @@ public class LimiteCommand implements CommandExecutor {
         ) {
             alvo = Players.getPlayerByName(args[1]);
             if (alvo == null) {
-                sender.sendMessage(String.format("§e§lLIMITE §6>> §cNão foi possível encontrar um jogador com o nick '%s'", args[1]));
+                sender.sendMessage(String.format("§c§lLIMITE §6>> §cNão foi possível encontrar um jogador com o nick '%s'", args[1]));
                 return true;
             }
 
             try {
                 quantia = new ConverterQuantia(args[2]).emNumeros();
             } catch (Exception e) {
-                sender.sendMessage("§e§lLIMITE §6>> §cQuantia inválida.");
+                sender.sendMessage("§c§lLIMITE §6>> §cQuantia inválida.");
                 return true;
             }
         }
@@ -59,7 +59,7 @@ public class LimiteCommand implements CommandExecutor {
         // Condição para o comando "/limite"
         if (args.length == 0) {
             player.playSound(player.getLocation(), Sound.NOTE_PLING, 3.0F, 2F);
-            player.sendMessage("§e§lLIMITE §6>> §bSeu limite de compra de Spawners é de §f" + new ConverterQuantia(spawnerPlayer.getLimite()).emLetras());
+            player.sendMessage("§c§lLIMITE §6>> §aSeu limite de compra de Spawners é de §c✤" + new ConverterQuantia(spawnerPlayer.getLimite()).emLetras());
             return true;
         }
 
@@ -67,31 +67,31 @@ public class LimiteCommand implements CommandExecutor {
         if (args[0].equals("send") || args[0].equals("enviar")) {
             if (args.length != 3) {
                 player.playSound(player.getLocation(), Sound.NOTE_BASS_GUITAR, 3.0F, 0.5F);
-                player.sendMessage("§e§lLIMITE §6>> §cUse: /limite enviar <player> <quantia>");
+                player.sendMessage("§c§lLIMITE §6>> §cUse: /limite enviar <player> <quantia>");
                 return true;
             }
 
             if (alvo.getNickname().equals(player.getDisplayName())) {
                 player.playSound(player.getLocation(), Sound.NOTE_BASS_GUITAR, 3.0F, 0.5F);
-                player.sendMessage("§e§lLIMITE §6>> §cVocê não pode enviar limites de compra para si mesmo");
+                player.sendMessage("§c§lLIMITE §6>> §cVocê não pode enviar limites de compra para si mesmo");
                 return true;
             }
 
             if (spawnerPlayer.getLimite().compareTo(quantia) < 0) {
                 player.playSound(player.getLocation(), Sound.NOTE_BASS_GUITAR, 3.0F, 0.5F);
-                player.sendMessage("§e§lLIMITE §6>> §cVocê não possui limites suficientes para efetuar este envio.");
+                player.sendMessage("§c§lLIMITE §6>> §cVocê não possui limites suficientes para efetuar este envio.");
                 return true;
             }
 
             alvo.addLimite(quantia);
             spawnerPlayer.subLimite(quantia);
             player.playSound(player.getLocation(), Sound.NOTE_PLING, 3.0F, 2F);
-            player.sendMessage(String.format("§e§lLIMITE §6>> §bVocê enviou §f%s §bde limites de compra para §a%s", new ConverterQuantia(quantia).emLetras(), alvo.getNickname()));
+            player.sendMessage(String.format("§c§lLIMITE §6>> §aVocê enviou §c✤%s §ade limites de compra para §b%s", new ConverterQuantia(quantia).emLetras(), alvo.getNickname()));
 
             Player playerAlvo = player.getServer().getPlayer(alvo.getNickname());
             if (playerAlvo != null && playerAlvo.isOnline()) {
                 playerAlvo.playSound(playerAlvo.getLocation(), Sound.LEVEL_UP, 3.0F, 2F);
-                playerAlvo.sendMessage(String.format("§e§lLIMITE §6>> §bO jogador §a%s §bte enviou §f%s §bde limites de compra.", player.getDisplayName(), new ConverterQuantia(quantia).emLetras()));
+                playerAlvo.sendMessage(String.format("§c§lLIMITE §6>> §aO jogador §b%s §ate enviou §c✤%s §ade limites de compra.", player.getDisplayName(), new ConverterQuantia(quantia).emLetras()));
             }
             return true;
         }
@@ -101,7 +101,7 @@ public class LimiteCommand implements CommandExecutor {
             if (sender instanceof Player && !sender.hasPermission("swedenspawners.admin")) {
                 Player playerIn = (Player) sender;
                 playerIn.playSound(playerIn.getLocation(), Sound.NOTE_BASS_GUITAR, 3.0F, 0.5F);
-                sender.sendMessage("§e§lLIMITE §6>> §cVocê não tem permissão para utilizar este comando.");
+                sender.sendMessage("§c§lLIMITE §6>> §cVocê não tem permissão para utilizar este comando.");
                 return true;
             }
 
@@ -110,7 +110,7 @@ public class LimiteCommand implements CommandExecutor {
                     Player playerIn = (Player) sender;
                     playerIn.playSound(playerIn.getLocation(), Sound.NOTE_BASS_GUITAR, 3.0F, 0.5F);
                 }
-                sender.sendMessage("§e§lLIMITE §6>> §cUse: /limite setar <jogador> <quantia>");
+                sender.sendMessage("§c§lLIMITE §6>> §cUse: /limite setar <jogador> <quantia>");
                 return true;
             }
 
@@ -119,14 +119,16 @@ public class LimiteCommand implements CommandExecutor {
                 Player playerIn = (Player) sender;
                 playerIn.playSound(playerIn.getLocation(), Sound.NOTE_PLING, 3.0F, 2F);
             }
-            sender.sendMessage(String.format("§e§lLIMITE §6>> §bVocê setou a quantidade de limites de compra do jogador §a%s §bpara §f%s", alvo.getNickname(), new ConverterQuantia(quantia).emLetras()));
+            sender.sendMessage(String.format("§c§lLIMITE §6>> §aVocê setou a quantidade de limites de compra do jogador §b%s §apara §c✤%s", alvo.getNickname(), new ConverterQuantia(quantia).emLetras()));
             return true;
         }
 
         // Condição para o comando "/limite give"
         if (args[0].equals("give") || args[0].equals("dar") || args[0].equals("add")) {
             if (sender instanceof Player && !sender.hasPermission("swedenspawners.admin")) {
-                sender.sendMessage("§e§lLIMITE §6>> §cVocê não tem permissão para utilizar este comando.");
+                Player playerIn = (Player) sender;
+                playerIn.playSound(playerIn.getLocation(), Sound.NOTE_BASS_GUITAR, 3.0F, 0.5F);
+                sender.sendMessage("§c§lLIMITE §6>> §cVocê não tem permissão para utilizar este comando.");
                 return true;
             }
 
@@ -135,7 +137,7 @@ public class LimiteCommand implements CommandExecutor {
                     Player playerIn = (Player) sender;
                     playerIn.playSound(playerIn.getLocation(), Sound.NOTE_BASS_GUITAR, 3.0F, 0.5F);
                 }
-                sender.sendMessage("§e§lLIMITE §6>> §cUse: /limite dar <jogador> <quantia>");
+                sender.sendMessage("§c§lLIMITE §6>> §cUse: /limite dar <jogador> <quantia>");
                 return true;
             }
 
@@ -144,7 +146,7 @@ public class LimiteCommand implements CommandExecutor {
                 Player playerIn = (Player) sender;
                 playerIn.playSound(playerIn.getLocation(), Sound.NOTE_PLING, 3.0F, 2F);
             }
-            sender.sendMessage(String.format("§e§lLIMITE §6>> §bVocê adicionou §f%s §bde limites ao jogador §a%s", new ConverterQuantia(quantia).emLetras(), alvo.getNickname()));
+            sender.sendMessage(String.format("§c§lLIMITE §6>> §aVocê adicionou §c✤%s §ade limites ao jogador §b%s", new ConverterQuantia(quantia).emLetras(), alvo.getNickname()));
             return true;
         }
 
@@ -155,7 +157,7 @@ public class LimiteCommand implements CommandExecutor {
                 playerIn.playSound(playerIn.getLocation(), Sound.LEVEL_UP, 3.0F, 2.5F);
             }
             sender.sendMessage("");
-            sender.sendMessage(" §e§lLIMITES");
+            sender.sendMessage(" §c§lLIMITES ✤");
             sender.sendMessage("");
             sender.sendMessage(" §e- §9Os limites, como o próprio nome indica, limitam a quantidade de spawners que você pode comprar de uma só vez.");
             sender.sendMessage(" §e- §9Você pode obter limites por meio de §e§lMÁQUINAS§9 ou §b§lMINERANDO§9.");
@@ -170,7 +172,7 @@ public class LimiteCommand implements CommandExecutor {
                 playerIn.playSound(playerIn.getLocation(), Sound.NOTE_PLING, 3.0F, 2.5F);
             }
             sender.sendMessage("");
-            sender.sendMessage(" §e§lLIMITES §6- §b§lCOMANDOS");
+            sender.sendMessage(" §c§lLIMITES §6- §b§lCOMANDOS");
             sender.sendMessage("");
             sender.sendMessage(" §e- §a/limite <player>: §7Mostra quanto de limite um jogador possui.");
             sender.sendMessage(" §e- §a/limite enviar <player> <quantia>: §7Envia limites à um jogador.");
@@ -189,14 +191,14 @@ public class LimiteCommand implements CommandExecutor {
                 Player playerIn = (Player) sender;
                 playerIn.playSound(playerIn.getLocation(), Sound.NOTE_BASS_GUITAR, 3.0F, 0.5F);
             }
-            sender.sendMessage(String.format("§e§lLIMITE §6>> §cNão foi possível encontrar um jogador com o nick '%s'", args[0]));
+            sender.sendMessage(String.format("§c§lLIMITE §6>> §cNão foi possível encontrar um jogador com o nick '%s'", args[0]));
             return true;
         }
 
         if (sender instanceof Player && alvo.getNickname().equals(((Player) sender).getDisplayName())) {
             Player playerIn = (Player) sender;
             playerIn.playSound(playerIn.getLocation(), Sound.NOTE_PLING, 3.0F, 2F);
-            sender.sendMessage("§e§lLIMITE §6>> §bSeu limite de compra de Spawners é de §f" + new ConverterQuantia(alvo.getLimite()).emLetras());
+            sender.sendMessage("§c§lLIMITE §6>> §aSeu limite de compra de Spawners é de §c✤" + new ConverterQuantia(alvo.getLimite()).emLetras());
             return true;
         }
 
@@ -204,7 +206,7 @@ public class LimiteCommand implements CommandExecutor {
             Player playerIn = (Player) sender;
             playerIn.playSound(playerIn.getLocation(), Sound.NOTE_PLING, 3.0F, 2F);
         }
-        sender.sendMessage(String.format("§e§lLIMITE §6>> §a%s §bpossui §f%s §bde limite de compra.", alvo.getNickname(), new ConverterQuantia(alvo.getLimite()).emLetras()));
+        sender.sendMessage(String.format("§c§lLIMITE §6>> §b%s §apossui §c✤%s §ade limite de compra.", alvo.getNickname(), new ConverterQuantia(alvo.getLimite()).emLetras()));
         return true;
     }
 }
