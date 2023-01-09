@@ -37,6 +37,8 @@ public class PlayersFile {
             SpawnerPlayer newPlayer = new SpawnerPlayer(player, nickname, new BigDecimal(limite), new BigDecimal(spawnersComprados), multiplicador);
             Players.addPlayer(newPlayer, false);
         }
+
+        Players.iniciarSalvamentoAutomatico();
     }
 
     public static void createNewPlayer(String uuid, String nickname) {

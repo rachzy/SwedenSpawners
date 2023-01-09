@@ -74,7 +74,7 @@ public class SpawnerMeta {
         spawnerMeta.setDisplayName(this.titulo);
 
         List<String> spawnerLore = new ArrayList<>();
-        spawnerLore.add("§fQuantidade: §a" + new ConverterQuantia(quantidade).emLetras());
+        spawnerLore.add("§7Quantidade: §a" + new ConverterQuantia(quantidade).emLetras());
         spawnerMeta.setLore(spawnerLore);
 
         // Remove o 'org.bukkit.entity' do nome da entidade

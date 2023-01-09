@@ -1,5 +1,6 @@
 package com.redesweden.swedenspawners.events;
 
+import com.nickuc.chat.api.events.PublicMessageEvent;
 import com.redesweden.swedeneconomia.functions.ConverterQuantia;
 import com.redesweden.swedeneconomia.models.PlayerSaldo;
 import com.redesweden.swedenspawners.data.EventosEspeciais;
@@ -14,31 +15,30 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class ChatMessageListener implements Listener {
+public class nChatMessageListener implements Listener {
     @EventHandler
-    public void onPlayerMessage(PlayerChatEvent e) {
-        Player player = e.getPlayer();
+    public void onPublicMessage(PublicMessageEvent e) {
+        Player player = e.getSender();
 
-        if(EventosEspeciais.getEventoInComprarQuantiaDeSpawnersByPlayer(player.getDisplayName()) != null) {
-            EventoPlayerCompraDeSpawners evento = EventosEspeciais.getEventoInComprarQuantiaDeSpawnersByPlayer(player.getDisplayName());
+        if(EventosEspeciais.getEventoInComprarQuantiaDeSpawnersByPlayer(player.getName()) != null) {
+            EventoPlayerCompraDeSpawners evento = EventosEspeciais.getEventoInComprarQuantiaDeSpawnersByPlayer(player.getName());
 
             e.setCancelled(true);
 
-            if(e.getMessage().equalsIgnoreCase("CANCELAR")) {
+            if(e.getOriginalMessage().equalsIgnoreCase("CANCELAR")) {
                 EventosEspeciais.removePlayerFromComprarQuantiaDeSpawners(player);
                 player.playSound(player.getLocation(), Sound.NOTE_BASS_GUITAR, 3.0F, 0.5F);
                 player.sendMessage("§cVocê cancelou a operação atual.");
                 return;
             }
 
-            String mensagem = e.getMessage();
+            String mensagem = e.getOriginalMessage();
             BigDecimal quantia;
 
             try {
@@ -59,7 +59,7 @@ public class ChatMessageListener implements Listener {
                 return;
             }
 
-            PlayerSaldo playerSaldo = com.redesweden.swedeneconomia.data.Players.getPlayer(player.getDisplayName());
+            PlayerSaldo playerSaldo = com.redesweden.swedeneconomia.data.Players.getPlayer(player.getName());
             BigDecimal saldo = (BigDecimal) playerSaldo.getSaldo(false);
             SpawnerMeta spawner = evento.getSpawnerMeta();
             BigDecimal spawnerPreco = spawner.getPreco();
@@ -110,16 +110,16 @@ public class ChatMessageListener implements Listener {
             Spawner spawner = EventosEspeciais.getEventoAdicionarAmigoByPlayer(player).getSpawner();
             e.setCancelled(true);
 
-            if(e.getMessage().equalsIgnoreCase("CANCELAR")) {
+            if(e.getOriginalMessage().equalsIgnoreCase("CANCELAR")) {
                 EventosEspeciais.removePlayerAdicionandoAmigo(player);
                 player.playSound(player.getLocation(), Sound.NOTE_BASS_GUITAR, 3.0F, 0.5F);
                 player.sendMessage("§cVocê cancelou a operação atual.");
                 return;
             }
 
-            String nomeDoJogador = e.getMessage();
+            String nomeDoJogador = e.getOriginalMessage();
 
-            if(nomeDoJogador.equals(player.getDisplayName())) {
+            if(nomeDoJogador.equals(player.getName())) {
                 player.playSound(player.getLocation(), Sound.NOTE_BASS_GUITAR, 3.0F, 0.5F);
                 player.sendMessage("§cVocê não pode se adicionar como amigo.");
                 player.sendMessage("§7(Digite 'CANCELAR' para cancelar esta operação)");
@@ -152,7 +152,7 @@ public class ChatMessageListener implements Listener {
             e.setCancelled(true);
             int quantia;
 
-            if(e.getMessage().equalsIgnoreCase("CANCELAR")) {
+            if(e.getOriginalMessage().equalsIgnoreCase("CANCELAR")) {
                 EventosEspeciais.removePlayerSetandoMultiplicador(player);
                 player.playSound(player.getLocation(), Sound.NOTE_BASS_GUITAR, 3.0F, 0.5F);
                 player.sendMessage("§cVocê cancelou a operação atual.");
@@ -160,7 +160,7 @@ public class ChatMessageListener implements Listener {
             }
 
             try {
-              quantia = Integer.parseInt(e.getMessage());
+              quantia = Integer.parseInt(e.getOriginalMessage());
             } catch (Exception ex) {
                 player.playSound(player.getLocation(), Sound.NOTE_BASS_GUITAR, 3.0F, 0.5F);
                 player.sendMessage("§cA quantia inserida precisa ser um número.");
@@ -183,7 +183,7 @@ public class ChatMessageListener implements Listener {
             }
 
             EventosEspeciais.removePlayerSetandoMultiplicador(player);
-            SpawnerPlayer spawnerPlayer = Players.getPlayerByName(player.getDisplayName());
+            SpawnerPlayer spawnerPlayer = Players.getPlayerByName(player.getName());
             spawnerPlayer.setMultiplicador(quantia);
             player.playSound(player.getLocation(), Sound.NOTE_PLING, 3.0F, 2F);
             player.sendMessage("§7Você definiu com sucesso seu multiplicador para §a" + quantia);
@@ -193,7 +193,7 @@ public class ChatMessageListener implements Listener {
         if(EventosEspeciais.getPlayerRemovendoSpawners(player) != null) {
             e.setCancelled(true);
 
-            if(e.getMessage().equalsIgnoreCase("CANCELAR")) {
+            if(e.getOriginalMessage().equalsIgnoreCase("CANCELAR")) {
                 EventosEspeciais.removePlayerRemovendoSpawners(player);
                 player.playSound(player.getLocation(), Sound.NOTE_BASS_GUITAR, 3.0F, 0.5F);
                 player.sendMessage("§cVocê cancelou a operação atual.");
@@ -203,7 +203,7 @@ public class ChatMessageListener implements Listener {
             BigDecimal quantia;
 
             try {
-                quantia = new ConverterQuantia(e.getMessage()).emNumeros();
+                quantia = new ConverterQuantia(e.getOriginalMessage()).emNumeros();
             } catch (Exception ex) {
                 player.playSound(player.getLocation(), Sound.NOTE_BASS_GUITAR, 3.0F, 0.5F);
                 player.sendMessage("§cQuantia inválida");

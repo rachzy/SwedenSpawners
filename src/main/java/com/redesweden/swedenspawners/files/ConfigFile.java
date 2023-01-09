@@ -15,18 +15,18 @@ import org.bukkit.inventory.ItemStack;
 import java.io.File;
 import java.math.BigDecimal;
 
-public class LojaFile {
+public class ConfigFile {
     private static File file;
     private static FileConfiguration lojaFile;
 
     public static void setup() {
-        file = new File(Bukkit.getServer().getPluginManager().getPlugin("SwedenSpawners").getDataFolder(), "loja.yml");
+        file = new File(Bukkit.getServer().getPluginManager().getPlugin("SwedenSpawners").getDataFolder(), "config.yml");
 
         if(!file.exists()) {
             try {
                 file.createNewFile();
             } catch (Exception e) {
-                System.out.println("Não foi possível criar o arquivo loja.yml... " + e.getMessage());
+                System.out.println("Não foi possível criar o arquivo config.yml... " + e.getMessage());
             }
         }
 
@@ -93,7 +93,7 @@ public class LojaFile {
         try {
             lojaFile.save(file);
         } catch (Exception e) {
-            System.out.println("Não foi possível salvar o arquivo loja.yml... " + e.getMessage());
+            System.out.println("Não foi possível salvar o arquivo config.yml... " + e.getMessage());
         }
     }
 }

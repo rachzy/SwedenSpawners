@@ -33,8 +33,8 @@ public class EntityDamageListener implements Listener {
 
         if(spawner.get() == null) return;
 
-        if(!spawner.get().getDono().getNickname().equals(player.getDisplayName())) {
-            SpawnerAmigo amigo = spawner.get().getAmigoPorNome(player.getDisplayName());
+        if(!spawner.get().getDono().getNickname().equals(player.getName())) {
+            SpawnerAmigo amigo = spawner.get().getAmigoPorNome(player.getName());
 
             if(amigo == null || !amigo.getPermissaoMatar()) {
                 player.sendMessage("§cVocê não tem permissão para matar os mobs deste spawner.");

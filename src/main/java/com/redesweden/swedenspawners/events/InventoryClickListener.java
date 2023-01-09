@@ -78,8 +78,8 @@ public class InventoryClickListener implements Listener {
                 return;
             }
 
-            PlayerSaldo playerSaldo = Players.getPlayer(player.getDisplayName());
-            SpawnerPlayer playerSpawner = com.redesweden.swedenspawners.data.Players.getPlayerByName(player.getDisplayName());
+            PlayerSaldo playerSaldo = Players.getPlayer(player.getName());
+            SpawnerPlayer playerSpawner = com.redesweden.swedenspawners.data.Players.getPlayerByName(player.getName());
             BigDecimal saldo = (BigDecimal) playerSaldo.getSaldo(false);
             BigDecimal spawnerPreco = spawner.getPreco();
             BigDecimal quantidade = new BigDecimal("1");
@@ -124,6 +124,7 @@ public class InventoryClickListener implements Listener {
 
             playerSaldo.subSaldo(precoFinal);
             playerSpawner.addSpawnersComprados(quantidade);
+            player.openInventory(new ComprarSpawnersGUI(player.getName()).get());
             player.sendMessage(String.format("§aVocê comprou §f%s §a%s", new ConverterQuantia(quantidade).emLetras(), spawner.getTitulo()));
             player.playSound(player.getLocation(), Sound.VILLAGER_YES, 3.0F, 1F);
             return;
@@ -146,7 +147,7 @@ public class InventoryClickListener implements Listener {
             }
 
             if (nomeDoItem.equalsIgnoreCase("GERENCIAR AMIGOS")) {
-                player.openInventory(new GerenciarAmigosGUI(player.getDisplayName(), spawner).get());
+                player.openInventory(new GerenciarAmigosGUI(player.getName(), spawner).get());
                 player.playSound(player.getLocation(), Sound.CLICK, 3.0F, 1.5F);
                 return;
             }
@@ -172,8 +173,8 @@ public class InventoryClickListener implements Listener {
             }
 
             if (nomeDoItem.startsWith("Retirar spawner")) {
-                if (!spawner.getDono().getNickname().equals(player.getDisplayName())) {
-                    SpawnerAmigo amigo = spawner.getAmigoPorNome(player.getDisplayName());
+                if (!spawner.getDono().getNickname().equals(player.getName())) {
+                    SpawnerAmigo amigo = spawner.getAmigoPorNome(player.getName());
 
                     if (amigo == null || !amigo.getPermissaoRetirar()) {
                         EventosEspeciais.removePlayerRemovendoSpawners(player);
@@ -218,8 +219,8 @@ public class InventoryClickListener implements Listener {
 
             player.closeInventory();
 
-            if (!spawner.getDono().getNickname().equals(player.getDisplayName())) {
-                SpawnerAmigo amigo = spawner.getAmigoPorNome(player.getDisplayName());
+            if (!spawner.getDono().getNickname().equals(player.getName())) {
+                SpawnerAmigo amigo = spawner.getAmigoPorNome(player.getName());
 
                 if (amigo == null || !amigo.getPermissaoVender()) {
                     player.sendMessage("§cVocê não tem permissão para gerenciar os drops deste spawner.");
@@ -232,7 +233,7 @@ public class InventoryClickListener implements Listener {
                     player.sendMessage("§cEste spawner não tem nenhum drop para vender.");
                     return;
                 }
-                PlayerSaldo playerSaldo = Players.getPlayer(player.getDisplayName());
+                PlayerSaldo playerSaldo = Players.getPlayer(player.getName());
                 BigDecimal valorDaVenda = spawner.getDropsAramazenados().multiply(spawner.getSpawnerMeta().getPrecoPorDrop().multiply(BigDecimal.valueOf(spawner.getLevelValorDoDrop())));
                 playerSaldo.addSaldo(valorDaVenda);
                 playerSaldo.addQuantiaMovimentada(valorDaVenda);
@@ -265,7 +266,7 @@ public class InventoryClickListener implements Listener {
                 return;
             }
 
-            if (!spawner.getDono().getNickname().equals(player.getDisplayName())) {
+            if (!spawner.getDono().getNickname().equals(player.getName())) {
                 player.sendMessage("§cVocê não tem permissão para gerenciar os amigos deste spawner.");
                 player.closeInventory();
                 player.playSound(player.getLocation(), Sound.NOTE_BASS_GUITAR, 3.0F, 0.5F);
@@ -306,12 +307,12 @@ public class InventoryClickListener implements Listener {
             Spawner spawner = EventosEspeciais.getEventoGerenciarSpawnerByPlayer(player).getSpawner();
 
             if (nomeDoItem.equalsIgnoreCase("VOLTAR")) {
-                player.openInventory(new GerenciarAmigosGUI(player.getDisplayName(), spawner).get());
+                player.openInventory(new GerenciarAmigosGUI(player.getName(), spawner).get());
                 player.playSound(player.getLocation(), Sound.CLICK, 3.0F, 2.5F);
                 return;
             }
 
-            if (!spawner.getDono().getNickname().equals(player.getDisplayName())) {
+            if (!spawner.getDono().getNickname().equals(player.getName())) {
                 player.sendMessage("§cVocê não tem permissão para gerenciar os amigos deste spawner.");
                 player.playSound(player.getLocation(), Sound.NOTE_BASS_GUITAR, 3.0F, 0.5F);
                 return;
@@ -343,7 +344,7 @@ public class InventoryClickListener implements Listener {
 
             if (nomeDoItem.equalsIgnoreCase("REMOVER AMIGO")) {
                 spawner.removerAmigo(amigoAlvo);
-                player.openInventory(new GerenciarAmigosGUI(player.getDisplayName(), spawner).get());
+                player.openInventory(new GerenciarAmigosGUI(player.getName(), spawner).get());
                 player.playSound(player.getLocation(), Sound.NOTE_PLING, 3.0F, 2F);
                 player.sendMessage(String.format("§cVocê removeu %s da lista de Amigos do seu spawner.", amigoAlvo.getNickname()));
             }
@@ -379,7 +380,7 @@ public class InventoryClickListener implements Listener {
                     String preco = Arrays.stream(e.getCurrentItem().getItemMeta().getLore().get(1).split(" ")).toArray()[3].toString().substring(3);
                     precoMelhoria = new ConverterQuantia(preco).emNumeros();
 
-                    PlayerCash playerCash = com.redesweden.swedencash.data.Players.getPlayerPorNickname(player.getDisplayName());
+                    PlayerCash playerCash = com.redesweden.swedencash.data.Players.getPlayerPorNickname(player.getName());
                     if(playerCash.getCash().compareTo(precoMelhoria) < 0) {
                         player.playSound(player.getLocation(), Sound.NOTE_BASS_GUITAR, 3.0F, 2F);
                         player.sendMessage("§cVocê não possui CASH suficiente para comprar este upgrade.");

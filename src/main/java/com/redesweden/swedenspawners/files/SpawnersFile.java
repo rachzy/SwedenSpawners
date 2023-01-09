@@ -90,9 +90,9 @@ public class SpawnersFile {
     }
 
     public static void createNewSpawner(Player dono, SpawnerMeta tipo, Location local, BigDecimal quantidadeStackada) {
-        System.out.println("[LOGGER] " + dono.getDisplayName() + " criou um novo spawner.");
+        System.out.println("[LOGGER] " + dono.getName() + " criou um novo spawner.");
         String id = dono.getUniqueId().toString().concat(String.valueOf(Math.round(Math.random() * 999999)));
-        spawnersFile.set(String.format("spawners.%s.dono", id), dono.getDisplayName());
+        spawnersFile.set(String.format("spawners.%s.dono", id), dono.getName());
         spawnersFile.set(String.format("spawners.%s.tipo", id), tipo.getId());
         spawnersFile.set(String.format("spawners.%s.local.x", id), local.getX());
         spawnersFile.set(String.format("spawners.%s.local.y", id), local.getY());
@@ -107,7 +107,7 @@ public class SpawnersFile {
         spawnersFile.set(String.format("spawners.%s.ativado", id), true);
         spawnersFile.set(String.format("spawners.%s.retirado", id), false);
 
-        Spawner novoSpawner = new Spawner(id, Players.getPlayerByName(dono.getDisplayName()), tipo, local, 1, 1, 1, quantidadeStackada, new BigDecimal("0"), new BigDecimal("0"), new ArrayList<>(), true, false);
+        Spawner novoSpawner = new Spawner(id, Players.getPlayerByName(dono.getName()), tipo, local, 1, 1, 1, quantidadeStackada, new BigDecimal("0"), new BigDecimal("0"), new ArrayList<>(), true, false);
         Spawners.addSpawner(novoSpawner);
         save();
     }

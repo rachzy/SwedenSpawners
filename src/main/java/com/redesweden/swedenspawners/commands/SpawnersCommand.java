@@ -25,7 +25,7 @@ public class SpawnersCommand implements CommandExecutor {
             }
 
             Player player = (Player) sender;
-            player.openInventory(new ComprarSpawnersGUI(player.getDisplayName()).get());
+            player.openInventory(new ComprarSpawnersGUI(player.getName()).get());
             player.playSound(player.getLocation(), Sound.LEVEL_UP, 3.0F, 2.5F);
             return true;
         }

@@ -1,12 +1,13 @@
 package com.redesweden.swedenspawners.models;
 
+import com.redesweden.swedenspawners.data.Players;
 import com.redesweden.swedenspawners.files.PlayersFile;
 
 import java.math.BigDecimal;
 
 public class SpawnerPlayer {
-    private String uuid;
-    private String nickname;
+    private final String uuid;
+    private final String nickname;
     private BigDecimal limite;
     private BigDecimal spawnersComprados;
     private Integer multiplicador;
@@ -19,8 +20,10 @@ public class SpawnerPlayer {
         this.multiplicador = multiplicador;
     }
 
-    public void save(String key, Object value) {
-        PlayersFile.get().set(String.format("players.%s.%s", this.uuid, key), value);
+    public void save() {
+        PlayersFile.get().set(String.format("players.%s.limite", this.uuid), limite.toString());
+        PlayersFile.get().set(String.format("players.%s.spawnersComprados", this.uuid), spawnersComprados.toString());
+        PlayersFile.get().set(String.format("players.%s.multiplicador", this.uuid), multiplicador);
         PlayersFile.save();
     }
 
@@ -50,7 +53,7 @@ public class SpawnerPlayer {
 
     public void setLimite(BigDecimal quantia) {
         this.limite = quantia;
-        save("limite", this.limite.toString());
+        Players.addPlayerModificado(this);
     }
 
     public void subLimite(BigDecimal quantia) {
@@ -59,11 +62,11 @@ public class SpawnerPlayer {
 
     public void addSpawnersComprados(BigDecimal quantia) {
         this.spawnersComprados = this.spawnersComprados.add(quantia);
-        save("spawnersComprados", this.spawnersComprados.toString());
+        Players.addPlayerModificado(this);
     }
 
     public void setMultiplicador(Integer multiplicador) {
         this.multiplicador = multiplicador;
-        save("multiplicador", multiplicador);
+        Players.addPlayerModificado(this);
     }
 }

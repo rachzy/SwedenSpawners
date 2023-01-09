@@ -71,6 +71,10 @@
             <id>skullcreator-repo</id>
             <url>https://github.com/deanveloper/SkullCreator/raw/mvn-repo/</url>
         </repository>
+        <repository>
+            <id>nickuc-repo</id>
+            <url>https://repo.nickuc.com/maven-releases/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -112,6 +116,12 @@
             <artifactId>skullcreator</artifactId>
             <version>3.0.1</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.nickuc.chat</groupId>
+            <artifactId>nchat-api</artifactId>
+            <version>5.4</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

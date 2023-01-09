@@ -24,7 +24,7 @@ public class EventosEspeciais {
     public static EventoGerenciarSpawner getPlayerRemovendoSpawners(Player player) {
         return playersRemovendoSpawners
                 .stream()
-                .filter(playerIn -> playerIn.getNick().equals(player.getDisplayName()))
+                .filter(playerIn -> playerIn.getNick().equals(player.getName()))
                 .findFirst()
                 .orElse(null);
     }
@@ -35,7 +35,7 @@ public class EventosEspeciais {
 
     public static EventoPlayerCompraDeSpawners getEventoInComprarQuantiaDeSpawnersByPlayer(String nickname) {
         return comprarQuantiaDeSpawners.stream()
-                .filter(evento -> evento.getPlayer().getDisplayName().equals(nickname))
+                .filter(evento -> evento.getPlayer().getName().equals(nickname))
                 .findFirst()
                 .orElse(null);
     }
@@ -55,59 +55,59 @@ public class EventosEspeciais {
     public static EventoGerenciarSpawner getEventoGerenciarSpawnerByPlayer(Player player) {
         return playersGerenciandoSpawners
                 .stream()
-                .filter(playerIn -> playerIn.getNick().equals(player.getDisplayName()))
+                .filter(playerIn -> playerIn.getNick().equals(player.getName()))
                 .findFirst()
                 .orElse(null);
     }
 
     public static void addPlayerGerenciandoSpawner(Player player, Spawner spawner) {
         removePlayerGerenciandoSpawner(player);
-        playersGerenciandoSpawners.add(new EventoGerenciarSpawner(player.getDisplayName(), spawner));
+        playersGerenciandoSpawners.add(new EventoGerenciarSpawner(player.getName(), spawner));
     }
 
     public static void removePlayerGerenciandoSpawner(Player player) {
         playersGerenciandoSpawners = playersGerenciandoSpawners
                 .stream()
-                .filter(playerIn -> !playerIn.getNick().equals(player.getDisplayName()))
+                .filter(playerIn -> !playerIn.getNick().equals(player.getName()))
                 .collect(Collectors.toList());
     }
 
     public static void addPlayerRemovendoSpawners(Player player, Spawner spawner) {
         removePlayerRemovendoSpawners(player);
-        playersRemovendoSpawners.add(new EventoGerenciarSpawner(player.getDisplayName(), spawner));
+        playersRemovendoSpawners.add(new EventoGerenciarSpawner(player.getName(), spawner));
     }
 
     public static void removePlayerRemovendoSpawners(Player player) {
         playersRemovendoSpawners = playersRemovendoSpawners
                 .stream()
-                .filter(playerIn -> !playerIn.getNick().equals(player.getDisplayName()))
+                .filter(playerIn -> !playerIn.getNick().equals(player.getName()))
                 .collect(Collectors.toList());
     }
 
     public static EventoGerenciarSpawner getEventoAdicionarAmigoByPlayer(Player player) {
         return playersAdicionandoAmigos
                 .stream()
-                .filter(playerIn -> playerIn.getNick().equals(player.getDisplayName()))
+                .filter(playerIn -> playerIn.getNick().equals(player.getName()))
                 .findFirst()
                 .orElse(null);
     }
 
     public static void addPlayerAdicionandoAmigo(Player player, Spawner spawner) {
         removePlayerAdicionandoAmigo(player);
-        playersAdicionandoAmigos.add(new EventoGerenciarSpawner(player.getDisplayName(), spawner));
+        playersAdicionandoAmigos.add(new EventoGerenciarSpawner(player.getName(), spawner));
     }
 
     public static void removePlayerAdicionandoAmigo(Player player) {
         playersAdicionandoAmigos = playersAdicionandoAmigos
                 .stream()
-                .filter(playerIn -> !playerIn.getNick().equals(player.getDisplayName()))
+                .filter(playerIn -> !playerIn.getNick().equals(player.getName()))
                 .collect(Collectors.toList());
     }
 
     public static Player getPlayerSetandoMultiplicador(Player player) {
         return playersSetandoMultiplicador
                 .stream()
-                .filter(playerIn -> playerIn.getDisplayName().equals(player.getDisplayName()))
+                .filter(playerIn -> playerIn.getName().equals(player.getName()))
                 .findFirst()
                 .orElse(null);
     }
@@ -119,7 +119,7 @@ public class EventosEspeciais {
     public static void removePlayerSetandoMultiplicador(Player player) {
         playersSetandoMultiplicador = playersSetandoMultiplicador
                 .stream()
-                .filter(playerIn -> !playerIn.getDisplayName().equals(player.getDisplayName()))
+                .filter(playerIn -> !playerIn.getName().equals(player.getName()))
                 .collect(Collectors.toList());
     }
 

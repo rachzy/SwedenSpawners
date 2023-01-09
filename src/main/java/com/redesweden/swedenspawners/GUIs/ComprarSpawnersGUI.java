@@ -1,6 +1,7 @@
 package com.redesweden.swedenspawners.GUIs;
 
 import com.redesweden.swedeneconomia.functions.ConverterQuantia;
+import com.redesweden.swedeneconomia.models.PlayerSaldo;
 import com.redesweden.swedenspawners.data.Players;
 import com.redesweden.swedenspawners.data.SaleSpawners;
 import com.redesweden.swedenspawners.models.SpawnerMeta;
@@ -19,18 +20,20 @@ import java.util.List;
 public class ComprarSpawnersGUI {
     final private Inventory inventario = Bukkit.createInventory(null, 36, "§9Spawners");
     public ComprarSpawnersGUI(String playerNickname) {
-        SpawnerPlayer player = Players.getPlayerByName(playerNickname);
+        PlayerSaldo playerSaldo = com.redesweden.swedeneconomia.data.Players.getPlayer(playerNickname);
+        SpawnerPlayer playerLimite = Players.getPlayerByName(playerNickname);
 
         // Item que mostra o limite ao jogador
-        ItemStack limiteItem = new ItemStack(Material.NAME_TAG, 1);
-        ItemMeta limiteItemMeta = limiteItem.getItemMeta();
-        limiteItemMeta.setDisplayName("§eLimite de Compra");
+        ItemStack playerHead = SkullCreator.itemFromName(playerNickname);
+        ItemMeta playerHeadMeta = playerHead.getItemMeta();
+        playerHeadMeta.setDisplayName("§e" + playerNickname);
 
         List<String> loreItemMeta = new ArrayList<>();
-        loreItemMeta.add("§7Seu limite: §a" + new ConverterQuantia(player.getLimite()).emLetras());
-        limiteItemMeta.setLore(loreItemMeta);
+        loreItemMeta.add("§7Seu saldo: §a$" + playerSaldo.getSaldo(true));
+        loreItemMeta.add("§7Seu limite: §c✤" + new ConverterQuantia(playerLimite.getLimite()).emLetras());
+        playerHeadMeta.setLore(loreItemMeta);
 
-        limiteItem.setItemMeta(limiteItemMeta);
+        playerHead.setItemMeta(playerHeadMeta);
 
         for(int i = 0; i <= 13; i++) {
             int saltRounds = 10;
@@ -82,13 +85,13 @@ public class ComprarSpawnersGUI {
         loreMultiplicador.add("§7vários spawners de uma vez, multiplicando");
         loreMultiplicador.add("§7seu limite de compra em X vezes");
         loreMultiplicador.add("");
-        loreMultiplicador.add("§eSeu multiplicador atual: §a" + player.getMultiplicador());
+        loreMultiplicador.add("§eSeu multiplicador atual: §a" + playerLimite.getMultiplicador());
         loreMultiplicador.add("§aClique para alterar");
         multiplicadorItemMeta.setLore(loreMultiplicador);
 
         multiplicadorItem.setItemMeta(multiplicadorItemMeta);
 
-        inventario.setItem(4, limiteItem);
+        inventario.setItem(4, playerHead);
         inventario.setItem(31, multiplicadorItem);
     }
     public Inventory get() {

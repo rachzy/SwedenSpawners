@@ -67,7 +67,7 @@ public class BlockPlaceListener implements Listener {
         if (spawnerMeta == null) return;
 
         if (spawner.get() != null) {
-            if (!spawner.get().getDono().getNickname().equals(player.getDisplayName())
+            if (!spawner.get().getDono().getNickname().equals(player.getName())
                     || spawner.get().getSpawnerMeta().getMob() != spawnerMeta.getMob()) {
                 player.sendMessage("§cJá existe um spawner de outro tipo ou de outro player muito perto deste. (Menos de 5 blocos)");
                 e.setCancelled(true);
@@ -102,7 +102,7 @@ public class BlockPlaceListener implements Listener {
                     String spawnerId = itemBloco.getItemMeta().getLore().get(1).substring(2);
                     Spawner spawner = Spawners.getSpawnerPorId(spawnerId);
                     spawner.setLocal(blocoColocado.getLocation());
-                    spawner.setDono(Players.getPlayerByName(player.getDisplayName()));
+                    spawner.setDono(Players.getPlayerByName(player.getName()));
                     spawner.setRetirado(false);
                     spawner.setAtivado(true);
                     spawner.iniciar();
