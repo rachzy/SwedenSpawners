@@ -252,7 +252,6 @@ public class Spawner {
             novoMob.setCustomName(String.format("§e§l%s §f- §e%s", this.getSpawnerMeta().getId(), new ConverterQuantia(this.entidadesSpawnadas).emLetras()));
             novoMob.setCustomNameVisible(true);
             NBTEditor.set(novoMob, true, "NoAI");
-            NBTEditor.set(novoMob, true, "Invunerable");
         }
         save("entidadesSpawnadas", this.entidadesSpawnadas.toString());
     }
