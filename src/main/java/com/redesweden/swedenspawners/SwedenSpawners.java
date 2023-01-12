@@ -3,6 +3,7 @@ package com.redesweden.swedenspawners;
 import com.redesweden.swedenspawners.commands.LimiteCommand;
 import com.redesweden.swedenspawners.commands.SpawnersCommand;
 import com.redesweden.swedenspawners.data.Players;
+import com.redesweden.swedenspawners.data.Spawners;
 import com.redesweden.swedenspawners.events.*;
 import com.redesweden.swedenspawners.files.ConfigFile;
 import com.redesweden.swedenspawners.files.PlayersFile;
@@ -48,6 +49,7 @@ public final class SwedenSpawners extends JavaPlugin {
     @Override
     public void onDisable() {
         Players.salvarPlayersModificados();
+        Spawners.salvarSpawnersModificados();
         System.out.println("Desativando SwedenSpawners...");
     }
 }

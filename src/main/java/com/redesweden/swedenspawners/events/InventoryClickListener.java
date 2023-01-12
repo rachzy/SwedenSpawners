@@ -322,21 +322,21 @@ public class InventoryClickListener implements Listener {
             SpawnerAmigo amigoAlvo = spawner.getAmigoPorNome(amigoNick);
 
             if (nomeDoItem.equalsIgnoreCase("PERMISSÃO DE VENDER")) {
-                amigoAlvo.togglePermissaoVender(spawner);
+                amigoAlvo.togglePermissaoVender();
                 player.openInventory(new GerenciarAmigoGUI(amigoAlvo).get());
                 player.playSound(player.getLocation(), Sound.CLICK, 3.0F, 2.5F);
                 return;
             }
 
             if (nomeDoItem.equalsIgnoreCase("PERMISSÃO DE MATAR")) {
-                amigoAlvo.togglePermissaoMatar(spawner);
+                amigoAlvo.togglePermissaoMatar();
                 player.openInventory(new GerenciarAmigoGUI(amigoAlvo).get());
                 player.playSound(player.getLocation(), Sound.CLICK, 3.0F, 2.5F);
                 return;
             }
 
             if (nomeDoItem.equalsIgnoreCase("PERMISSÃO DE RETIRAR")) {
-                amigoAlvo.togglePermissaoRetirar(spawner);
+                amigoAlvo.togglePermissaoRetirar();
                 player.openInventory(new GerenciarAmigoGUI(amigoAlvo).get());
                 player.playSound(player.getLocation(), Sound.CLICK, 3.0F, 2.5F);
                 return;

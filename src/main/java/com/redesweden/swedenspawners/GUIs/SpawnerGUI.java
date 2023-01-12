@@ -18,7 +18,7 @@ public class SpawnerGUI {
     private final Inventory inventario = Bukkit.createInventory(null, 27, "§9Gerenciar Spawner");
 
     public SpawnerGUI(Spawner spawner) {
-        ItemStack gerenciarDrops = new ItemStack(Material.MAGMA_CREAM, 1);
+        ItemStack gerenciarDrops = SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDgwN2YyMDk0MmQ4NGEzYjczM2ExYTJkNjZkZTQ3NWJmNDE2YzJlNmM1NTQyMTM2Nzc0MmIxNzcwNmJhMjE1OSJ9fX0=");
         ItemMeta gerenciarDropsMeta = gerenciarDrops.getItemMeta();
         gerenciarDropsMeta.setDisplayName("§eGerenciar Drops");
         List<String> loreGerenciarDropsMeta = new ArrayList<>();
@@ -27,7 +27,7 @@ public class SpawnerGUI {
 
         gerenciarDrops.setItemMeta(gerenciarDropsMeta);
 
-        ItemStack gerenciarAmigos = new ItemStack(Material.ARMOR_STAND, 1);
+        ItemStack gerenciarAmigos = SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzZjYmFlNzI0NmNjMmM2ZTg4ODU4NzE5OGM3OTU5OTc5NjY2YjRmNWE0MDg4ZjI0ZTI2ZTA3NWYxNDBhZTZjMyJ9fX0=");
         ItemMeta gerenciarAmigosMeta = gerenciarAmigos.getItemMeta();
         gerenciarAmigosMeta.setDisplayName("§eGerenciar Amigos");
         List<String> loreGerenciarAmigosMeta = new ArrayList<>();
@@ -36,7 +36,7 @@ public class SpawnerGUI {
 
         gerenciarAmigos.setItemMeta(gerenciarAmigosMeta);
 
-        ItemStack melhorias = new ItemStack(Material.BEACON, 1);
+        ItemStack melhorias = SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2I0NWM1ZWI3OGRmZjZmYzQzZjdmOGUzOTg3Mjk0MTQ0MjJhOGViNmYzMTQ1MDVkZjhmZjlhMzNiZGQ2ZDEyZiJ9fX0=");
         ItemMeta boosterMeta = melhorias.getItemMeta();
         boosterMeta.setDisplayName("§eMelhorias");
         List<String> loreBoosterMeta = new ArrayList<>();

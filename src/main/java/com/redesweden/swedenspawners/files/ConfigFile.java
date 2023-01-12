@@ -32,15 +32,7 @@ public class ConfigFile {
 
         lojaFile = YamlConfiguration.loadConfiguration(file);
 
-        lojaFile.addDefault("spawners.PORCO.title", "§eSpawner de §d§lPORCO");
-        lojaFile.addDefault("spawners.PORCO.mobID", 90);
-        lojaFile.addDefault("spawners.PORCO.head", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmVlODUxNDg5MmYzZDc4YTMyZTg0NTZmY2JiOGM2MDgxZTIxYjI0NmQ4MmYzOThiZDk2OWZlYzE5ZDNjMjdiMyJ9fX0=");
-        lojaFile.addDefault("spawners.PORCO.dropID", 319);
-        lojaFile.addDefault("spawners.PORCO.dropSubID", 0);
-        lojaFile.addDefault("spawners.PORCO.cor", "PINK");
-        lojaFile.addDefault("spawners.PORCO.preco", "10M");
-        lojaFile.addDefault("spawners.PORCO.precoPorDrop", "1M");
-
+        if(lojaFile.getConfigurationSection("spawners") == null) return;
         for(String spawner : lojaFile.getConfigurationSection("spawners").getKeys(false)) {
             String spawnerTitle = lojaFile.getString(String.format("spawners.%s.title", spawner));
             int spawnerMobID = lojaFile.getInt(String.format("spawners.%s.mobID", spawner));
@@ -83,6 +75,7 @@ public class ConfigFile {
                 SaleSpawners.addSpawner(spawnerMeta);
             }
         }
+        save();
     }
 
     public static FileConfiguration get() {

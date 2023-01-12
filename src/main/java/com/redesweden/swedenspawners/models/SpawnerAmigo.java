@@ -1,8 +1,8 @@
 package com.redesweden.swedenspawners.models;
 
 public class SpawnerAmigo {
-    private String uuid;
-    private String nickname;
+    private final String uuid;
+    private final String nickname;
     private Boolean permissaoVender;
     private Boolean permissaoMatar;
     private Boolean permissaoRetirar;
@@ -47,18 +47,15 @@ public class SpawnerAmigo {
         this.permissaoRetirar = permissaoRetirar;
     }
 
-    public void togglePermissaoVender(Spawner spawner) {
+    public void togglePermissaoVender() {
         this.setPermissaoVender(!this.permissaoVender);
-        spawner.save(String.format("amigos.%s.permissaoVender", this.uuid), this.permissaoVender);
     }
 
-    public void togglePermissaoMatar(Spawner spawner) {
+    public void togglePermissaoMatar() {
         this.setPermissaoMatar(!this.permissaoMatar);
-        spawner.save(String.format("amigos.%s.permissaoMatar", this.uuid), this.permissaoMatar);
     }
 
-    public void togglePermissaoRetirar(Spawner spawner) {
+    public void togglePermissaoRetirar() {
         this.setPermissaoRetirar(!this.permissaoRetirar);
-        spawner.save(String.format("amigos.%s.permissaoRetirar", this.uuid), this.permissaoRetirar);
     }
 }

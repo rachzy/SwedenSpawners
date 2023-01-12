@@ -2,6 +2,7 @@ package com.redesweden.swedenspawners.models;
 
 import com.redesweden.swedeneconomia.functions.ConverterQuantia;
 import com.redesweden.swedenspawners.SwedenSpawners;
+import com.redesweden.swedenspawners.data.Spawners;
 import com.redesweden.swedenspawners.files.SpawnersFile;
 import eu.decentsoftware.holograms.api.DHAPI;
 import eu.decentsoftware.holograms.api.holograms.Hologram;
@@ -53,8 +54,28 @@ public class Spawner {
         this.iniciar();
     }
 
-    public void save(String key, Object valor) {
-        SpawnersFile.get().set(String.format("spawners.%s.%s", this.id, key), valor);
+    public void salvarDados() {
+        SpawnersFile.get().set(String.format("spawners.%s.local.x", this.id), local.getX());
+        SpawnersFile.get().set(String.format("spawners.%s.local.y", this.id), local.getY());
+        SpawnersFile.get().set(String.format("spawners.%s.local.z", this.id), local.getZ());
+        SpawnersFile.get().set(String.format("spawners.%s.melhorias.tempoDeSpawn", this.id), this.levelTempoDeSpawn);
+        SpawnersFile.get().set(String.format("spawners.%s.melhorias.valorDoDrop", this.id), this.levelValorDoDrop);
+        SpawnersFile.get().set(String.format("spawners.%s.melhorias.multiplicadorDeSpawn", this.id), this.levelMultiplicadorDeSpawn);
+        SpawnersFile.get().set(String.format("spawners.%s.quantidadeStackada", this.id), this.quantidadeStackada.toString());
+        SpawnersFile.get().set(String.format("spawners.%s.dropsArmazenados", this.id), this.dropsAramazenados.toString());
+        SpawnersFile.get().set(String.format("spawners.%s.entidadesSpawnadas", this.id), this.entidadesSpawnadas.toString());
+
+        amigos.forEach((amigo) -> {
+            String uuid = amigo.getUuid();
+            SpawnersFile.get().set(String.format("spawners.%s.amigos.%s.nickname", this.id, uuid), amigo.getNickname());
+            SpawnersFile.get().set(String.format("spawners.%s.amigos.%s.permissaoVender", this.id, uuid), amigo.getPermissaoVender());
+            SpawnersFile.get().set(String.format("spawners.%s.amigos.%s.permissaoMatar", this.id, uuid), amigo.getPermissaoMatar());
+            SpawnersFile.get().set(String.format("spawners.%s.amigos.%s.permissaoRetirar", this.id, uuid), amigo.getPermissaoRetirar());
+        });
+
+        SpawnersFile.get().set(String.format("spawners.%s.ativado", this.id), ativado);
+        SpawnersFile.get().set(String.format("spawners.%s.retirado", this.id), retirado);
+
         SpawnersFile.save();
     }
 
@@ -80,9 +101,6 @@ public class Spawner {
 
     public void setLocal(Location local) {
         this.local = local;
-        save("local.x", local.getX());
-        save("local.y", local.getY());
-        save("local.z", local.getZ());
     }
 
     public int getLevelTempoDeSpawn() {
@@ -91,7 +109,6 @@ public class Spawner {
 
     public void addLevelTempoDeSpawn() {
         this.levelTempoDeSpawn += 1;
-        save("melhorias.tempoDeSpawn", this.levelTempoDeSpawn);
     }
 
     public int getLevelValorDoDrop() {
@@ -100,7 +117,6 @@ public class Spawner {
 
     public void addLevelValorDoDrop() {
         this.levelValorDoDrop += 1;
-        save("melhorias.valorDoDrop", this.levelValorDoDrop);
     }
 
     public int getLevelMultiplicadorDeSpawn() {
@@ -109,7 +125,6 @@ public class Spawner {
 
     public void addLevelMultiplicadorDeSpawn() {
         this.levelMultiplicadorDeSpawn += 1;
-        save("melhorias.multiplicadorDeSpawn", this.levelMultiplicadorDeSpawn);
     }
 
     public BigDecimal getQuantidadeStackada() {
@@ -119,7 +134,6 @@ public class Spawner {
     public void setQuantidadeStackada(BigDecimal quantidade) {
         this.quantidadeStackada = quantidade;
         DHAPI.setHologramLine(this.holograma, 3, String.format("§fQuantia: §e%s", new ConverterQuantia(this.getQuantidadeStackada()).emLetras()));
-        save("quantidadeStackada", quantidade.toString());
     }
 
     public void addQuantidadesStackadas(BigDecimal quantidade) {
@@ -149,15 +163,10 @@ public class Spawner {
     public void addAmigo(String uuid, String nickname) throws Exception {
         if(this.getAmigoPorNome(nickname) != null) throw new Exception("§cEste jogador já é um amigo desse spawn.");
         this.amigos.add(new SpawnerAmigo(uuid, nickname, false, false, false));
-        save(String.format("amigos.%s.nickname", uuid), nickname);
-        save(String.format("amigos.%s.permissaoVender", uuid), false);
-        save(String.format("amigos.%s.permissaoMatar", uuid), false);
-        save(String.format("amigos.%s.permissaoRetirar", uuid), false);
     }
 
     public void removerAmigo(SpawnerAmigo amigo) {
         this.amigos = this.amigos.stream().filter(amigoIn -> !amigoIn.getNickname().equals(amigo.getNickname())).collect(Collectors.toList());
-        save(String.format("amigos.%s", amigo.getUuid()), null);
     }
 
     public Boolean getAtivado() {
@@ -175,7 +184,8 @@ public class Spawner {
         } else {
             DHAPI.setHologramLine(this.holograma, 4, "§fStatus: §cOFF");
         }
-        save("ativado", ativado);
+
+        Spawners.getSpawnersModificados().put(this, this);
     }
 
     public Boolean getRetirado() {
@@ -184,21 +194,18 @@ public class Spawner {
 
     public void setRetirado(Boolean retirado) {
         this.retirado = retirado;
-        save("retirado", retirado);
-
+        
         if(retirado) {
             try {
                 holograma.delete();
             } catch (Exception e) {
                 holograma.destroy();
             }
-
         }
     }
 
     public void zerarDropsArmazenados() {
         this.dropsAramazenados = new BigDecimal("0");
-        save("dropsArmazenados", "0");
     }
 
     public void setarHolograma() {
@@ -235,6 +242,8 @@ public class Spawner {
         Player dono = Bukkit.getServer().getPlayer(this.getDono().getNickname());
         if(dono == null || !dono.isOnline()) return;
 
+        Spawners.getSpawnersModificados().put(this, this);
+
         this.entidadesSpawnadas = this.entidadesSpawnadas.add(this.quantidadeStackada.multiply(BigDecimal.valueOf(this.levelMultiplicadorDeSpawn)));
 
         List<Entity> mobsPorPerto = new ArrayList<>(Bukkit.getWorld(this.getLocal().getWorld().getName()).getNearbyEntities(this.getLocal(), 2, 2, 2));
@@ -253,7 +262,6 @@ public class Spawner {
             novoMob.setCustomNameVisible(true);
             NBTEditor.set(novoMob, true, "NoAI");
         }
-        save("entidadesSpawnadas", this.entidadesSpawnadas.toString());
     }
 
     public void desespawnarMob() {
@@ -280,7 +288,6 @@ public class Spawner {
             this.dropsAramazenados = this.dropsAramazenados.add(this.entidadesSpawnadas.multiply(BigDecimal.valueOf(looting * 0.6)));
         }
         this.entidadesSpawnadas = new BigDecimal("0");
-        save("entidadesSpawnadas", "0");
     }
 
     public void iniciar() {

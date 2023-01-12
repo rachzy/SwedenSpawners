@@ -13,15 +13,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GerenciarDropsGUI {
-    private Inventory inventario = Bukkit.createInventory(null, 27, "§2Drops");
+    private final Inventory inventario = Bukkit.createInventory(null, 27, "§2Drops");
 
     public GerenciarDropsGUI(Spawner spawner) {
         ItemStack dropsItem = spawner.getSpawnerMeta().getDrop().clone();
         ItemMeta dropsItemMeta = dropsItem.getItemMeta();
         dropsItemMeta.setDisplayName("§eDrops do spawner");
         List<String> loreDropsItem = new ArrayList<>();
-        loreDropsItem.add(String.format("§7Drops armazenados: §a%s", new ConverterQuantia(spawner.getDropsAramazenados()).emLetras()));
-        loreDropsItem.add(String.format("§7Valor total: §a$%s", new ConverterQuantia(spawner.getDropsAramazenados().multiply(spawner.getSpawnerMeta().getPrecoPorDrop().multiply(BigDecimal.valueOf(spawner.getLevelValorDoDrop())))).emLetras()));
+        loreDropsItem.add("");
+        loreDropsItem.add(String.format(" §e| §fDrops armazenados: §e%s", new ConverterQuantia(spawner.getDropsAramazenados()).emLetras()));
+        loreDropsItem.add("");
+        loreDropsItem.add(String.format(" §2| §7Valor unitário: §2$%s", new ConverterQuantia(spawner.getSpawnerMeta().getPrecoPorDrop()).emLetras()));
+        loreDropsItem.add(String.format(" §a| §fValor total: §a$%s", new ConverterQuantia(spawner.getDropsAramazenados().multiply(spawner.getSpawnerMeta().getPrecoPorDrop().multiply(BigDecimal.valueOf(spawner.getLevelValorDoDrop())))).emLetras()));
         loreDropsItem.add("");
         loreDropsItem.add("§aClique para vender");
         dropsItemMeta.setLore(loreDropsItem);

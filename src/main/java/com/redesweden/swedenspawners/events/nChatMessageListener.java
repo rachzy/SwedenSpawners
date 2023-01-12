@@ -3,6 +3,8 @@ package com.redesweden.swedenspawners.events;
 import com.nickuc.chat.api.events.PublicMessageEvent;
 import com.redesweden.swedeneconomia.functions.ConverterQuantia;
 import com.redesweden.swedeneconomia.models.PlayerSaldo;
+import com.redesweden.swedenspawners.GUIs.GerenciarAmigoGUI;
+import com.redesweden.swedenspawners.GUIs.GerenciarAmigosGUI;
 import com.redesweden.swedenspawners.data.EventosEspeciais;
 import com.redesweden.swedenspawners.data.Players;
 import com.redesweden.swedenspawners.functions.GerenciadorDeSpawner;
@@ -144,6 +146,7 @@ public class nChatMessageListener implements Listener {
 
             EventosEspeciais.removePlayerAdicionandoAmigo(player);
             player.playSound(player.getLocation(), Sound.LEVEL_UP, 3.0F, 1F);
+            player.openInventory(new GerenciarAmigosGUI(player.getName(), spawner).get());
             player.sendMessage(String.format("§aVocê adicionou o jogador §e%s §aà lista de amigos de seu spawner.", nomeDoJogador));
             return;
         }

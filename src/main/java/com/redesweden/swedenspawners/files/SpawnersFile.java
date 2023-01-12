@@ -87,6 +87,8 @@ public class SpawnersFile {
                     retirado);
             Spawners.addSpawner(spawner);
         }
+
+        Spawners.iniciarSalvamentoAutomatico();
     }
 
     public static void createNewSpawner(Player dono, SpawnerMeta tipo, Location local, BigDecimal quantidadeStackada) {
